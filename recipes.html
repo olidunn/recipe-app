@@ -18,8 +18,13 @@
     <main>
       <div id="recipe-list"></div>
       <a class="button" href="./create-recipe.html">Create Recipe</a>
+      <button class="button" onclick="deleteAllRecipes()">
+        Delete All Recipes
+      </button>
     </main>
   </body>
-
-  <script src="./recipes.js"></script>
+  <script src="./render.js"></script>
+  <script>
+    renderRecipes();
+  </script>
 </html>

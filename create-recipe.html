@@ -17,13 +17,12 @@
   <body>
     <main>
       <div class="form">
+        <label for="recipeName">
+          Name: <input type="text" id="recipeName" />
+        </label>
         <textarea id="recipeStepsInput"></textarea>
         <div class="buttonGroup">
-          <button
-            style="margin-left: auto"
-            class="button"
-            onclick="renderIngredients(), renderSteps()"
-          >
+          <button style="margin-left: auto" class="button" onclick="preview()">
             Preview
           </button>
           <button
@@ -34,15 +33,12 @@
             Save
           </button>
         </div>
+        <div id="preview-ingredients"></div>
+        <div id="preview-steps"></div>
       </div>
-      <section>
-        <h3 id="ingredientsHeading">Ingredients</h3>
-      </section>
-      <section>
-        <h3 id="stepsHeading">Steps</h3>
-      </section>
     </main>
   </body>
 
   <script src="./create-recipe.js"></script>
+  <script src="./render.js"></script>
 </html>
