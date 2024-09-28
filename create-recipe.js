@@ -35,7 +35,7 @@ function parseRecipe(recipeString, recipeName) {
 
 function saveRecipe() {
   const recipe = parseRecipe(recipeStepsInput.value, recipeNameInput.value);
-  const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  const recipes = JSON.parse(localStorage.getItem("recipes")) ?? [];
 
   recipes.push(recipe);
 

@@ -4,12 +4,11 @@ function removeCurlyBrackets(ingredient) {
   return ingredient.slice(2, ingredient.length - 2);
 }
 
-function renderSteps(steps, parentId) {
+function renderSteps(steps, parentElement) {
   if (steps.length === 0) {
     return;
   }
 
-  const parentElement = document.getElementById(parentId);
   if (parentElement === null) {
     throw new Error("Parent element does not exist.");
   }
@@ -37,12 +36,11 @@ function renderSteps(steps, parentId) {
 }
 
 // This function is used to print the ingredients as a list
-function renderIngredients(ingredients, parentId) {
+function renderIngredients(ingredients, parentElement) {
   if (ingredients.length === 0) {
     return;
   }
 
-  const parentElement = document.getElementById(parentId);
   if (parentElement === null) {
     throw new Error("Parent element does not exist.");
   }
@@ -74,6 +72,7 @@ function renderIngredients(ingredients, parentId) {
 }
 
 function renderRecipes() {
+  console.log("Rendering recipes...");
   const recipeList = document.getElementById("recipe-list");
   // This helps us as developers know when we for example, forgot to add the "recipe-list" element to the page.
   if (recipeList === null) {
@@ -81,21 +80,30 @@ function renderRecipes() {
   }
 
   // We need to use JSON.parse to convert the string back to an object, so that we can use it.
-  const recipes = JSON.parse(localStorage.getItem("recipes"));
-  if (recipes === null) {
+  const recipes = JSON.parse(localStorage.getItem("recipes")) ?? [];
+  if (recipes.length === 0) {
     // this is a dangerous way of changing the DOM, better to use append child instead
     recipeList.innerHTML = "<p>No recipes found.</p>";
     return;
   }
 
+  const recipeElements = [];
+
   for (let i = 0; i < recipes.length; i++) {
     const recipe = recipes[i];
-    const ingredientsSet = new Set(recipe.ingredients);
     const recipeElement = document.createElement("div");
-    const recipeId = `recipe-${i}`;
+    const recipeId = recipe.name;
     recipeElement.setAttribute("id", recipeId);
     recipeElement.appendChild(document.createElement("h2")).textContent =
       recipe.name;
+
+    const deleteButtonElement = document.createElement("button");
+    deleteButtonElement.setAttribute("name", "recipeId");
+    deleteButtonElement.setAttribute("value", recipeId);
+    deleteButtonElement.setAttribute("class", "button");
+    deleteButtonElement.textContent = "Delete Recipe";
+    deleteButtonElement.addEventListener("click", () => deleteRecipe(recipeId));
+    recipeElement.appendChild(deleteButtonElement);
 
     const ingredientsElement = document.createElement("div");
     ingredientsElement.setAttribute("id", `${recipeId}-ingredients`);
@@ -105,10 +113,12 @@ function renderRecipes() {
     stepsElement.setAttribute("id", `${recipeId}-steps`);
     recipeElement.appendChild(stepsElement);
 
-    recipeList.appendChild(recipeElement);
-    renderIngredients(recipe.ingredients, ingredientsElement.id);
-    renderSteps(recipe.steps, stepsElement.id);
+    recipeElements.push(recipeElement);
+    renderIngredients([...new Set(recipe.ingredients)], ingredientsElement);
+    renderSteps(recipe.steps, stepsElement);
   }
+
+  recipeList.replaceChildren(...recipeElements);
 }
 
 function createStepListItem(step) {
@@ -141,7 +151,20 @@ function createStepListItem(step) {
   return listItemElement;
 }
 
-function deleteAllRecipes() {
-  localStorage.clear("recipes");
+function deleteRecipe(recipeId) {
+  console.log("Deleting recipe...", recipeId);
+  const recipes = JSON.parse(localStorage.getItem("recipes")) ?? [];
+  const updatedRecipes = recipes.filter((recipe) => recipe.name !== recipeId);
+  localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
   renderRecipes();
 }
+
+function deleteAllRecipes() {
+  localStorage.removeItem("recipes");
+  renderRecipes();
+}
+
+// How can we get the "recipeId": "value" of the button that was clicked? and access it in the deleteRecipe function?
+
+// add code here to find the recipe from local storage and delete it
+// then call renderRecipes() to update the page
