@@ -45,6 +45,7 @@ export function CreateRecipe() {
             Save
           </Button>
         </ButtonGroup>
+
         <div id="preview-ingredients"></div>
         <div id="preview-steps"></div>
       </Form>
