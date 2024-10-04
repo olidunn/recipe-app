@@ -5,8 +5,11 @@ import { Form } from "../../components/Form";
 import { InputText } from "../../components/InputText";
 import { TextArea } from "../../components/TextArea";
 import { saveRecipe } from "./utils";
+import { useLocation } from "wouter";
+import { routes } from "../../common/routes";
 
 export function CreateRecipe() {
+  const [_, setLocation] = useLocation();
   const [recipeName, setRecipeName] = useState("");
   const [recipeSteps, setRecipeSteps] = useState("");
 
@@ -35,12 +38,14 @@ export function CreateRecipe() {
           >
             Preview
           </Button>
-
           <Button
             style={{
               marginLeft: "auto",
             }}
-            onClick={() => saveRecipe(recipeName, recipeSteps)}
+            onClick={() => {
+              saveRecipe(recipeName, recipeSteps);
+              setLocation(routes.recipes);
+            }}
           >
             Save
           </Button>

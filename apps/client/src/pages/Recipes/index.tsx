@@ -1,13 +1,11 @@
 import { Link } from "wouter";
 import { Button } from "../../components/Button";
 import { routes } from "../../common/routes";
+import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 
 /**
  * TODO:
- * 1. Try loading the data from localStorage and displaying it on this page.
- * 2. When clicking save, look at the wouter documentation to see how to navigate to the recipes page.
- * 3. Go through the render.js file and start building React components for the sections and recipe card etc.
- * (components that will be displayed on this page as a list) use hardcoded (fake) data for now.
+ * Go through the render.js file and start building React components for the sections and recipe card etc.
  *
  * https://www.typescriptlang.org/docs/
  * https://react.dev/learn
@@ -16,15 +14,25 @@ import { routes } from "../../common/routes";
  * https://github.com/molefrog/wouter
  */
 export function Recipes() {
-  function deleteAllRecipes() {}
+  const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
   return (
     <>
-      <div id="recipe-list"></div>
+      {recipes.length === 0 && <p>No recipes found</p>}
+      {recipes.map((recipe) => (
+        <div key={recipe.name}>
+          <h4>{recipe.name}</h4>
+          <ul>
+            {recipe.ingredients.map((ingredient) => (
+              <li key={ingredient}>{ingredient}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
       <Link className="button" href={routes.createRecipe}>
         Create Recipe
       </Link>
-      <Button onClick={deleteAllRecipes}>Delete All Recipes</Button>
+      <Button onClick={() => setRecipes([])}>Delete All Recipes</Button>
     </>
   );
 }

@@ -1,18 +1,16 @@
-import { navigate } from "wouter/use-browser-location";
-
 function removeCurlyBrackets(ingredient: string): string {
   return ingredient.slice(2, ingredient.length - 2);
 }
 
 const ingredientPattern = /\{\{.*?\}\}/g;
 
-type Recipe = {
+export type Recipe = {
   name: string;
   steps: string[];
   ingredients: string[];
 };
 
-function parseRecipe(recipeName: string, recipeString: string): Recipe {
+export function parseRecipe(recipeName: string, recipeString: string): Recipe {
   const recipe: Recipe = {
     name: recipeName,
     steps: parseSteps(recipeString),
@@ -28,8 +26,6 @@ export function saveRecipe(name: string, steps: string) {
   const recipes: Recipe[] = recipesString ? JSON.parse(recipesString) : [];
 
   recipes.push(recipe);
-
-  navigate("/recipes");
 
   // We need to convert the javascript variable into a string so that we can store
   // it in localStorage. localStorage can only store string representations of data.
