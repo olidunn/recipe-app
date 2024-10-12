@@ -20,11 +20,19 @@ export function parseRecipe(recipeName: string, recipeString: string): Recipe {
   return recipe;
 }
 
-export function saveRecipe(name: string, steps: string) {
-  const recipe = parseRecipe(name, steps);
+/**
+ * @returns an error message if the recipe name already exists, otherwise it saves the recipe
+ */
+export function saveRecipe(name: string, steps: string): string | void {
   const recipesString = localStorage.getItem("recipes");
   const recipes: Recipe[] = recipesString ? JSON.parse(recipesString) : [];
 
+  const recipeNameExists = recipes.some((r) => r.name === name);
+  if (recipeNameExists) {
+    return "This recipe name already exists, please choose a different name.";
+  }
+
+  const recipe = parseRecipe(name, steps);
   recipes.push(recipe);
 
   // We need to convert the javascript variable into a string so that we can store

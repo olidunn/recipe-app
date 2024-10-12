@@ -16,23 +16,39 @@ import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 export function Recipes() {
   const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
+  function deleteAllRecipes() {
+    setRecipes([]);
+  }
+
+  function deleteRecipe() {
+    //
+  }
+
   return (
     <>
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes.map((recipe) => (
         <div key={recipe.name}>
-          <h4>{recipe.name}</h4>
+          <h3>{recipe.name}</h3>
+          <h4>Ingredients</h4>
           <ul>
             {recipe.ingredients.map((ingredient) => (
               <li key={ingredient}>{ingredient}</li>
             ))}
           </ul>
+          <h4>Steps</h4>
+          <ul>
+            {recipe.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ul>
+          <Button onClick={deleteRecipe}>Delete Recipe</Button>
         </div>
       ))}
       <Link className="button" href={routes.createRecipe}>
         Create Recipe
       </Link>
-      <Button onClick={() => setRecipes([])}>Delete All Recipes</Button>
+      <Button onClick={deleteAllRecipes}>Delete All Recipes</Button>
     </>
   );
 }
