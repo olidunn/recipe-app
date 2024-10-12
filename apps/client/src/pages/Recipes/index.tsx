@@ -20,8 +20,10 @@ export function Recipes() {
     setRecipes([]);
   }
 
-  function deleteRecipe() {
-    //
+  function deleteRecipe(recipeId: string) {
+    setRecipes((currentRecipes) =>
+      currentRecipes.filter((recipe) => recipe.name !== recipeId)
+    );
   }
 
   return (
@@ -42,7 +44,9 @@ export function Recipes() {
               <li key={step}>{step}</li>
             ))}
           </ul>
-          <Button onClick={deleteRecipe}>Delete Recipe</Button>
+          <Button onClick={() => deleteRecipe(recipe.name)}>
+            Delete Recipe
+          </Button>
         </div>
       ))}
       <Link className="button" href={routes.createRecipe}>
