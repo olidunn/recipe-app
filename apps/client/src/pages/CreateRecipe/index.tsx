@@ -12,8 +12,20 @@ export function CreateRecipe() {
   const [_, setLocation] = useLocation();
   const [recipeName, setRecipeName] = useState("");
   const [recipeSteps, setRecipeSteps] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   function preview() {}
+
+  function save() {
+    const errorMessage = saveRecipe(recipeName, recipeSteps);
+
+    if (errorMessage) {
+      setError(errorMessage);
+      return;
+    }
+
+    setLocation(routes.recipes);
+  }
 
   return (
     <>
@@ -23,6 +35,7 @@ export function CreateRecipe() {
           label="Name"
           onChange={(event) => setRecipeName(event.target.value)}
           value={recipeName}
+          error={error}
         />
         <TextArea
           height={200}
@@ -42,10 +55,7 @@ export function CreateRecipe() {
             style={{
               marginLeft: "auto",
             }}
-            onClick={() => {
-              saveRecipe(recipeName, recipeSteps);
-              setLocation(routes.recipes);
-            }}
+            onClick={save}
           >
             Save
           </Button>
