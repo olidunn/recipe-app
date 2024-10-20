@@ -1,8 +1,8 @@
-function removeCurlyBrackets(ingredient: string): string {
+export function removeCurlyBrackets(ingredient: string): string {
   return ingredient.slice(2, ingredient.length - 2);
 }
 
-const ingredientPattern = /\{\{.*?\}\}/g;
+export const ingredientPattern = /\{\{.*?\}\}/g;
 
 export type Recipe = {
   name: string;
@@ -21,11 +21,15 @@ export function parseRecipe(recipeName: string, recipeString: string): Recipe {
 }
 
 /**
- * @returns an error message if the recipe name already exists, otherwise it saves the recipe
+ * @returns an error message, otherwise it saves the recipe
  */
 export function saveRecipe(name: string, steps: string): string | void {
   const recipesString = localStorage.getItem("recipes");
   const recipes: Recipe[] = recipesString ? JSON.parse(recipesString) : [];
+
+  if (name.length === 0 || steps.length === 0) {
+    return "Recipe name and steps are required.";
+  }
 
   const recipeNameExists = recipes.some((r) => r.name === name);
   if (recipeNameExists) {

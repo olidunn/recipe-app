@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "../../components/Button";
 import { routes } from "../../common/routes";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
+import { RecipeStep } from "../../components/RecipeStep";
 
 /**
  * TODO:
@@ -41,7 +42,9 @@ export function Recipes() {
           <h4>Steps</h4>
           <ul>
             {recipe.steps.map((step) => (
-              <li key={step}>{step}</li>
+              <li key={step}>
+                <RecipeStep>{step}</RecipeStep>
+              </li>
             ))}
           </ul>
           <Button onClick={() => deleteRecipe(recipe.name)}>
