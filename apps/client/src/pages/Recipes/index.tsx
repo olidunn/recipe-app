@@ -1,8 +1,9 @@
 import { Link } from "wouter";
 import { Button } from "../../components/Button";
-import { routes } from "../../common/routes";
+import { paths } from "../../common/routes";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
-import { RecipeStep } from "../../components/RecipeStep";
+
+import { Recipe } from "../../components/Recipe";
 
 /**
  * TODO:
@@ -14,6 +15,7 @@ import { RecipeStep } from "../../components/RecipeStep";
  * https://styled-components.com/docs
  * https://github.com/molefrog/wouter
  */
+
 export function Recipes() {
   const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
@@ -21,9 +23,9 @@ export function Recipes() {
     setRecipes([]);
   }
 
-  function deleteRecipe(recipeId: string) {
+  function deleteRecipe(recipeName: string) {
     setRecipes((currentRecipes) =>
-      currentRecipes.filter((recipe) => recipe.name !== recipeId)
+      currentRecipes.filter((recipe) => recipe.name !== recipeName)
     );
   }
 
@@ -31,28 +33,15 @@ export function Recipes() {
     <>
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes.map((recipe) => (
-        <div key={recipe.name}>
-          <h3>{recipe.name}</h3>
-          <h4>Ingredients</h4>
-          <ul>
-            {recipe.ingredients.map((ingredient) => (
-              <li key={ingredient}>{ingredient}</li>
-            ))}
-          </ul>
-          <h4>Steps</h4>
-          <ul>
-            {recipe.steps.map((step) => (
-              <li key={step}>
-                <RecipeStep>{step}</RecipeStep>
-              </li>
-            ))}
-          </ul>
-          <Button onClick={() => deleteRecipe(recipe.name)}>
-            Delete Recipe
-          </Button>
-        </div>
+        <Recipe
+          key={recipe.name}
+          name={recipe.name}
+          ingredients={recipe.ingredients}
+          steps={recipe.steps}
+          onDelete={deleteRecipe}
+        />
       ))}
-      <Link className="button" href={routes.createRecipe}>
+      <Link className="button" href={paths.createRecipe}>
         Create Recipe
       </Link>
       <Button onClick={deleteAllRecipes}>Delete All Recipes</Button>
