@@ -1,8 +1,9 @@
 import { Link, Route, Switch } from "wouter";
 import { Recipes } from "./pages/Recipes";
 import { CreateRecipe } from "./pages/CreateRecipe";
-import { routes } from "./common/routes";
+import { paths } from "./common/routes";
 import { createGlobalStyle } from "styled-components";
+import { Recipe } from "./pages/Recipe";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -45,13 +46,14 @@ export function App() {
       <GlobalStyle />
       <main>
         <Switch>
-          <Route path={routes.home}>
+          <Route path={paths.home}>
             <h1>Home</h1>
-            <Link href={routes.recipes}>Recipes</Link>
-            <Link href={routes.createRecipe}>Create recipe</Link>
+            <Link href={paths.recipes}>Recipes</Link>
+            <Link href={paths.createRecipe}>Create recipe</Link>
           </Route>
-          <Route path={routes.recipes} component={Recipes} />
-          <Route path={routes.createRecipe} component={CreateRecipe} />
+          <Route path={paths.recipes} component={Recipes} />
+          <Route path={paths.recipe} component={Recipe} />
+          <Route path={paths.createRecipe} component={CreateRecipe} />
           <Route>404 Not found</Route>
         </Switch>
       </main>

@@ -6,7 +6,7 @@ import { InputText } from "../../components/InputText";
 import { TextArea } from "../../components/TextArea";
 import { saveRecipe } from "./utils";
 import { useLocation } from "wouter";
-import { routes } from "../../common/routes";
+import { paths } from "../../common/routes";
 
 export function CreateRecipe() {
   const [_, setLocation] = useLocation();
@@ -39,7 +39,7 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       return;
     }
 
-    setLocation(routes.recipes);
+    setLocation(paths.recipes);
   }
 
   return (
