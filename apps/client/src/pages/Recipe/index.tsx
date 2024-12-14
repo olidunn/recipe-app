@@ -1,11 +1,16 @@
-import { useParams } from "wouter";
+import { useParams, Redirect } from "wouter";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
+import { routes } from "../../common/routes";
+import { useState } from "react";
+import { RecipeStep } from "../../components/RecipeStep";
+import { Button } from "../../components/Button";
 
-export function Recipe() {
+export function RecipePage() {
   const { name } = useParams<{
     name: string;
   }>();
-  const [recipes] = useLocalStorage("recipes", []);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
   //// Expanded code version
   //   const recipe = recipes.find((r) => r.name === name);
@@ -26,19 +31,49 @@ export function Recipe() {
   const ingredients = recipe?.ingredients ?? [];
   const steps = recipe?.steps ?? [];
 
+  function deleteRecipe(recipeName: string) {
+    setRecipes((currentRecipes) =>
+      currentRecipes.filter((r) => r.name !== recipeName)
+    );
+    setShouldRedirect(true);
+  }
+
+  if (shouldRedirect) {
+    return <Redirect to={routes.recipes} />;
+  }
+
   return (
-    <>
-      My recipe {name}
+    <div key={name}>
+      <h3>{name}</h3>
+      <h4>Ingredients</h4>
       <ul>
-        {ingredients.map((i) => (
-          <li key={i}>{i}</li>
+        {ingredients.map((ingredient) => (
+          <li key={ingredient}>{ingredient}</li>
         ))}
       </ul>
+      <h4>Steps</h4>
       <ul>
-        {steps.map((s) => (
-          <li key={s}>{s}</li>
+        {steps.map((step) => (
+          <li key={step}>
+            <RecipeStep>{step}</RecipeStep>
+          </li>
         ))}
       </ul>
-    </>
+      <Button
+        onClick={() => {
+          const confirmed =
+            prompt(`
+Do you want to delete this recipe?
+Type "delete" to confirm.
+`) === "delete";
+
+          if (confirmed) {
+            deleteRecipe(name);
+          }
+        }}
+      >
+        Delete Recipe
+      </Button>
+    </div>
   );
 }
