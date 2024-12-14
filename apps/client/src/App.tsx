@@ -3,7 +3,7 @@ import { Recipes } from "./pages/Recipes";
 import { CreateRecipe } from "./pages/CreateRecipe";
 import { paths } from "./common/routes";
 import { createGlobalStyle } from "styled-components";
-import { Recipe } from "./pages/Recipe";
+import { RecipePage } from "./pages/Recipe";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -27,10 +27,6 @@ body {
   }
 
   main {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-
     margin: 0 20px;
 
     @media (min-width: 400px) {
@@ -38,6 +34,10 @@ body {
       margin: auto;
     }
   }
+
+  /* h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+  } */
 `;
 
 export function App() {
@@ -52,7 +52,7 @@ export function App() {
             <Link href={paths.createRecipe}>Create recipe</Link>
           </Route>
           <Route path={paths.recipes} component={Recipes} />
-          <Route path={paths.recipe} component={Recipe} />
+          <Route path={paths.recipe} component={RecipePage} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
           <Route>404 Not found</Route>
         </Switch>

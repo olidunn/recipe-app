@@ -7,4 +7,5 @@ export const paths = {
 
 export const routes = {
   recipe: (name: string) => `/recipes/${name}`,
+  recipes: "/recipes",
 };

@@ -1,9 +1,8 @@
 import { Link } from "wouter";
 import { Button } from "../../components/Button";
-import { paths } from "../../common/routes";
+import { paths, routes } from "../../common/routes";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
-
-import { Recipe } from "../../components/Recipe";
+import styled from "styled-components";
 
 /**
  * TODO:
@@ -23,28 +22,64 @@ export function Recipes() {
     setRecipes([]);
   }
 
-  function deleteRecipe(recipeName: string) {
-    setRecipes((currentRecipes) =>
-      currentRecipes.filter((recipe) => recipe.name !== recipeName)
-    );
-  }
-
   return (
-    <>
+    <Container>
+      <h1 style={{ margin: 0 }}>Recipes</h1>
       {recipes.length === 0 && <p>No recipes found</p>}
-      {recipes.map((recipe) => (
-        <Recipe
-          key={recipe.name}
-          name={recipe.name}
-          ingredients={recipe.ingredients}
-          steps={recipe.steps}
-          onDelete={deleteRecipe}
-        />
-      ))}
-      <Link className="button" href={paths.createRecipe}>
-        Create Recipe
-      </Link>
-      <Button onClick={deleteAllRecipes}>Delete All Recipes</Button>
-    </>
+      <RecipeList>
+        {recipes.map((recipe) => (
+          <RecipeLink key={recipe.name} href={routes.recipe(recipe.name)}>
+            {recipe.name}
+          </RecipeLink>
+        ))}
+      </RecipeList>
+      <ButtonGroup>
+        <Link href={paths.createRecipe}>Create Recipe</Link>
+        <Button
+          onClick={() => {
+            const confirmed =
+              prompt(`
+            Do you want to delete all recipes?
+            Type "delete" to confirm.
+            `) === "delete";
+            if (confirmed) {
+              deleteAllRecipes();
+            }
+          }}
+        >
+          Delete All Recipes
+        </Button>
+      </ButtonGroup>
+    </Container>
   );
 }
+
+const RecipeLink = styled(Link)`
+  background-color: pink;
+  display: grid;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+`;
+
+const RecipeList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 16px;
+`;
