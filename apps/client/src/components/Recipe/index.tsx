@@ -39,6 +39,6 @@ export function Recipe({ name, ingredients, steps, onDelete }: RecipeProps) {
 }
 
 export const Container = styled.div`
-  background-color: pink;
+  background-color: purple;
   display: grid;
 `;
