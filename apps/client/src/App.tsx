@@ -29,15 +29,28 @@ body {
   main {
     margin: 0 20px;
 
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      button {
+        font-size: 20px;
+      }
+      input, textarea {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      font-size: 20px;
+    }
+
     @media (min-width: 400px) {
       width: 60%;
       margin: auto;
     }
+
   }
 
-  /* h1, h2, h3, h4, h5, h6, p {
-    margin: 0;
-  } */
+
 `;
 
 export function App() {
