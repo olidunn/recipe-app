@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "../../components/Button";
-import { ButtonGroup } from "../../components/ButtonGroup";
 import { Form } from "../../components/Form";
 import { InputText } from "../../components/InputText";
 import { TextArea } from "../../components/TextArea";
@@ -29,8 +28,6 @@ Stir in chopped {{spinach}} and cook until wilted.
 Season with {{salt}} and {{black pepper}} to taste before serving.`);
   const [error, setError] = useState<string | null>(null);
 
-  function preview() {}
-
   function save() {
     const errorMessage = saveRecipe(recipeName, recipeSteps);
 
@@ -57,24 +54,15 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
           onChange={(event) => setRecipeSteps(event.target.value)}
           value={recipeSteps}
         />
-        <ButtonGroup>
-          <Button
-            style={{
-              marginLeft: "auto",
-            }}
-            onClick={preview}
-          >
-            Preview
-          </Button>
-          <Button
-            style={{
-              marginLeft: "auto",
-            }}
-            onClick={save}
-          >
-            Save
-          </Button>
-        </ButtonGroup>
+
+        <Button
+          style={{
+            marginLeft: "auto",
+          }}
+          onClick={save}
+        >
+          Save
+        </Button>
 
         <div id="preview-ingredients"></div>
         <div id="preview-steps"></div>

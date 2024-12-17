@@ -34,7 +34,9 @@ export function Recipes() {
         ))}
       </RecipeList>
       <ButtonGroup>
-        <Link href={paths.createRecipe}>Create Recipe</Link>
+        <CreateRecipeLink href={paths.createRecipe}>
+          Create Recipe
+        </CreateRecipeLink>
         <Button
           onClick={() => {
             const confirmed =
@@ -62,6 +64,19 @@ const RecipeLink = styled(Link)`
   text-decoration: none;
   color: black;
   font-weight: bold;
+  box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
+`;
+
+const CreateRecipeLink = styled(Link)`
+  color: #e8e9eb;
+  background-color: #8c8b91;
+  padding: 8px 10px;
+  width: fit-content;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
+  border: none;
+  font-family: "DM Sans", sans-serif;
+  text-decoration: none;
 `;
 
 const RecipeList = styled.div`
