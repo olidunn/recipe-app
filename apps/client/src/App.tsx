@@ -1,10 +1,11 @@
-import { Link, Route, Switch } from "wouter";
+import { Route, Switch } from "wouter";
 import { Recipes } from "./pages/Recipes";
 import { CreateRecipe } from "./pages/CreateRecipe";
 import { paths } from "./common/routes";
-import styled, { createGlobalStyle } from "styled-components";
 import { RecipePage } from "./pages/Recipe";
 import { ButtonGroup } from "./components/ButtonGroup";
+import { StyledLink } from "./components/LinkStyle";
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -54,18 +55,6 @@ body {
 
 `;
 
-const RecipeLink = styled(Link)`
-  color: #e8e9eb;
-  background-color: #8c8b91;
-  padding: 8px 10px;
-  width: fit-content;
-  cursor: pointer;
-  box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
-  border: none;
-  font-family: "DM Sans", sans-serif;
-  text-decoration: none;
-`;
-
 export function App() {
   return (
     <>
@@ -75,8 +64,8 @@ export function App() {
           <Route path={paths.home}>
             <h1>Home</h1>
             <ButtonGroup>
-              <RecipeLink href={paths.recipes}>Recipes</RecipeLink>
-              <RecipeLink href={paths.createRecipe}>Create recipe</RecipeLink>
+              <StyledLink href={paths.recipes}>Recipes</StyledLink>
+              <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
             </ButtonGroup>
           </Route>
           <Route path={paths.recipes} component={Recipes} />

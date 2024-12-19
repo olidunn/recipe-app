@@ -1,11 +1,11 @@
-import { useParams, Redirect, Link } from "wouter";
+import { useParams, Redirect } from "wouter";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 import { paths, routes } from "../../common/routes";
 import { useState } from "react";
 import { RecipeStep } from "../../components/RecipeStep";
 import { Button } from "../../components/Button";
 import { ButtonGroup } from "../../components/ButtonGroup";
-import styled from "styled-components";
+import { StyledLink } from "../../components/LinkStyle";
 
 export function RecipePage() {
   const { name } = useParams<{
@@ -32,18 +32,6 @@ export function RecipePage() {
   const recipe = recipes.find((r) => r.name === name);
   const ingredients = recipe?.ingredients ?? [];
   const steps = recipe?.steps ?? [];
-
-  const CreateRecipeLink = styled(Link)`
-    color: #e8e9eb;
-    background-color: #8c8b91;
-    padding: 8px 10px;
-    width: fit-content;
-    cursor: pointer;
-    box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
-    border: none;
-    font-family: "DM Sans", sans-serif;
-    text-decoration: none;
-  `;
 
   function deleteRecipe(recipeName: string) {
     setRecipes((currentRecipes) =>
@@ -74,7 +62,7 @@ export function RecipePage() {
         ))}
       </ul>
       <ButtonGroup>
-        <CreateRecipeLink href={paths.recipes}>Recipes</CreateRecipeLink>
+        <StyledLink href={paths.recipes}>Recipes</StyledLink>
         <Button
           onClick={() => {
             const confirmed =

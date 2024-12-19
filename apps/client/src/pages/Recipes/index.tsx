@@ -3,6 +3,7 @@ import { Button } from "../../components/Button";
 import { paths, routes } from "../../common/routes";
 import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 import styled from "styled-components";
+import { StyledLink } from "../../components/LinkStyle";
 
 /**
  * TODO:
@@ -34,9 +35,7 @@ export function Recipes() {
         ))}
       </RecipeList>
       <ButtonGroup>
-        <CreateRecipeLink href={paths.createRecipe}>
-          Create Recipe
-        </CreateRecipeLink>
+        <StyledLink href={paths.createRecipe}>Create Recipe</StyledLink>
         <Button
           onClick={() => {
             const confirmed =
@@ -65,18 +64,6 @@ const RecipeLink = styled(Link)`
   color: black;
   font-weight: bold;
   box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
-`;
-
-const CreateRecipeLink = styled(Link)`
-  color: #e8e9eb;
-  background-color: #8c8b91;
-  padding: 8px 10px;
-  width: fit-content;
-  cursor: pointer;
-  box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
-  border: none;
-  font-family: "DM Sans", sans-serif;
-  text-decoration: none;
 `;
 
 const RecipeList = styled.div`
