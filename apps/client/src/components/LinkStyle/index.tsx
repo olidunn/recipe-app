@@ -11,4 +11,5 @@ export const StyledLink = styled(Link)`
   border: none;
   font-family: "DM Sans", sans-serif;
   text-decoration: none;
+  border-radius: 5px;
 `;

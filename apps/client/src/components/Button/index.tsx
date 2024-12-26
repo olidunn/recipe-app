@@ -24,4 +24,5 @@ const StyledButton = styled.button`
   box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
   border: none;
   font-family: "DM Sans", sans-serif;
+  border-radius: 5px;
 `;
