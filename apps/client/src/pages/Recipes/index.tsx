@@ -1,9 +1,10 @@
 import { Link } from "wouter";
 import { Button } from "../../components/Button";
 import { paths, routes } from "../../common/routes";
-import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 import styled from "styled-components";
 import { StyledLink } from "../../components/LinkStyle";
+import { useCallback, useEffect, useState } from "react";
+import { Recipe } from "../CreateRecipe/utils";
 
 /**
  * TODO:
@@ -17,23 +18,49 @@ import { StyledLink } from "../../components/LinkStyle";
  */
 
 export function Recipes() {
-  const [recipes, setRecipes] = useLocalStorage("recipes", []);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  function deleteAllRecipes() {
-    setRecipes([]);
+  const loadData = useCallback(async () => {
+    const response = await fetch("http://localhost:8787/recipes");
+    const recipesFromServer = await response.json();
+    setRecipes(recipesFromServer);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  async function deleteAllRecipes() {
+    setLoading(true);
+    const response = await fetch("http://localhost:8787/recipes", {
+      method: "DELETE",
+    });
+    if (response.status === 204) {
+      setRecipes([]);
+    }
+    setLoading(false);
   }
 
   return (
     <Container>
       <h1 style={{ margin: 0 }}>Recipes</h1>
-      {recipes.length === 0 && <p>No recipes found</p>}
-      <RecipeList>
-        {recipes.map((recipe) => (
-          <RecipeLink key={recipe.name} href={routes.recipe(recipe.name)}>
-            {recipe.name}
-          </RecipeLink>
-        ))}
-      </RecipeList>
+      {recipes.length === 0 && !loading && <p>No recipes found</p>}
+      {loading && <p>Loading...</p>}
+      {recipes.length > 0 && (
+        <RecipeList>
+          {recipes.map((recipe) => (
+            <RecipeLink
+              key={recipe.name}
+              href={routes.recipe(recipe.name)}
+              style={{ opacity: loading ? 0.5 : 1, transition: "opacity 0.5s" }}
+            >
+              {recipe.name}
+            </RecipeLink>
+          ))}
+        </RecipeList>
+      )}
       <ButtonGroup>
         <StyledLink href={paths.createRecipe}>Create Recipe</StyledLink>
         <Button

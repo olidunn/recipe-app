@@ -12,6 +12,7 @@ export function RecipePage() {
     name: string;
   }>();
   const [shouldRedirect, setShouldRedirect] = useState(false);
+  // TODO replace localStorage with a real backend endpoint
   const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
   //// Expanded code version
@@ -34,9 +35,12 @@ export function RecipePage() {
   const steps = recipe?.steps ?? [];
 
   function deleteRecipe(recipeName: string) {
+    // replace this code with the existing backend endpoint (you'll need to make the function async)
     setRecipes((currentRecipes) =>
       currentRecipes.filter((r) => r.name !== recipeName)
     );
+
+    // leave this code as is
     setShouldRedirect(true);
   }
 
