@@ -35,11 +35,18 @@ export default {
 		}
 
 		// GET RECIPE
-		// TODO: Add a route to get a single recipe by name
+		// TODO: Add a route to get a single recipe by id
+		// E.g: url.pathname === '/recipe/<id>'
+		// get one: first (return the object directly)
+		// get all: all (accessed by result.results)
+		// Promise: needs to be awaited using the await keyword to access the value within - removes Promise type
+		// Promise to finish task before assigning value to the variable
 
 		// GET RECIPES
 		if (url.pathname === '/recipes' && request.method === httpMethod.GET) {
 			const headers = createHeaders({ contentType: 'application/json' });
+			const recipesResult = await env.DB.prepare('SELECT * FROM recipes').all();
+			const recipes = recipesResult.results;
 
 			return new Response(JSON.stringify(recipes), {
 				headers,

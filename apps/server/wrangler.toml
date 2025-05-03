@@ -1,0 +1,17 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "recipes-server"
+main = "src/index.ts"
+compatibility_date = "2025-02-04"
+
+# Workers Logs
+# Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+# Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_id = "abfbbde7-8866-4947-9b62-bcb4b237d4c7"
+database_name = "recipe-app-db"
+migrations_table = "d1_migrations"
+migrations_dir = "migrations"
