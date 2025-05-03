@@ -1,6 +1,4 @@
-import { Recipe } from "./types";
-
-gitimport { Recipe } from './types';
+import { Recipe } from './types';
 
 let recipes: Recipe[] = [
 	{
@@ -27,7 +25,7 @@ export default {
 			return new Response(null, {
 				status: 204,
 				headers: {
-					'Access-Control-Allow-Origin': 'http://localhost:5173',
+					'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
 					'Access-Control-Allow-Methods': 'GET, POST, DELETE',
 					'Access-Control-Allow-Headers': 'Content-Type',
 					'Access-Control-Allow-Credentials': 'true',
@@ -93,7 +91,7 @@ function createHeaders(options?: { contentType?: MimeType }): Headers {
 	const headers = new Headers();
 
 	// CORS - Cross Origin Resource Sharing
-	headers.set('Access-Control-Allow-Origin', 'http://localhost:5173');
+	headers.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
 	headers.set('Access-Control-Allow-Credentials', 'true');
 
 	if (options?.contentType) {
