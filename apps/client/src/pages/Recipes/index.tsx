@@ -22,7 +22,7 @@ export function Recipes() {
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    const response = await fetch("http://localhost:8787/recipes");
+    const response = await fetch("http://127.0.0.1:8787/recipes");
     const recipesFromServer = await response.json();
     setRecipes(recipesFromServer);
     setLoading(false);
@@ -34,7 +34,7 @@ export function Recipes() {
 
   async function deleteAllRecipes() {
     setLoading(true);
-    const response = await fetch("http://localhost:8787/recipes", {
+    const response = await fetch("http://127.0.0.1:8787/recipes", {
       method: "DELETE",
     });
     if (response.status === 204) {

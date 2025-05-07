@@ -1,6 +1,4 @@
-import { Recipe } from "./types";
-
-gitimport { Recipe } from './types';
+import { Recipe } from './types';
 
 let recipes: Recipe[] = [
 	{
@@ -27,7 +25,7 @@ export default {
 			return new Response(null, {
 				status: 204,
 				headers: {
-					'Access-Control-Allow-Origin': 'http://localhost:5173',
+					'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
 					'Access-Control-Allow-Methods': 'GET, POST, DELETE',
 					'Access-Control-Allow-Headers': 'Content-Type',
 					'Access-Control-Allow-Credentials': 'true',
@@ -37,11 +35,18 @@ export default {
 		}
 
 		// GET RECIPE
-		// TODO: Add a route to get a single recipe by name
+		// TODO: Add a route to get a single recipe by id
+		// E.g: url.pathname === '/recipe/<id>'
+		// get one: first (return the object directly)
+		// get all: all (accessed by result.results)
+		// Promise: needs to be awaited using the await keyword to access the value within - removes Promise type
+		// Promise to finish task before assigning value to the variable
 
 		// GET RECIPES
 		if (url.pathname === '/recipes' && request.method === httpMethod.GET) {
 			const headers = createHeaders({ contentType: 'application/json' });
+			const recipesResult = await env.DB.prepare('SELECT * FROM recipes').all();
+			const recipes = recipesResult.results;
 
 			return new Response(JSON.stringify(recipes), {
 				headers,
@@ -93,7 +98,7 @@ function createHeaders(options?: { contentType?: MimeType }): Headers {
 	const headers = new Headers();
 
 	// CORS - Cross Origin Resource Sharing
-	headers.set('Access-Control-Allow-Origin', 'http://localhost:5173');
+	headers.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
 	headers.set('Access-Control-Allow-Credentials', 'true');
 
 	if (options?.contentType) {
