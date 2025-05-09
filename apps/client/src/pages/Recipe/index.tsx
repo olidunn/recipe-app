@@ -1,26 +1,50 @@
 import { useParams, Redirect } from "wouter";
-import { useLocalStorage } from "../../common/hooks/useLocalStorage";
 import { paths, routes } from "../../common/routes";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RecipeStep } from "../../components/RecipeStep";
 import { Button } from "../../components/Button";
 import { ButtonGroup } from "../../components/ButtonGroup";
 import { StyledLink } from "../../components/LinkStyle";
+import { Recipe } from "../CreateRecipe/utils";
 
 export function RecipePage() {
-  const { name } = useParams<{
-    name: string;
+  const { id } = useParams<{
+    id: string;
   }>();
-  const [shouldRedirect, setShouldRedirect] = useState(false);
-  // TODO replace localStorage with a real backend endpoint
-  const [recipes, setRecipes] = useLocalStorage("recipes", []);
 
-  //// Expanded code version
-  //   const recipe = recipes.find((r) => r.name === name);
-  //   let ingredients: string[] = [];
-  //   if(recipe) {
-  //     ingredients = recipe.ingredients;
-  //   }
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8787/recipes/${id}`);
+  
+      const recipeFromServer = await response.json();
+      setRecipe(recipeFromServer);
+    } catch (_error) {
+      setRecipe(null);
+    }
+    
+    setLoading(false);
+  }, [id]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  async function deleteRecipe(recipeId: string) {
+    setLoading(true);
+    const response = await fetch(`http://127.0.0.1:8787/recipes/${recipeId}`, {
+      method: "DELETE",
+      mode: "cors",
+    });
+    if (response.status === 204) {
+      setShouldRedirect(true);
+    }
+    setLoading(false);
+  }
+
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   // The ? in `foo?.bar` is called the optional chaining operator,
   // and it allows you to access deeply nested properties without worrying about
@@ -30,26 +54,23 @@ export function RecipePage() {
   // The ?? in `foo ?? bar` is called the nullish coalescing operator.
   // The default value is on the right side of the operator,
   // and it will be returned if the left side is null or undefined.
-  const recipe = recipes.find((r) => r.name === name);
-  const ingredients = recipe?.ingredients ?? [];
-  const steps = recipe?.steps ?? [];
-
-  function deleteRecipe(recipeName: string) {
-    // replace this code with the existing backend endpoint (you'll need to make the function async)
-    setRecipes((currentRecipes) =>
-      currentRecipes.filter((r) => r.name !== recipeName)
-    );
-
-    // leave this code as is
-    setShouldRedirect(true);
-  }
 
   if (shouldRedirect) {
     return <Redirect to={routes.recipes} />;
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (recipe === null) {
+    return <div>Recipe not found</div>;
+  }
+
+  const { name, ingredients, steps } = recipe;
+
   return (
-    <div key={name}>
+    <div>
       <h3>{name}</h3>
       <h4>Ingredients</h4>
       <ul>
@@ -76,7 +97,7 @@ export function RecipePage() {
             `) === "delete";
 
             if (confirmed) {
-              deleteRecipe(name);
+              deleteRecipe(id);
             }
           }}
         >

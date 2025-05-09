@@ -53,6 +53,39 @@ export default {
 			});
 		}
 
+		// GET RECIPE
+		const recipeIdPattern = /\d+/;
+		const recipeIdMatch = url.pathname.match(recipeIdPattern);
+		if (recipeIdMatch && request.method === httpMethod.GET) {
+			const headers = createHeaders({ contentType: 'application/json' });
+			const recipeId = recipeIdMatch[0];
+
+			// We use bind to sanitize the data coming into the query and prevent SQL injection attacks.
+			const recipe = await env.DB.prepare(
+				`
+				SELECT * FROM recipes
+				WHERE id = ?
+				LIMIT 1;
+				`
+			)
+				.bind(recipeId)
+				.first();
+
+			if (!recipe) {
+				return new Response(JSON.stringify({ message: 'Recipe not found' }), { status: 404 });
+			}
+
+			// Manually map the data to the correct type
+			recipe.steps = JSON.parse(recipe.steps as string);
+			recipe.ingredients = JSON.parse(recipe.ingredients as string);
+
+			console.log({ recipe });
+
+			return new Response(JSON.stringify(recipe), {
+				headers,
+			});
+		}
+
 		// CREATE RECIPE
 		if (url.pathname === '/recipe' && request.method === httpMethod.POST) {
 			const headers = createHeaders({ contentType: 'application/json' });
@@ -60,15 +93,19 @@ export default {
 			return new Response(null, { status: 201, headers });
 		}
 
-		// DELETE RECIPE - remember to use the query params (search params) e.g. "/recipe?name=Pasta"
-		if (url.pathname === '/recipe' && request.method === httpMethod.DELETE) {
-			const name = url.searchParams.get('name');
-			if (!name) {
-				return new Response(JSON.stringify({ message: "Expected to find search param 'name'" }), { status: 400 });
-			}
+		// DELETE RECIPE
+		if (recipeIdMatch && request.method === httpMethod.DELETE) {
+			const recipeId = recipeIdMatch[0];
+			await env.DB.prepare(
+				`
+				DELETE FROM recipes
+				WHERE id = ?;
+				`
+			)
+				.bind(recipeId)
+				.run();
 
 			const headers = createHeaders({ contentType: 'application/json' });
-			recipes = recipes.filter((recipe) => recipe.name !== url.searchParams.get('name'));
 			return new Response(null, { status: 204, headers });
 		}
 

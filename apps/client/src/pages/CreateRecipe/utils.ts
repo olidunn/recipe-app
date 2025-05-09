@@ -5,19 +5,18 @@ export function removeCurlyBrackets(ingredient: string): string {
 export const ingredientPattern = /\{\{.*?\}\}/g;
 
 export type Recipe = {
+  id: string;
   name: string;
   steps: string[];
   ingredients: string[];
 };
 
-export function parseRecipe(recipeName: string, recipeString: string): Recipe {
-  const recipe: Recipe = {
+export function parseRecipe(recipeName: string, recipeString: string): Omit<Recipe, 'id'> {
+  return ({
     name: recipeName,
     steps: parseSteps(recipeString),
     ingredients: parseIngredients(recipeString),
-  };
-
-  return recipe;
+  });
 }
 
 /**
@@ -25,7 +24,7 @@ export function parseRecipe(recipeName: string, recipeString: string): Recipe {
  */
 export function saveRecipe(name: string, steps: string): string | void {
   const recipesString = localStorage.getItem("recipes");
-  const recipes: Recipe[] = recipesString ? JSON.parse(recipesString) : [];
+  const recipes: Omit<Recipe, 'id'>[] = recipesString ? JSON.parse(recipesString) : [];
 
   if (name.length === 0 || steps.length === 0) {
     return "Recipe name and steps are required.";

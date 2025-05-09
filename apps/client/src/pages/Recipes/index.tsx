@@ -52,8 +52,8 @@ export function Recipes() {
         <RecipeList>
           {recipes.map((recipe) => (
             <RecipeLink
-              key={recipe.name}
-              href={routes.recipe(recipe.name)}
+              key={recipe.id}
+              href={routes.recipe(recipe.id)}
               style={{ opacity: loading ? 0.5 : 1, transition: "opacity 0.5s" }}
             >
               {recipe.name}

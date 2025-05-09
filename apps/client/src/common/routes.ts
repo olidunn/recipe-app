@@ -2,10 +2,10 @@ export const paths = {
   home: "/",
   createRecipe: "/create-recipe",
   recipes: "/recipes",
-  recipe: "/recipes/:name",
+  recipe: "/recipes/:id",
 };
 
 export const routes = {
-  recipe: (name: string) => `/recipes/${name}`,
+  recipe: (id: string) => `/recipes/${id}`,
   recipes: "/recipes",
 };
