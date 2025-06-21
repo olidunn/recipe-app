@@ -79,10 +79,15 @@ export default {
 		}
 
 		// TODO: implement create recipe via sql
+		// Focus on create first, then do update
+
 		// If the id is undefined, create a new recipe
 		// If the id has a value, find the recipe in the database
 		// If it exists, update it
 		// If it doesn't exist, return a 404 saying that it doesn't exist
+		// curl -X GET "http://localhost:8787/recipes"
+		// curl -X POST "http://localhost:8787/recipes" -d '{"foo": "bar"}'
+		// May need to set the header with -H "Content-Type: application/json"
 
 		// CREATE/Update RECIPE
 		if (url.pathname === '/recipes' && request.method === httpMethod.POST) {
