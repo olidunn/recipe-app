@@ -7,6 +7,11 @@ import { ButtonGroup } from "../../components/ButtonGroup";
 import { StyledLink } from "../../components/LinkStyle";
 import { Recipe } from "../CreateRecipe/utils";
 
+// useParams to access id parameter
+// useState returns an array: current state is recipe, then update state with setRecipe (new recipe)
+// To load our data, we need to wait for the url to be fetched with an id: recipes/${id}
+// If await function returns true, recipe is updated with the new recipe from server (using setRecipe)
+
 export function RecipePage() {
   const { id } = useParams<{
     id: string;
@@ -18,13 +23,13 @@ export function RecipePage() {
   const loadData = useCallback(async () => {
     try {
       const response = await fetch(`http://127.0.0.1:8787/recipes/${id}`);
-  
+
       const recipeFromServer = await response.json();
       setRecipe(recipeFromServer);
     } catch (_error) {
       setRecipe(null);
     }
-    
+
     setLoading(false);
   }, [id]);
 
