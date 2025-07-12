@@ -5,7 +5,7 @@ export function removeCurlyBrackets(ingredient: string): string {
 export const ingredientPattern = /\{\{.*?\}\}/g;
 
 export type Recipe = {
-  id?: string;
+  id: string;
   name: string;
   steps: string[];
   servingSize: number;
