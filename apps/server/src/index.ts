@@ -1,18 +1,5 @@
 import { Recipe } from './types';
 
-let recipes: Recipe[] = [
-	{
-		name: 'Pasta',
-		ingredients: ['Pasta', 'Tomato Sauce'],
-		steps: ['Boil water', 'Add pasta', 'Cook for 10 minutes', 'Drain pasta', 'Add sauce'],
-	},
-	{
-		name: 'Pizza',
-		ingredients: ['Dough', 'Tomato Sauce', 'Cheese'],
-		steps: ['Roll out dough', 'Add sauce', 'Add cheese', 'Bake for 15 minutes'],
-	},
-];
-
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
 		const url = new URL(request.url);
@@ -78,25 +65,9 @@ export default {
 			});
 		}
 
-		// TODO: implement create recipe via sql
-		// Focus on create first, then do update
-
-		// If the id is undefined, create a new recipe
-		// If the id has a value, find the recipe in the database
-		// If it exists, update it
-		// If it doesn't exist, return a 404 saying that it doesn't exist
-		// curl -X GET "http://localhost:8787/recipes"
-		// curl -X POST "http://localhost:8787/recipes" -d '{"name": "pasta", "steps": "["step 1: make food"]", "servingSize": "6", "ingredients": "["pasta", "pasta sauce"]"}'
-		// May need to set the header with -H "Content-Type: application/json"
-
 		// CREATE RECIPE
 		if (url.pathname === '/recipes' && request.method === httpMethod.POST) {
-			const { name, steps, servingSize, ingredients } = await request.json<{
-				name: string;
-				steps: string;
-				servingSize: string;
-				ingredients: string;
-			}>();
+			const { name, steps, servingSize, ingredients } = await request.json<Recipe>();
 			await env.DB.prepare(
 				`INSERT INTO recipes (name, steps, servingSize, ingredients)
 				VALUES (?, ?, ?, ?);
@@ -105,7 +76,6 @@ export default {
 				.bind(name, steps.toString(), servingSize, ingredients.toString())
 				.run();
 
-			//end of new code
 			const headers = createHeaders({ contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
@@ -114,12 +84,7 @@ export default {
 		if (recipeIdMatch && request.method === httpMethod.POST) {
 			const recipeId = recipeIdMatch[0];
 
-			const { name, steps, servingSize, ingredients } = await request.json<{
-				name: string;
-				steps: string;
-				servingSize: string;
-				ingredients: string;
-			}>();
+			const { name, steps, servingSize, ingredients } = await request.json<Recipe>();
 			await env.DB.prepare(
 				`UPDATE recipes 
 				SET name = ?,
@@ -132,7 +97,6 @@ export default {
 				.bind(name, steps.toString(), servingSize, ingredients.toString(), recipeId)
 				.run();
 
-			//end of new code
 			const headers = createHeaders({ contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
