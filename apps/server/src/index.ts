@@ -1,18 +1,5 @@
 import { Recipe } from './types';
 
-let recipes: Recipe[] = [
-	{
-		name: 'Pasta',
-		ingredients: ['Pasta', 'Tomato Sauce'],
-		steps: ['Boil water', 'Add pasta', 'Cook for 10 minutes', 'Drain pasta', 'Add sauce'],
-	},
-	{
-		name: 'Pizza',
-		ingredients: ['Dough', 'Tomato Sauce', 'Cheese'],
-		steps: ['Roll out dough', 'Add sauce', 'Add cheese', 'Bake for 15 minutes'],
-	},
-];
-
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
 		const url = new URL(request.url);
@@ -33,14 +20,6 @@ export default {
 				},
 			});
 		}
-
-		// GET RECIPE
-		// TODO: Add a route to get a single recipe by id
-		// E.g: url.pathname === '/recipe/<id>'
-		// get one: first (return the object directly)
-		// get all: all (accessed by result.results)
-		// Promise: needs to be awaited using the await keyword to access the value within - removes Promise type
-		// Promise to finish task before assigning value to the variable
 
 		// GET RECIPES
 		if (url.pathname === '/recipes' && request.method === httpMethod.GET) {
@@ -87,9 +66,38 @@ export default {
 		}
 
 		// CREATE RECIPE
-		if (url.pathname === '/recipe' && request.method === httpMethod.POST) {
+		if (url.pathname === '/recipes' && request.method === httpMethod.POST) {
+			const { name, steps, servingSize, ingredients } = await request.json<Recipe>();
+			await env.DB.prepare(
+				`INSERT INTO recipes (name, steps, servingSize, ingredients)
+				VALUES (?, ?, ?, ?);
+				`
+			)
+				.bind(name, steps.toString(), servingSize, ingredients.toString())
+				.run();
+
 			const headers = createHeaders({ contentType: 'application/json' });
-			recipes.push(await request.json());
+			return new Response(null, { status: 201, headers });
+		}
+
+		// UPDATE RECIPE
+		if (recipeIdMatch && request.method === httpMethod.POST) {
+			const recipeId = recipeIdMatch[0];
+
+			const { name, steps, servingSize, ingredients } = await request.json<Recipe>();
+			await env.DB.prepare(
+				`UPDATE recipes 
+				SET name = ?,
+				steps = ?,
+				servingSize = ?,
+				ingredients = ?
+				WHERE id == ?;
+				`
+			)
+				.bind(name, steps.toString(), servingSize, ingredients.toString(), recipeId)
+				.run();
+
+			const headers = createHeaders({ contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
 
@@ -111,8 +119,12 @@ export default {
 
 		// DELETE RECIPES
 		if (url.pathname === '/recipes' && request.method === httpMethod.DELETE) {
-			recipes = [];
-			await new Promise((resolve) => setTimeout(resolve, 2000));
+			await env.DB.prepare(
+				`
+				DELETE FROM recipes;
+				`
+			).run();
+
 			const headers = createHeaders({ contentType: 'application/json' });
 			return new Response(null, { status: 204, headers });
 		}
