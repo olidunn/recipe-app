@@ -32,6 +32,12 @@ export default {
 			});
 		}
 
+		// Error messages
+		const errors = {
+			recipeNameExists: 'This recipe name already exists, please choose a different name.',
+			nameStepsRequired: 'Recipe name and steps are required.',
+		};
+
 		// GET RECIPE
 		const recipeIdPattern = /\d+/;
 		const recipeIdMatch = url.pathname.match(recipeIdPattern);
@@ -48,19 +54,19 @@ export default {
 				`
 			)
 				.bind(recipeId)
-				.first();
+				.first<{ name: string; steps: string; servingSize: number; ingredients: string }>();
 
 			if (!recipe) {
 				return new Response(JSON.stringify({ message: 'Recipe not found' }), { status: 404 });
 			}
+			const mappedRecipe: Recipe = {
+				name: recipe.name,
+				steps: recipe.steps.split(','),
+				servingSize: recipe.servingSize,
+				ingredients: recipe.ingredients.split(','),
+			};
 
-			// Manually map the data to the correct type
-			recipe.steps = JSON.parse(recipe.steps as string);
-			recipe.ingredients = JSON.parse(recipe.ingredients as string);
-
-			console.log({ recipe });
-
-			return new Response(JSON.stringify(recipe), {
+			return new Response(JSON.stringify(mappedRecipe), {
 				headers,
 			});
 		}

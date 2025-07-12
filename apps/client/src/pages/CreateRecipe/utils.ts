@@ -8,46 +8,22 @@ export type Recipe = {
   id: string;
   name: string;
   steps: string[];
+  servingSize: number;
   ingredients: string[];
 };
 
-export function parseRecipe(recipeName: string, recipeString: string): Omit<Recipe, 'id'> {
-  return ({
+export function parseRecipe(
+  recipeName: string,
+  recipeString: string,
+  servingSize: number
+): Omit<Recipe, "id"> {
+  return {
     name: recipeName,
     steps: parseSteps(recipeString),
+    servingSize,
     ingredients: parseIngredients(recipeString),
-  });
+  };
 }
-
-/**
- * @returns an error message, otherwise it saves the recipe
- */
-export function saveRecipe(name: string, steps: string): string | void {
-  const recipesString = localStorage.getItem("recipes");
-  const recipes: Omit<Recipe, 'id'>[] = recipesString ? JSON.parse(recipesString) : [];
-
-  if (name.length === 0 || steps.length === 0) {
-    return "Recipe name and steps are required.";
-  }
-
-  const recipeNameExists = recipes.some((r) => r.name === name);
-  if (recipeNameExists) {
-    return "This recipe name already exists, please choose a different name.";
-  }
-
-  const recipe = parseRecipe(name, steps);
-  recipes.push(recipe);
-
-  // We need to convert the javascript variable into a string so that we can store
-  // it in localStorage. localStorage can only store string representations of data.
-  localStorage.setItem("recipes", JSON.stringify(recipes));
-}
-
-// function preview() {
-//   const recipe = parseRecipe(recipeStepsInput.value);
-//   renderIngredients(recipe.ingredients, "preview-ingredients");
-//   renderSteps(recipe.steps, "preview-steps");
-// }
 
 /**
  * A function to identify the ingredient pattern and print as an array
