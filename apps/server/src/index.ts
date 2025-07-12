@@ -86,13 +86,54 @@ export default {
 		// If it exists, update it
 		// If it doesn't exist, return a 404 saying that it doesn't exist
 		// curl -X GET "http://localhost:8787/recipes"
-		// curl -X POST "http://localhost:8787/recipes" -d '{"foo": "bar"}'
+		// curl -X POST "http://localhost:8787/recipes" -d '{"name": "pasta", "steps": "["step 1: make food"]", "servingSize": "6", "ingredients": "["pasta", "pasta sauce"]"}'
 		// May need to set the header with -H "Content-Type: application/json"
 
-		// CREATE/Update RECIPE
+		// CREATE RECIPE
 		if (url.pathname === '/recipes' && request.method === httpMethod.POST) {
+			const { name, steps, servingSize, ingredients } = await request.json<{
+				name: string;
+				steps: string;
+				servingSize: string;
+				ingredients: string;
+			}>();
+			await env.DB.prepare(
+				`INSERT INTO recipes (name, steps, servingSize, ingredients)
+				VALUES (?, ?, ?, ?);
+				`
+			)
+				.bind(name, steps.toString(), servingSize, ingredients.toString())
+				.run();
+
+			//end of new code
 			const headers = createHeaders({ contentType: 'application/json' });
-			recipes.push(await request.json());
+			return new Response(null, { status: 201, headers });
+		}
+
+		// UPDATE RECIPE
+		if (recipeIdMatch && request.method === httpMethod.POST) {
+			const recipeId = recipeIdMatch[0];
+
+			const { name, steps, servingSize, ingredients } = await request.json<{
+				name: string;
+				steps: string;
+				servingSize: string;
+				ingredients: string;
+			}>();
+			await env.DB.prepare(
+				`UPDATE recipes 
+				SET name = ?,
+				steps = ?,
+				servingSize = ?,
+				ingredients = ?
+				WHERE id == ?;
+				`
+			)
+				.bind(name, steps.toString(), servingSize, ingredients.toString(), recipeId)
+				.run();
+
+			//end of new code
+			const headers = createHeaders({ contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
 
