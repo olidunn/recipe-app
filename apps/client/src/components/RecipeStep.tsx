@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import {
   ingredientPattern,
   removeCurlyBrackets,
-} from "../../pages/CreateRecipe/utils";
+} from "~/pages/CreateRecipe/utils";
 
 type RecipeStepProps = { children: string };
 
