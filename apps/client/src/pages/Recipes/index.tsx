@@ -66,10 +66,8 @@ export function Recipes() {
         <Button
           onClick={() => {
             const confirmed =
-              prompt(`
-            Do you want to delete all recipes?
-            Type "delete" to confirm.
-            `) === "delete";
+              prompt(`Do you want to delete all recipes?
+Type "delete" to confirm.`) === "delete";
             if (confirmed) {
               deleteAllRecipes();
             }

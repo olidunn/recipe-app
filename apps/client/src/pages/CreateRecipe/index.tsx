@@ -69,6 +69,8 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       />
 
       <TextArea
+        id="recipeString"
+        label="Steps"
         height={200}
         onChange={(event) => setRecipeString(event.target.value)}
         value={recipeString}

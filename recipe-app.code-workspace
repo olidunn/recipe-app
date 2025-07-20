@@ -1,12 +1,13 @@
 {
   "folders": [
     {
-      "name": "client",
       "path": "apps/client"
     },
     {
-      "name": "server",
       "path": "apps/server"
+    },
+    {
+      "path": "e2e"
     },
     {
       "name": "root",
@@ -17,7 +18,8 @@
     "recommendations": [
       "dbaeumer.vscode-eslint",
       "esbenp.prettier-vscode",
-      "streetsidesoftware.code-spell-checker"
+      "streetsidesoftware.code-spell-checker",
+      "ms-playwright.playwright"
     ]
   },
   "settings": {
