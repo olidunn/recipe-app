@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "name": "client",
+      "path": "apps/client"
+    },
+    {
+      "name": "server",
+      "path": "apps/server"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "streetsidesoftware.code-spell-checker"
+    ]
+  },
+  "settings": {
+    "cSpell.words": ["wouter"]
+  }
+}

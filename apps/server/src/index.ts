@@ -12,7 +12,7 @@ export default {
 			return new Response(null, {
 				status: 204,
 				headers: {
-					'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
+					'Access-Control-Allow-Origin': env.CLIENT_URL,
 					'Access-Control-Allow-Methods': 'GET, POST, DELETE',
 					'Access-Control-Allow-Headers': 'Content-Type',
 					'Access-Control-Allow-Credentials': 'true',
@@ -23,7 +23,7 @@ export default {
 
 		// GET RECIPES
 		if (url.pathname === '/recipes' && request.method === httpMethod.GET) {
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			const recipesResult = await env.DB.prepare('SELECT * FROM recipes').all();
 			const recipes = recipesResult.results;
 
@@ -32,17 +32,11 @@ export default {
 			});
 		}
 
-		// Error messages
-		const errors = {
-			recipeNameExists: 'This recipe name already exists, please choose a different name.',
-			nameStepsRequired: 'Recipe name and steps are required.',
-		};
-
 		// GET RECIPE
 		const recipeIdPattern = /\d+/;
 		const recipeIdMatch = url.pathname.match(recipeIdPattern);
 		if (recipeIdMatch && request.method === httpMethod.GET) {
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			const recipeId = recipeIdMatch[0];
 
 			// We use bind to sanitize the data coming into the query and prevent SQL injection attacks.
@@ -82,7 +76,7 @@ export default {
 				.bind(name, steps.toString(), servingSize, ingredients.toString())
 				.run();
 
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
 
@@ -103,7 +97,7 @@ export default {
 				.bind(name, steps.toString(), servingSize, ingredients.toString(), recipeId)
 				.run();
 
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			return new Response(null, { status: 201, headers });
 		}
 
@@ -119,7 +113,7 @@ export default {
 				.bind(recipeId)
 				.run();
 
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			return new Response(null, { status: 204, headers });
 		}
 
@@ -131,7 +125,7 @@ export default {
 				`
 			).run();
 
-			const headers = createHeaders({ contentType: 'application/json' });
+			const headers = createHeaders(env, { contentType: 'application/json' });
 			return new Response(null, { status: 204, headers });
 		}
 
@@ -149,11 +143,11 @@ const httpMethod = {
 
 type MimeType = 'application/json';
 
-function createHeaders(options?: { contentType?: MimeType }): Headers {
+function createHeaders(env: Env, options?: { contentType?: MimeType }): Headers {
 	const headers = new Headers();
 
 	// CORS - Cross Origin Resource Sharing
-	headers.set('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+	headers.set('Access-Control-Allow-Origin', env.CLIENT_URL);
 	headers.set('Access-Control-Allow-Credentials', 'true');
 
 	if (options?.contentType) {

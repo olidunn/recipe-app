@@ -1,0 +1,18 @@
+# Shared
+.DS_Store
+.vscode/
+dist/
+node_modules/
+
+# Client only
+build_cache/
+.env
+
+# Server only
+.dev.vars
+.wrangler/
+
+# E2E only
+test-results/
+playwright-report/
+playwright/.cache/

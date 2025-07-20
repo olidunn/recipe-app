@@ -1,10 +1,10 @@
 import { useParams, Redirect } from "wouter";
-import { paths, routes } from "../../common/routes";
+import { paths, routes } from "~/common/routes";
 import { useCallback, useEffect, useState } from "react";
-import { RecipeStep } from "../../components/RecipeStep";
-import { Button } from "../../components/Button";
-import { ButtonGroup } from "../../components/ButtonGroup";
-import { StyledLink } from "../../components/LinkStyle";
+import { RecipeStep } from "~/components/RecipeStep";
+import { Button } from "~/components/Button";
+import { ButtonGroup } from "~/components/ButtonGroup";
+import { StyledLink } from "~/components/LinkStyle";
 import { Recipe } from "../CreateRecipe/utils";
 
 // useParams to access id parameter
@@ -22,7 +22,9 @@ export function RecipePage() {
 
   const loadData = useCallback(async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8787/recipes/${id}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/recipes/${id}`
+      );
 
       const recipeFromServer = await response.json();
       setRecipe(recipeFromServer);
@@ -39,10 +41,13 @@ export function RecipePage() {
 
   async function deleteRecipe(recipeId: string) {
     setLoading(true);
-    const response = await fetch(`http://127.0.0.1:8787/recipes/${recipeId}`, {
-      method: "DELETE",
-      mode: "cors",
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/recipes/${recipeId}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+      }
+    );
     if (response.status === 204) {
       setShouldRedirect(true);
     }

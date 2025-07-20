@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "ESNext",
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["ESNext"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -12,10 +12,10 @@
     "moduleDetection": "force",
     "noEmit": true,
 
-    /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["vite.config.ts"]

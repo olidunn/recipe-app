@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Button } from "../../components/Button";
-import { Form } from "../../components/Form";
-import { InputText } from "../../components/InputText";
-import { TextArea } from "../../components/TextArea";
+import { Button } from "~/components/Button";
+import { Form } from "~/components/Form";
+import { InputText } from "~/components/InputText";
+import { TextArea } from "~/components/TextArea";
 import { useLocation } from "wouter";
-import { paths } from "../../common/routes";
+import { paths } from "~/common/routes";
 import { parseRecipe } from "./utils";
 
 export function CreateRecipe() {
@@ -28,22 +28,22 @@ Reduce heat, cover, and simmer for 15 minutes until quinoa is cooked.
 Stir in chopped {{spinach}} and cook until wilted.
 
 Season with {{salt}} and {{black pepper}} to taste before serving.`);
-  const [error, setError] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function save() {
     try {
       setSaving(true);
       const recipe = parseRecipe(recipeName, recipeString, servingSize);
-      await fetch("http://localhost:8787/recipes", {
+      await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
         body: JSON.stringify(recipe),
         method: "POST",
       });
       setLocation(paths.recipes);
     } catch (error) {
-      const errorMessage = "";
-
-      if (errorMessage) {
-        setError(errorMessage);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("We were unable to save your recipe.");
       }
     } finally {
       setSaving(false);
@@ -57,7 +57,7 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
         label="Name"
         onChange={(event) => setRecipeName(event.target.value)}
         value={recipeName}
-        error={error}
+        error={errorMessage}
       />
 
       <InputText
@@ -65,7 +65,7 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
         label="Serving Size"
         onChange={(event) => setServingSize(Number(event.target.value))}
         value={servingSize.toString()}
-        error={error}
+        error={errorMessage}
       />
 
       <TextArea

@@ -1,8 +1,8 @@
 import { Link } from "wouter";
-import { Button } from "../../components/Button";
-import { paths, routes } from "../../common/routes";
+import { Button } from "~/components/Button";
+import { paths, routes } from "~/common/routes";
 import styled from "styled-components";
-import { StyledLink } from "../../components/LinkStyle";
+import { StyledLink } from "~/components/LinkStyle";
 import { useCallback, useEffect, useState } from "react";
 import { Recipe } from "../CreateRecipe/utils";
 
@@ -22,7 +22,7 @@ export function Recipes() {
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    const response = await fetch("http://127.0.0.1:8787/recipes");
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`);
     const recipesFromServer = await response.json();
     setRecipes(recipesFromServer);
     setLoading(false);
@@ -34,7 +34,7 @@ export function Recipes() {
 
   async function deleteAllRecipes() {
     setLoading(true);
-    const response = await fetch("http://127.0.0.1:8787/recipes", {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
       method: "DELETE",
     });
     if (response.status === 204) {

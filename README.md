@@ -1,5 +1,22 @@
 # Recipe app
 
+- [Recipe app](#recipe-app)
+  - [Setup](#setup)
+  - [Development](#development)
+  - [Database (Cloudflare D1)](#database-cloudflare-d1)
+    - [Query](#query)
+    - [Migration](#migration)
+  - [Generate types](#generate-types)
+  - [Deployment](#deployment)
+
+
+## Setup
+
+- Create `apps/client/.env` with the following content:
+  ```env
+  VITE_SERVER_URL
+  ```
+
 ## Development
 
 Run the client (Vite server) locally:
