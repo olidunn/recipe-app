@@ -102,9 +102,9 @@ export function RecipePage() {
           onClick={() => {
             const confirmed =
               prompt(`
-            Do you want to delete this recipe?
-            Type "delete" to confirm.
-            `) === "delete";
+Do you want to delete this recipe?
+Type "delete" to confirm.
+`) === "delete";
 
             if (confirmed) {
               deleteRecipe(id);
