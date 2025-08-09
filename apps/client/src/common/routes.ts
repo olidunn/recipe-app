@@ -3,8 +3,6 @@ export const paths = {
   createRecipe: "/create-recipe",
   recipes: "/recipes",
   recipe: "/recipes/:id",
-  createAccount: "/create-account",
-  login: "/login",
 };
 
 export const routes = {
