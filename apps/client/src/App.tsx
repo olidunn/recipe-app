@@ -6,6 +6,8 @@ import { RecipePage } from "./pages/Recipe";
 import { ButtonGroup } from "./components/ButtonGroup";
 import { StyledLink } from "./components/LinkStyle";
 import { createGlobalStyle } from "styled-components";
+import { CreateAccount } from "./pages/CreateAccount";
+import { Login } from "./pages/Login";
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -51,8 +53,6 @@ body {
     }
 
   }
-
-
 `;
 
 export function App() {
@@ -71,6 +71,8 @@ export function App() {
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.recipe} component={RecipePage} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
+          <Route path={paths.createAccount} component={CreateAccount} />
+          <Route path={paths.login} component={Login} />
           <Route>404 Not found</Route>
         </Switch>
       </main>
