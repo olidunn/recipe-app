@@ -4,6 +4,9 @@
       "path": "apps/client"
     },
     {
+      "path": "apps/server-old"
+    },
+    {
       "path": "apps/server"
     },
     {
