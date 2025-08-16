@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "types": ["bun-types"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": ["src", "./worker-configuration.d.ts", "./package.json"]
+}

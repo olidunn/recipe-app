@@ -4,9 +4,6 @@
       "path": "apps/client"
     },
     {
-      "path": "apps/server-old"
-    },
-    {
       "path": "apps/server"
     },
     {
@@ -19,13 +16,41 @@
   ],
   "extensions": {
     "recommendations": [
-      "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode",
+      "biomejs.biome",
       "streetsidesoftware.code-spell-checker",
       "ms-playwright.playwright"
     ]
   },
   "settings": {
-    "cSpell.words": ["wouter"]
+    "cSpell.words": ["Elysia", "typebox", "wouter"],
+    "json.schemas": [
+      {
+        "fileMatch": ["biome.jsonc"],
+        "url": "https://biomejs.dev/schemas/1.9.4/schema.json"
+      }
+    ],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "explicit",
+      "source.fixAll.biome": "explicit"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "typescript.tsdk": "root/node_modules/typescript/lib"
   }
 }
