@@ -1,10 +1,10 @@
-import { Link } from "wouter";
-import { Button } from "~/components/Button";
-import { paths, routes } from "~/common/routes";
-import styled from "styled-components";
-import { StyledLink } from "~/components/LinkStyle";
-import { useCallback, useEffect, useState } from "react";
-import { Recipe } from "../CreateRecipe/utils";
+import { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'wouter';
+import { paths, routes } from '~/common/routes';
+import { Button } from '~/components/Button';
+import { StyledLink } from '~/components/LinkStyle';
+import type { Recipe } from '../CreateRecipe/utils';
 
 /**
  * TODO:
@@ -29,13 +29,13 @@ export function Recipes() {
   }, []);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [loadData]);
 
   async function deleteAllRecipes() {
     setLoading(true);
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     if (response.ok) {
       setRecipes([]);
@@ -54,7 +54,7 @@ export function Recipes() {
             <RecipeLink
               key={recipe.id}
               href={routes.recipe(recipe.id)}
-              style={{ opacity: loading ? 0.5 : 1, transition: "opacity 0.5s" }}
+              style={{ opacity: loading ? 0.5 : 1, transition: 'opacity 0.5s' }}
             >
               {recipe.name}
             </RecipeLink>
@@ -67,9 +67,9 @@ export function Recipes() {
           onClick={() => {
             const confirmed =
               prompt(`Do you want to delete all recipes?
-Type "delete" to confirm.`) === "delete";
+Type "delete" to confirm.`) === 'delete';
             if (confirmed) {
-              deleteAllRecipes();
+              void deleteAllRecipes();
             }
           }}
         >

@@ -14,6 +14,7 @@
   "dependencies": {
     "@elysiajs/cors": "^1.3.3",
     "@elysiajs/swagger": "^1.3.1",
+    "@recipe-app/common": "workspace:*",
     "elysia": "1.3.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

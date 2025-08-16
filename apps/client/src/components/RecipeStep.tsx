@@ -1,8 +1,8 @@
-import { Fragment } from "react";
+import { Fragment } from 'react';
 import {
   ingredientPattern,
   removeCurlyBrackets,
-} from "~/pages/CreateRecipe/utils";
+} from '~/pages/CreateRecipe/utils';
 
 type RecipeStepProps = { children: string };
 
@@ -12,16 +12,18 @@ export function RecipeStep({ children }: RecipeStepProps) {
   return (
     <>
       {stepParts.map((stepPart, index) => {
+        const key = `${index}-${stepPart}`;
+
         if (ingredientPattern.test(stepPart)) {
           return (
-            <Fragment key={index}>
-              {index > 0 && " "}
-              <strong key={index}>{removeCurlyBrackets(stepPart)}</strong>
+            <Fragment key={key}>
+              {index > 0 && ' '}
+              <strong>{removeCurlyBrackets(stepPart)}</strong>
             </Fragment>
           );
-        } else {
-          return <Fragment key={index}>{stepPart}</Fragment>;
         }
+
+        return <Fragment key={key}>{stepPart}</Fragment>;
       })}
     </>
   );

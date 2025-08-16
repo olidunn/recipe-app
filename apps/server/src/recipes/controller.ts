@@ -1,11 +1,5 @@
-import Elysia, { t } from 'elysia';
 import { Value } from '@sinclair/typebox/value';
-import {
-  RecipeMapper,
-  RecipesMapper,
-  RecipeResponse,
-  RecipeRequest,
-} from './schemas';
+import Elysia, { t } from 'elysia';
 import {
   createRecipe,
   deleteAllRecipes,
@@ -14,6 +8,12 @@ import {
   getRecipeById,
   updateRecipeById,
 } from './data';
+import {
+  RecipeMapper,
+  RecipeRequest,
+  RecipeResponse,
+  RecipesMapper,
+} from './schemas';
 
 export const recipesController = new Elysia({
   name: 'recipes',
@@ -21,7 +21,7 @@ export const recipesController = new Elysia({
   prefix: '/recipes',
 })
   .decorate('env', {} as Env)
-    // GET ALL RECIPES
+  // GET ALL RECIPES
   .get(
     '',
     async ({ env }) => {
@@ -35,7 +35,7 @@ export const recipesController = new Elysia({
       },
     },
   )
-    // GET RECIPE BY ID
+  // GET RECIPE BY ID
   .get(
     ':recipeId',
     async ({ env, status, params: { recipeId } }) => {
@@ -55,7 +55,7 @@ export const recipesController = new Elysia({
       },
     },
   )
-    // CREATE RECIPE
+  // CREATE RECIPE
   .post(
     '',
     async ({ env, body }) => {
@@ -70,7 +70,7 @@ export const recipesController = new Elysia({
       body: RecipeRequest,
     },
   )
-   // UPDATE RECIPE
+  // UPDATE RECIPE
   .post(
     ':recipeId',
     async ({ env, body, params: { recipeId } }) => {
@@ -88,9 +88,9 @@ export const recipesController = new Elysia({
       }).run();
     },
     {
-        detail: {
-            summary: 'Update Recipe by ID',
-        },
+      detail: {
+        summary: 'Update Recipe by ID',
+      },
       params: t.Object({ recipeId: t.Number() }),
       body: RecipeResponse,
     },
@@ -99,7 +99,7 @@ export const recipesController = new Elysia({
   .delete('', async ({ env }) => {
     await deleteAllRecipes(env).run();
   })
-    // DELETE RECIPE BY ID
+  // DELETE RECIPE BY ID
   .delete(
     ':recipeId',
     async ({ env, params: { recipeId } }) => {

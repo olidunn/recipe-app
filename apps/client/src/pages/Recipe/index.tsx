@@ -1,11 +1,11 @@
-import { useParams, Redirect } from "wouter";
-import { paths, routes } from "~/common/routes";
-import { useCallback, useEffect, useState } from "react";
-import { RecipeStep } from "~/components/RecipeStep";
-import { Button } from "~/components/Button";
-import { ButtonGroup } from "~/components/ButtonGroup";
-import { StyledLink } from "~/components/LinkStyle";
-import { Recipe } from "../CreateRecipe/utils";
+import { useCallback, useEffect, useState } from 'react';
+import { Redirect, useParams } from 'wouter';
+import { paths, routes } from '~/common/routes';
+import { Button } from '~/components/Button';
+import { ButtonGroup } from '~/components/ButtonGroup';
+import { StyledLink } from '~/components/LinkStyle';
+import { RecipeStep } from '~/components/RecipeStep';
+import type { Recipe } from '../CreateRecipe/utils';
 
 // useParams to access id parameter
 // useState returns an array: current state is recipe, then update state with setRecipe (new recipe)
@@ -23,7 +23,7 @@ export function RecipePage() {
   const loadData = useCallback(async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/recipes/${id}`
+        `${import.meta.env.VITE_SERVER_URL}/recipes/${id}`,
       );
 
       const recipeFromServer = await response.json();
@@ -36,7 +36,7 @@ export function RecipePage() {
   }, [id]);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [loadData]);
 
   async function deleteRecipe(recipeId: string) {
@@ -44,9 +44,9 @@ export function RecipePage() {
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/recipes/${recipeId}`,
       {
-        method: "DELETE",
-        mode: "cors",
-      }
+        method: 'DELETE',
+        mode: 'cors',
+      },
     );
     if (response.ok) {
       setShouldRedirect(true);
@@ -104,10 +104,10 @@ export function RecipePage() {
               prompt(`
 Do you want to delete this recipe?
 Type "delete" to confirm.
-`) === "delete";
+`) === 'delete';
 
             if (confirmed) {
-              deleteRecipe(id);
+              void deleteRecipe(id);
             }
           }}
         >

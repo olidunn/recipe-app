@@ -1,5 +1,5 @@
-import { ChangeEventHandler, ReactNode } from "react";
-import styled, { css } from "styled-components";
+import type { ChangeEventHandler, ReactNode } from 'react';
+import styled, { css } from 'styled-components';
 
 type InputTextProps = {
   id: string;
@@ -15,7 +15,7 @@ export function InputText({
   onChange,
   error,
 }: InputTextProps) {
-  const errorMessageId = id + "-error";
+  const errorMessageId = `${id}-error`;
 
   return (
     <div>
@@ -30,7 +30,7 @@ export function InputText({
           $errorOccurred={!!error}
         />
       </Label>
-      {error && <Error id={errorMessageId}>{error}</Error>}
+      {error && <ErrorMessage id={errorMessageId}>{error}</ErrorMessage>}
     </div>
   );
 }
@@ -52,7 +52,7 @@ const Label = styled.label`
   flex-direction: column;
 `;
 
-const Error = styled.div`
+const ErrorMessage = styled.div`
   color: red;
   font-size: 14px;
 `;
