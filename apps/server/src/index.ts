@@ -46,3 +46,5 @@ export default {
     return server.handle(request);
   },
 } satisfies ExportedHandler<Env>;
+
+export type Server = ReturnType<typeof createServer>;

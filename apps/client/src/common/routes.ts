@@ -2,12 +2,12 @@ export const paths = {
   home: '/',
   createRecipe: '/create-recipe',
   recipes: '/recipes',
-  recipe: '/recipes/:id',
+  recipe: '/recipes/:recipeId',
   createAccount: '/create-account',
   login: '/login',
 };
 
 export const routes = {
-  recipe: (id: string) => `/recipes/${id}`,
+  recipe: (recipeId: number) => `/recipes/${recipeId}`,
   recipes: '/recipes',
 };

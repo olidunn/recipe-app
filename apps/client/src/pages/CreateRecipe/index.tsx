@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
+import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
@@ -34,13 +35,12 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
     try {
       setSaving(true);
       const recipe = parseRecipe(recipeName, recipeString, servingSize);
-      await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
-        body: JSON.stringify(recipe),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      });
+      const { error } = await server.recipes.post(recipe);
+
+      if (error) {
+        throw error;
+      }
+
       setLocation(paths.recipes);
     } catch (error) {
       if (error instanceof Error) {
@@ -87,9 +87,6 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       >
         {saving ? 'loading...' : 'Save'}
       </Button>
-
-      <div id="preview-ingredients" />
-      <div id="preview-steps" />
     </Form>
   );
 }
