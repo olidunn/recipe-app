@@ -1,45 +1,39 @@
-import { Link } from "wouter";
-import { Button } from "~/components/Button";
-import { paths, routes } from "~/common/routes";
-import styled from "styled-components";
-import { StyledLink } from "~/components/LinkStyle";
-import { useCallback, useEffect, useState } from "react";
-import { Recipe } from "../CreateRecipe/utils";
-
-/**
- * TODO:
- * Go through the render.js file and start building React components for the sections and recipe card etc.
- *
- * https://www.typescriptlang.org/docs/
- * https://react.dev/learn
- * https://react.dev/reference/react
- * https://styled-components.com/docs
- * https://github.com/molefrog/wouter
- */
+import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
+import { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'wouter';
+import { paths, routes } from '~/common/routes';
+import { server } from '~/common/server';
+import { Button } from '~/components/Button';
+import { StyledLink } from '~/components/LinkStyle';
 
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`);
-    const recipesFromServer = await response.json();
-    setRecipes(recipesFromServer);
+    const { data, error } = await server.recipes.get();
+    if (error) {
+      throw error;
+    }
+
+    setRecipes(data);
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [loadData]);
 
   async function deleteAllRecipes() {
     setLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      setRecipes([]);
+    const { error } = await server.recipes.delete();
+
+    if (error) {
+      throw error;
     }
+
+    setRecipes([]);
     setLoading(false);
   }
 
@@ -54,7 +48,7 @@ export function Recipes() {
             <RecipeLink
               key={recipe.id}
               href={routes.recipe(recipe.id)}
-              style={{ opacity: loading ? 0.5 : 1, transition: "opacity 0.5s" }}
+              style={{ opacity: loading ? 0.5 : 1, transition: 'opacity 0.5s' }}
             >
               {recipe.name}
             </RecipeLink>
@@ -67,9 +61,9 @@ export function Recipes() {
           onClick={() => {
             const confirmed =
               prompt(`Do you want to delete all recipes?
-Type "delete" to confirm.`) === "delete";
+Type "delete" to confirm.`) === 'delete';
             if (confirmed) {
-              deleteAllRecipes();
+              void deleteAllRecipes();
             }
           }}
         >

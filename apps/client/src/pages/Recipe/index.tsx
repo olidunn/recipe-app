@@ -1,11 +1,12 @@
-import { useParams, Redirect } from "wouter";
-import { paths, routes } from "~/common/routes";
-import { useCallback, useEffect, useState } from "react";
-import { RecipeStep } from "~/components/RecipeStep";
-import { Button } from "~/components/Button";
-import { ButtonGroup } from "~/components/ButtonGroup";
-import { StyledLink } from "~/components/LinkStyle";
-import { Recipe } from "../CreateRecipe/utils";
+import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
+import { useCallback, useEffect, useState } from 'react';
+import { Redirect, useParams } from 'wouter';
+import { paths, routes } from '~/common/routes';
+import { server } from '~/common/server';
+import { Button } from '~/components/Button';
+import { ButtonGroup } from '~/components/ButtonGroup';
+import { StyledLink } from '~/components/LinkStyle';
+import { RecipeStep } from '~/components/RecipeStep';
 
 // useParams to access id parameter
 // useState returns an array: current state is recipe, then update state with setRecipe (new recipe)
@@ -13,44 +14,32 @@ import { Recipe } from "../CreateRecipe/utils";
 // If await function returns true, recipe is updated with the new recipe from server (using setRecipe)
 
 export function RecipePage() {
-  const { id } = useParams<{
-    id: string;
-  }>();
+  const { recipeId } = useParams<{ recipeId: string }>();
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/recipes/${id}`
-      );
-
-      const recipeFromServer = await response.json();
-      setRecipe(recipeFromServer);
-    } catch (_error) {
+    const { data, error } = await server.recipes({ recipeId }).get();
+    if (error) {
       setRecipe(null);
     }
-
+    setRecipe(data);
     setLoading(false);
-  }, [id]);
+  }, [recipeId]);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [loadData]);
 
-  async function deleteRecipe(recipeId: string) {
+  async function deleteRecipe(id: string) {
     setLoading(true);
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/recipes/${recipeId}`,
-      {
-        method: "DELETE",
-        mode: "cors",
-      }
-    );
-    if (response.ok) {
-      setShouldRedirect(true);
+    const { error } = await server['recipes']({ recipeId: id }).delete();
+    if (error) {
+      throw error;
     }
+
+    setShouldRedirect(true);
     setLoading(false);
   }
 
@@ -104,10 +93,10 @@ export function RecipePage() {
               prompt(`
 Do you want to delete this recipe?
 Type "delete" to confirm.
-`) === "delete";
+`) === 'delete';
 
             if (confirmed) {
-              deleteRecipe(id);
+              void deleteRecipe(recipeId);
             }
           }}
         >

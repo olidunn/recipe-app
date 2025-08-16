@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { Button } from "~/components/Button";
-import { Form } from "~/components/Form";
-import { InputText } from "~/components/InputText";
-import { TextArea } from "~/components/TextArea";
-import { useLocation } from "wouter";
-import { paths } from "~/common/routes";
-import { parseRecipe } from "./utils";
+import { useState } from 'react';
+import { useLocation } from 'wouter';
+import { paths } from '~/common/routes';
+import { server } from '~/common/server';
+import { Button } from '~/components/Button';
+import { Form } from '~/components/Form';
+import { InputText } from '~/components/InputText';
+import { TextArea } from '~/components/TextArea';
+import { parseRecipe } from './utils';
 
 export function CreateRecipe() {
   const [saving, setSaving] = useState(false);
   const [_, setLocation] = useLocation();
-  const [recipeName, setRecipeName] = useState("");
+  const [recipeName, setRecipeName] = useState('');
   const [servingSize, setServingSize] = useState(1);
   const [recipeString, setRecipeString] =
     useState(`Heat a large pan over medium heat and add {{olive oil}}.
@@ -34,19 +35,18 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
     try {
       setSaving(true);
       const recipe = parseRecipe(recipeName, recipeString, servingSize);
-      await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
-        body: JSON.stringify(recipe),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      });
+      const { error } = await server.recipes.post(recipe);
+
+      if (error) {
+        throw error;
+      }
+
       setLocation(paths.recipes);
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage("We were unable to save your recipe.");
+        setErrorMessage('We were unable to save your recipe.');
       }
     } finally {
       setSaving(false);
@@ -81,15 +81,12 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
 
       <Button
         style={{
-          marginLeft: "auto",
+          marginLeft: 'auto',
         }}
         onClick={save}
       >
-        {saving ? "loading..." : "Save"}
+        {saving ? 'loading...' : 'Save'}
       </Button>
-
-      <div id="preview-ingredients"></div>
-      <div id="preview-steps"></div>
     </Form>
   );
 }
