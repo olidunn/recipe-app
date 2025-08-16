@@ -37,7 +37,7 @@ export function Recipes() {
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
       method: "DELETE",
     });
-    if (response.status === 204) {
+    if (response.ok) {
       setRecipes([]);
     }
     setLoading(false);

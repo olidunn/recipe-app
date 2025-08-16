@@ -36,6 +36,9 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       const recipe = parseRecipe(recipeName, recipeString, servingSize);
       await fetch(`${import.meta.env.VITE_SERVER_URL}/recipes`, {
         body: JSON.stringify(recipe),
+        headers: {
+          "Content-Type": "application/json",
+        },
         method: "POST",
       });
       setLocation(paths.recipes);

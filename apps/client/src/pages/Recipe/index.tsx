@@ -48,7 +48,7 @@ export function RecipePage() {
         mode: "cors",
       }
     );
-    if (response.status === 204) {
+    if (response.ok) {
       setShouldRedirect(true);
     }
     setLoading(false);

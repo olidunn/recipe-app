@@ -2,6 +2,7 @@ import swagger from '@elysiajs/swagger';
 import Elysia from 'elysia';
 import packageJson from '../package.json';
 import { recipesController } from './recipes/controller';
+import cors from '@elysiajs/cors';
 
 function createServer(env: Env) {
   return new Elysia({
@@ -10,6 +11,13 @@ function createServer(env: Env) {
     normalize: false,
   })
     .decorate('env', env)
+    .use(cors({
+      origin: env.CLIENT_URL,
+      methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+      // Allowed headers are currently bugged: https://github.com/elysiajs/elysia/issues/1342
+      // allowedHeaders: ['Content-Type'],
+      aot: false,
+    }))
     .use(
       swagger({
         documentation: {
