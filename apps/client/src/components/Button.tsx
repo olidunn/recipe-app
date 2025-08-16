@@ -1,5 +1,5 @@
-import { CSSProperties, MouseEventHandler, ReactNode } from "react";
-import styled from "styled-components";
+import type { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import styled from 'styled-components';
 
 type ButtonProps = {
   children: ReactNode;

@@ -37,7 +37,7 @@ export function updateRecipeById(
     ingredients: string;
   },
 ): D1PreparedStatement {
-    const { name, steps, servingSize, ingredients, recipeId } = data;
+  const { name, steps, servingSize, ingredients, recipeId } = data;
   return env.DB.prepare(
     `
   UPDATE recipes 

@@ -15,8 +15,8 @@ export type Recipe = {
 export function parseRecipe(
   recipeName: string,
   recipeString: string,
-  servingSize: number
-): Omit<Recipe, "id"> {
+  servingSize: number,
+): Omit<Recipe, 'id'> {
   return {
     name: recipeName,
     steps: parseSteps(recipeString),
@@ -31,7 +31,7 @@ export function parseRecipe(
 function parseIngredients(recipeStepsText: string): string[] {
   const matches = [...recipeStepsText.matchAll(ingredientPattern)];
 
-  const userIngredients = [];
+  const userIngredients: string[] = [];
 
   for (let index = 0; index < matches.length; index++) {
     const userIngredient = matches[index][0];
@@ -45,7 +45,7 @@ function parseIngredients(recipeStepsText: string): string[] {
 function parseSteps(recipeStepsText: string): string[] {
   const recipeSteps = recipeStepsText.split(/\n\n/);
 
-  const userSteps = [];
+  const userSteps: string[] = [];
 
   for (let index = 0; index < recipeSteps.length; index++) {
     const userStep = recipeSteps[index];

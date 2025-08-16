@@ -22,7 +22,7 @@
     ]
   },
   "settings": {
-    "cSpell.words": ["Elysia", "typebox", "wouter"],
+    "cSpell.words": ["Elysia", "elysiajs", "typebox", "wouter"],
     "json.schemas": [
       {
         "fileMatch": ["biome.jsonc"],

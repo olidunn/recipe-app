@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { Button } from "~/components/Button";
-import { Form } from "~/components/Form";
-import { InputText } from "~/components/InputText";
-import { paths } from "~/common/routes";
-import { useLocation } from "wouter";
+import { useState } from 'react';
+import { useLocation } from 'wouter';
+import { paths } from '~/common/routes';
+import { Button } from '~/components/Button';
+import { Form } from '~/components/Form';
+import { InputText } from '~/components/InputText';
 
 export function CreateAccount() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [, setLocation] = useLocation();
 
   async function createAccount() {
     try {
-      setErrorMessage("");
+      setErrorMessage('');
       setCreatingAccount(true);
       const response = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/create-account`,
         {
           body: JSON.stringify({ name, email, password, confirmPassword }),
-          method: "POST",
-        }
+          method: 'POST',
+        },
       );
 
       if (response.status === 400) {
@@ -36,7 +36,7 @@ export function CreateAccount() {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage("We were unable to create your account.");
+        setErrorMessage('We were unable to create your account.');
       }
     } finally {
       setCreatingAccount(false);
@@ -72,11 +72,11 @@ export function CreateAccount() {
       />
       <Button
         style={{
-          marginLeft: "auto",
+          marginLeft: 'auto',
         }}
         onClick={createAccount}
       >
-        {creatingAccount ? "loading..." : "Create account"}
+        {creatingAccount ? 'loading...' : 'Create account'}
       </Button>
     </Form>
   );

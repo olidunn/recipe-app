@@ -1,13 +1,13 @@
-import { Route, Switch } from "wouter";
-import { Recipes } from "./pages/Recipes";
-import { CreateRecipe } from "./pages/CreateRecipe";
-import { paths } from "./common/routes";
-import { RecipePage } from "./pages/Recipe";
-import { ButtonGroup } from "./components/ButtonGroup";
-import { StyledLink } from "./components/LinkStyle";
-import { createGlobalStyle } from "styled-components";
-import { CreateAccount } from "./pages/CreateAccount";
-import { Login } from "./pages/Login";
+import { createGlobalStyle } from 'styled-components';
+import { Route, Switch } from 'wouter';
+import { paths } from './common/routes';
+import { ButtonGroup } from './components/ButtonGroup';
+import { StyledLink } from './components/LinkStyle';
+import { CreateAccount } from './pages/CreateAccount';
+import { CreateRecipe } from './pages/CreateRecipe';
+import { Login } from './pages/Login';
+import { RecipePage } from './pages/Recipe';
+import { Recipes } from './pages/Recipes';
 
 const GlobalStyle = createGlobalStyle`
 body {
