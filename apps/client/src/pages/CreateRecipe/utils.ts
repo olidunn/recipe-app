@@ -34,8 +34,11 @@ function parseIngredients(recipeStepsText: string): string[] {
   const userIngredients: string[] = [];
 
   for (let index = 0; index < matches.length; index++) {
-    const userIngredient = matches[index][0];
-    userIngredients.push(removeCurlyBrackets(userIngredient));
+    const userIngredient = matches[index]?.[0];
+
+    if (userIngredient?.length) {
+      userIngredients.push(removeCurlyBrackets(userIngredient));
+    }
   }
 
   return removeDuplicates(userIngredients);
@@ -49,7 +52,10 @@ function parseSteps(recipeStepsText: string): string[] {
 
   for (let index = 0; index < recipeSteps.length; index++) {
     const userStep = recipeSteps[index];
-    userSteps.push(userStep);
+
+    if (userStep) {
+      userSteps.push(userStep);
+    }
   }
 
   return userSteps;

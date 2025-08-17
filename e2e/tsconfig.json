@@ -14,6 +14,7 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true,
 
     "paths": {
       "~/*": ["./src/*"]

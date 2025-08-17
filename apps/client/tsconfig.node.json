@@ -16,7 +16,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true
   },
   "include": ["vite.config.ts"]
 }

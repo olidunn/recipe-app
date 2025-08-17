@@ -34,7 +34,7 @@ const Label = styled.label`
 `;
 
 type StyledTextAreaProps = {
-  $height?: number;
+  $height?: number | undefined;
 };
 const StyledTextArea = styled.textarea<StyledTextAreaProps>`
   ${({ $height }) => $height && `min-height: ${$height}px`}
