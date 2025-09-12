@@ -56,7 +56,6 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
   return (
     <Form>
       <InputText
-        id="recipeName"
         label="Name"
         onChange={(event) => setRecipeName(event.target.value)}
         value={recipeName}
@@ -64,7 +63,6 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       />
 
       <InputText
-        id="servingSize"
         label="Serving Size"
         onChange={(event) => setServingSize(Number(event.target.value))}
         value={servingSize.toString()}
@@ -72,7 +70,6 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
       />
 
       <TextArea
-        id="recipeString"
         label="Steps"
         height={200}
         onChange={(event) => setRecipeString(event.target.value)}

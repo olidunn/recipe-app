@@ -1,20 +1,15 @@
 import type { ChangeEventHandler, ReactNode } from 'react';
+import { useId } from 'react';
 import styled, { css } from 'styled-components';
 
 type InputTextProps = {
-  id: string;
   label: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   error?: ReactNode;
 };
-export function InputText({
-  id,
-  label,
-  value,
-  onChange,
-  error,
-}: InputTextProps) {
+export function InputText({ label, value, onChange, error }: InputTextProps) {
+  const id = useId();
   const errorMessageId = `${id}-error`;
 
   return (

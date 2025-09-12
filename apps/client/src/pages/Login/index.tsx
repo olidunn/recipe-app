@@ -45,13 +45,11 @@ export function Login() {
   return (
     <Form>
       <InputText
-        id="email"
         label="Email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
       />
       <InputText
-        id="password"
         label="Password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}

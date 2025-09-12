@@ -1,26 +1,27 @@
-import { expect, Page } from "@playwright/test";
+import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 export async function submitRecipeForm(
   page: Page,
-  data: { name: string; servingSize: number; recipeString: string }
+  data: { name: string; servingSize: number; recipeString: string },
 ) {
   // Go to localhost/create-recipe
-  await page.goto("/create-recipe");
+  await page.goto('/create-recipe');
 
   // Get textbox for recipe name
-  const nameInput = page.getByRole("textbox", { name: "Name", exact: true });
+  const nameInput = page.getByRole('textbox', { name: 'Name', exact: true });
   await expect(nameInput).toBeVisible();
 
   // Get textbox for serving size
-  const servingSizeInput = page.getByRole("textbox", {
-    name: "Serving Size",
+  const servingSizeInput = page.getByRole('textbox', {
+    name: 'Serving Size',
     exact: true,
   });
   await expect(servingSizeInput).toBeVisible();
 
   // Get textbox for recipe steps
-  const recipeStringInput = page.getByRole("textbox", {
-    name: "Steps",
+  const recipeStringInput = page.getByRole('textbox', {
+    name: 'Steps',
     exact: true,
   });
   await expect(recipeStringInput).toBeVisible();
@@ -32,8 +33,8 @@ export async function submitRecipeForm(
 
   // Click submit button, creates recipe
   await page
-    .getByRole("button", {
-      name: "Save",
+    .getByRole('button', {
+      name: 'Save',
       exact: true,
     })
     .click();

@@ -1,20 +1,15 @@
 import type { ChangeEventHandler } from 'react';
+import { useId } from 'react';
 import styled from 'styled-components';
 
 type TextAreaProps = {
-  id: string;
   label: string;
   height?: number;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
   value: string;
 };
-export function TextArea({
-  id,
-  label,
-  height,
-  onChange,
-  value,
-}: TextAreaProps) {
+export function TextArea({ label, height, onChange, value }: TextAreaProps) {
+  const id = useId();
   return (
     <Label htmlFor={id}>
       {label}

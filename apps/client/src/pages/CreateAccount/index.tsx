@@ -46,26 +46,22 @@ export function CreateAccount() {
   return (
     <Form>
       <InputText
-        id="name"
         label="Name"
         onChange={(event) => setName(event.target.value)}
         value={name}
       />
       <InputText
-        id="email"
         label="Email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
       />
       <InputText
-        id="password"
         label="Password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
         error={errorMessage}
       />
       <InputText
-        id="confirmPassword"
         label="Confirm password"
         onChange={(event) => setConfirmPassword(event.target.value)}
         value={confirmPassword}
