@@ -29,7 +29,7 @@
     "json.schemas": [
       {
         "fileMatch": ["biome.jsonc"],
-        "url": "https://biomejs.dev/schemas/1.9.4/schema.json"
+        "url": "https://biomejs.dev/schemas/2.2.4/schema.json"
       }
     ],
     "editor.codeActionsOnSave": {
