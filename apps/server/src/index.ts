@@ -15,8 +15,7 @@ function createServer(env: Env) {
       cors({
         origin: env.CLIENT_URL,
         methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-        // Allowed headers are currently bugged: https://github.com/elysiajs/elysia/issues/1342
-        // allowedHeaders: ['Content-Type'],
+        allowedHeaders: ['Content-Type'],
         aot: false,
       }),
     )
