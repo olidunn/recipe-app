@@ -4,15 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clean": "rm -rf playwright-report test-results tsconfig.tsbuildinfo",
     "e2e": "playwright test",
     "e2e-ui": "playwright test --ui",
     "typecheck": "tsc -b"
   },
   "dependencies": {
-    "@playwright/test": "^1.54.1",
-    "typescript": "^5.8.3"
+    "@playwright/test": "^1.55.0",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@types/node": "^24.0.15"
+    "@types/node": "^24.3.1"
   }
 }

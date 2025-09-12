@@ -1,18 +1,19 @@
 {
   "name": "@recipe-app/root",
   "devDependencies": {
-    "@biomejs/biome": "2.1.2",
-    "@types/bun": "^1.2.19",
-    "typescript": "^5.8.3"
+    "@biomejs/biome": "2.2.4",
+    "@types/bun": "^1.2.21",
+    "typescript": "^5.9.2"
   },
   "private": true,
   "scripts": {
+    "clean": "rm -rf node_modules & bun --filter '*' clean",
     "dev": "bun --filter '*' dev",
     "dev:e2e": "bun --filter '@recipe-app/client' dev & bun --filter '@recipe-app/server' dev --env=test",
     "e2e": "bun --filter '@recipe-app/e2e' e2e",
     "unit-tests": "bun --filter '*' test",
     "typegen": "bun --filter '*' typegen",
-    "typecheck": "bun --filter '@recipe-app/common' typecheck && bun --filter '@recipe-app/server' typecheck && bun --filter '@recipe-app/client' typecheck && bun --filter '@recipe-app/e2e' typecheck"
+    "typecheck": "bun --filter '*' typecheck"
   },
   "type": "module",
   "workspaces": [
