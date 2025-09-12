@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "clean": "rm -rf dist"
   }
 }
