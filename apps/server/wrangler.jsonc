@@ -1,55 +1,55 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "recipes-server",
-	"main": "src/index.ts",
-	"compatibility_date": "2025-06-17",
-	"compatibility_flags": ["nodejs_compat"],
-	"observability": {
-		"enabled": true
-	},
-	"placement": {
-		"mode": "smart"
-	},
-	"vars": {
-		"ENVIRONMENT": "development",
-		"CLIENT_URL": "http://localhost:5173",
-		"SERVER_URL": "http://localhost:8787"
-	},
-	"d1_databases": [
-		{
-			"database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
-			"binding": "DB",
-			"database_name": "recipe-app-db"
-		}
-	],
-	"env": {
-		"test": {
-			"vars": {
-				"ENVIRONMENT": "test",
-				"CLIENT_URL": "http://localhost:5173",
-				"SERVER_URL": "http://localhost:8787"
-			},
-			"d1_databases": [
-				{
-					"database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
-					"binding": "DB",
-					"database_name": "recipe-app-db"
-				}
-			]
-		},
-		"production": {
-			"vars": {
-				"ENVIRONMENT": "production",
-				"CLIENT_URL": "https://recipes.oliver-dunn.com",
-				"SERVER_URL": "https://recipes-api.oliver-dunn.com"
-			},
-			"d1_databases": [
-				{
-					"database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
-					"binding": "DB",
-					"database_name": "recipe-app-db"
-				}
-			]
-		}
-	}
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "recipe-app-server",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "placement": {
+    "mode": "smart"
+  },
+  "vars": {
+    "ENVIRONMENT": "development",
+    "CLIENT_URL": "http://localhost:5173",
+    "SERVER_URL": "http://localhost:8787"
+  },
+  "d1_databases": [
+    {
+      "database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
+      "binding": "DB",
+      "database_name": "recipe-app-db"
+    }
+  ],
+  "env": {
+    "test": {
+      "vars": {
+        "ENVIRONMENT": "test",
+        "CLIENT_URL": "http://localhost:5173",
+        "SERVER_URL": "http://localhost:8787"
+      },
+      "d1_databases": [
+        {
+          "database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
+          "binding": "DB",
+          "database_name": "recipe-app-db"
+        }
+      ]
+    },
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production",
+        "CLIENT_URL": "https://recipes.oliver-dunn.com",
+        "SERVER_URL": "https://recipes-api.oliver-dunn.com"
+      },
+      "d1_databases": [
+        {
+          "database_id": "abfbbde7-8866-4947-9b62-bcb4b237d4c7",
+          "binding": "DB",
+          "database_name": "recipe-app-db"
+        }
+      ]
+    }
+  }
 }
