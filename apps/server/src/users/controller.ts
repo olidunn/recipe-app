@@ -1,6 +1,7 @@
-import { CreateUserRequest } from '@recipe-app/common/src/users/schemas';
-import { validateNewPassword } from '@recipe-app/common/src/users/validation';
+import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
 import Elysia, { t } from 'elysia';
+import { getErrorMessage } from '../common/error';
+import { D1_ERROR } from '../common/utils';
 import { createUser } from './data';
 import { generateSalt, hashPassword } from './utils';
 
@@ -23,18 +24,29 @@ export const usersController = new Elysia({
       const passwordSalt = generateSalt();
       const passwordHash = await hashPassword(password, passwordSalt);
 
-      await createUser(env, {
-        email,
-        name,
-        passwordHash,
-        passwordSalt,
-      }).run();
+      try {
+        await createUser(env, {
+          email,
+          name,
+          passwordHash,
+          passwordSalt,
+        }).run();
+      } catch (error) {
+        const message = getErrorMessage(error);
+
+        if (message.startsWith(D1_ERROR.UNIQUE_CONSTRAINT_FAILED)) {
+          return;
+        }
+
+        return status(500, 'Failed to create account.');
+      }
     },
     {
       body: CreateUserRequest,
       response: {
         200: t.Void(),
         400: t.String(),
+        500: t.String(),
       },
     },
   );

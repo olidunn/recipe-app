@@ -30,11 +30,11 @@ function errorFunction(error: ErrorFunctionParameter): string {
   }
 
   if (error.errorType === ValueErrorType.StringMinLength) {
-    return `Must be at least ${error.schema['minLength']} ${error.schema['minLength'].length === 1 ? 'character' : 'characters'} in length.`;
+    return `Must be at least ${error.schema['minLength']} ${error.schema['minLength'] === 1 ? 'character' : 'characters'} in length.`;
   }
 
   if (error.errorType === ValueErrorType.StringMaxLength) {
-    return `Must be less than ${error.schema['maxLength']} ${error.schema['maxLength'].length === 1 ? 'character' : 'characters'} in length.`;
+    return `Must be less than ${error.schema['maxLength']} ${error.schema['maxLength'] === 1 ? 'character' : 'characters'} in length.`;
   }
 
   return DefaultErrorFunction(error);
