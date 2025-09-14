@@ -1,30 +1,30 @@
-import type { TSchema } from '@sinclair/typebox/type';
-import { Type } from '@sinclair/typebox/type';
+import type { TSchema } from 'elysia';
+import { t } from 'elysia';
 
 /**
  * Utility function to create a nullable schema. This is because TypeBox does not
  * make error messages for nullable schemas easily accessible.
  */
 export function Nullable<T extends TSchema>(schema: T) {
-  return Type.Union([schema, Type.Null()], { nullable: true });
+  return t.Union([schema, t.Null()], { nullable: true });
 }
 
 export function IntegerPrimaryKey() {
-  return Type.Number({
+  return t.Number({
     exclusiveMinimum: 0,
     readOnly: true,
   });
 }
 
 export function IntegerForeignKey(options: { readOnly?: boolean } = {}) {
-  return Type.Number({
+  return t.Number({
     ...options,
     exclusiveMinimum: 0,
   });
 }
 
 export function Timestamp() {
-  return Type.Number({
+  return t.Number({
     exclusiveMinimum: 0,
     readOnly: true,
   });

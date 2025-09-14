@@ -1,5 +1,6 @@
-import type { Static } from '@sinclair/typebox';
-import { Type as t } from '@sinclair/typebox/type';
+import { Type } from '@sinclair/typebox/type';
+import type { Static } from 'elysia';
+import { t } from 'elysia';
 import { IntegerPrimaryKey } from '../common/schemas';
 
 export const RecipeRecord = t.Object({
@@ -27,8 +28,7 @@ export const RecipesMapper = t
   .Decode((recipes) => recipes.map(recordToResponse))
   .Encode((recipes) => recipes.map(responseToRecord));
 
-export const RecipeMapper = t
-  .Transform(RecipeRecord)
+export const RecipeMapper = Type.Transform(RecipeRecord)
   .Decode(recordToResponse)
   .Encode(responseToRecord);
 
