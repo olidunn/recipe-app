@@ -3,6 +3,7 @@ import swagger from '@elysiajs/swagger';
 import Elysia from 'elysia';
 import packageJson from '../package.json';
 import { recipesController } from './recipes/controller';
+import { usersController } from './users/controller';
 
 function createServer(env: Env) {
   return new Elysia({
@@ -41,6 +42,7 @@ function createServer(env: Env) {
         },
       }),
     )
+    .use(usersController)
     .use(recipesController);
 }
 

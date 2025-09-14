@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
+import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
@@ -9,7 +10,7 @@ export function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [, setLocation] = useLocation();
@@ -18,16 +19,15 @@ export function CreateAccount() {
     try {
       setErrorMessage('');
       setCreatingAccount(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/create-account`,
-        {
-          body: JSON.stringify({ name, email, password, confirmPassword }),
-          method: 'POST',
-        },
-      );
+      const { error } = await server.users['create-account'].post({
+        name,
+        email,
+        password,
+        confirmedPassword,
+      });
 
-      if (response.status === 400) {
-        setErrorMessage(await response.text());
+      if (error?.status === 400) {
+        setErrorMessage(error.value);
         return;
       }
 
@@ -63,8 +63,8 @@ export function CreateAccount() {
       />
       <InputText
         label="Confirm password"
-        onChange={(event) => setConfirmPassword(event.target.value)}
-        value={confirmPassword}
+        onChange={(event) => setConfirmedPassword(event.target.value)}
+        value={confirmedPassword}
       />
       <Button
         style={{
