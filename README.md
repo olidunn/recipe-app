@@ -7,8 +7,6 @@
     - [Query](#query)
     - [Migration](#migration)
   - [Generate types](#generate-types)
-  - [Deployment](#deployment)
-
 
 ## Setup
 
@@ -19,16 +17,22 @@
 
 ## Development
 
+Run all apps (client and server) locally:
+
+```sh
+bun dev
+```
+
 Run the client (Vite server) locally:
 
 ```sh
-npm run dev
+cd apps/client && bun dev
 ```
 
 Run the server (Cloudflare worker) locally:
 
 ```sh
-npm run dev
+cd apps/server && bun dev
 ```
 
 ## Database (Cloudflare D1)
@@ -40,13 +44,13 @@ These commands can be formatted as json via `--json`
 Query a database from text:
 
 ```sh
-wrangler d1 execute recipe-app-db --command "<sql here>"
+wrangler d1 execute DB --command "<sql here>"
 ```
 
 Query a database from a file:
 
 ```sh
-wrangler d1 execute recipe-app-db --file <path to file>
+wrangler d1 execute DB --file <path to file>
 ```
 
 ### Migration
@@ -54,48 +58,27 @@ wrangler d1 execute recipe-app-db --file <path to file>
 List available migrations:
 
 ```sh
-wrangler d1 migrations list recipe-app-db
+wrangler d1 migrations list DB
 ```
 
 Apply available migrations:
 
 ```sh
-wrangler d1 migrations apply recipe-app-db
+wrangler d1 migrations apply DB
 ```
 
 Create a migration:
 
 ```sh
- wrangler d1 migrations create recipe-app-db <migration_name>
+ wrangler d1 migrations create DB <migration_name>
 ```
 
 ## Generate types
 
-Generate types for your Cloudflare bindings in `wrangler.toml` (must be within server folder):
+Generate types for your Cloudflare bindings in `wrangler.jsonc` (must be within server folder):
 
 ```sh
-npm run cf-typegen
+bun typegen
 ```
 
-You will need to rerun `cf-typegen` whenever you make changes to `wrangler.toml`.
-
-## Deployment
-
-> [!WARNING]  
-> Cloudflare does _not_ use `wrangler.toml` to configure deployment bindings.
-> You **MUST** [configure deployment bindings manually in the Cloudflare dashboard][bindings].
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then, deploy your app to Cloudflare Pages:
-
-```sh
-npm run deploy
-```
-
-[bindings]: https://developers.cloudflare.com/pages/functions/bindings/
-
+You will need to rerun `bun typegen` whenever you make changes to `wrangler.jsonc`.
