@@ -16,9 +16,9 @@ function createServer(env: Env) {
     .use(
       cors({
         origin: env.CLIENT_URL,
-        methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type'],
         aot: false,
+        methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
       }),
     )
     .onRequest(async () => {
