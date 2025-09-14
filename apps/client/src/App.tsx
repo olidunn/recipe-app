@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
-import { Route, Switch } from 'wouter';
+import { Route, Switch, useLocation } from 'wouter';
+import { server } from '~/common/server';
+import { Button } from '~/components/Button';
 import { paths } from './common/routes';
 import { ButtonGroup } from './components/ButtonGroup';
 import { StyledLink } from './components/LinkStyle';
@@ -56,6 +58,13 @@ body {
 `;
 
 export function App() {
+  const [, setLocation] = useLocation();
+
+  async function logout() {
+    await server.users.logout.post();
+    setLocation(paths.home);
+  }
+
   return (
     <>
       <GlobalStyle />
@@ -66,6 +75,8 @@ export function App() {
             <ButtonGroup>
               <StyledLink href={paths.recipes}>Recipes</StyledLink>
               <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+              <StyledLink href={paths.login}>Login</StyledLink>
+              <Button onClick={logout}>Logout</Button>
             </ButtonGroup>
           </Route>
           <Route path={paths.recipes} component={Recipes} />

@@ -1,4 +1,76 @@
 import { passwordMaxLength } from '@recipe-app/common';
+import type { Static } from 'elysia';
+import type { AuthenticationError } from './schemas';
+
+export type UserSchema = {
+  readonly id: number;
+  email: string;
+  emailIsVerified: boolean;
+  name: string;
+  passwordSalt: string;
+  passwordHash: string;
+};
+
+type SuccessResult = {
+  failed: false;
+  name: string;
+  userId: number;
+};
+
+type ErrorResult = {
+  failed: true;
+  error: Static<typeof AuthenticationError>;
+};
+
+export async function authenticate(
+  env: Env,
+  email: string,
+  password: string,
+): Promise<SuccessResult | ErrorResult> {
+  const user = await env.DB.prepare(
+    `
+SELECT id, name, emailIsVerified, passwordHash, passwordSalt
+FROM users
+WHERE email = ?
+LIMIT 1;`,
+  )
+    .bind(email)
+    .first<
+      Pick<
+        UserSchema,
+        'id' | 'name' | 'emailIsVerified' | 'passwordHash' | 'passwordSalt'
+      >
+    >();
+
+  if (!user) {
+    return {
+      failed: true,
+      error: 'invalidEmailOrPassword',
+    };
+  }
+
+  if (!user.emailIsVerified) {
+    return {
+      failed: true,
+      error: 'emailIsNotVerified',
+    };
+  }
+
+  const generatedHash = await hashPassword(password, user.passwordSalt);
+
+  if (generatedHash !== user.passwordHash) {
+    return {
+      failed: true,
+      error: 'invalidEmailOrPassword',
+    };
+  }
+
+  return {
+    failed: false,
+    name: user.name,
+    userId: user.id,
+  };
+}
 
 export function generateSalt(length = 16): string {
   return (

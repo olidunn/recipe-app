@@ -21,6 +21,7 @@ export const recipesController = new Elysia({
   prefix: '/recipes',
 })
   .decorate('env', {} as Env)
+  .decorate('userId', 0)
   // GET ALL RECIPES
   .get(
     '',

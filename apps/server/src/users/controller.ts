@@ -1,9 +1,15 @@
-import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
+import {
+  CreateUserRequest,
+  LoginRequest,
+  sessionMaxAge,
+  validateNewPassword,
+} from '@recipe-app/common';
 import Elysia, { t } from 'elysia';
 import { getErrorMessage } from '../common/error';
 import { D1_ERROR } from '../common/utils';
 import { createUser } from './data';
-import { generateSalt, hashPassword } from './utils';
+import { AuthenticationError, OptionalSessionCookie } from './schemas';
+import { authenticate, generateSalt, hashPassword } from './utils';
 
 export const usersController = new Elysia({
   name: 'users',
@@ -49,35 +55,147 @@ export const usersController = new Elysia({
         500: t.String(),
       },
     },
+  )
+  .post(
+    '/login',
+    async ({ status, body, env, cookie, request }) => {
+      const { email, password } = body;
+      const authentication = await authenticate(env, email, password);
+
+      if (authentication.failed) {
+        return status(400, authentication.error);
+      }
+
+      const sessionId = crypto.randomUUID();
+      await env.DB.prepare(
+        `
+INSERT INTO sessions (id, userId, expiresAt, city, region, countryCode, userAgent)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+`,
+      )
+        .bind(
+          sessionId,
+          authentication.userId,
+          Math.ceil(Date.now() / 1000 + sessionMaxAge),
+          request.cf?.city || null,
+          request.cf?.region || null,
+          request.cf?.country || null,
+          request.headers.get('user-agent') || null,
+        )
+        .run();
+
+      cookie.session.set({
+        path: '/',
+        httpOnly: true,
+        sameSite: true,
+        secure: env.ENVIRONMENT === 'production',
+        secrets: [env.SESSION_COOKIE_SECRET],
+        maxAge: sessionMaxAge,
+        value: sessionId,
+      });
+    },
+    {
+      body: LoginRequest,
+      cookie: OptionalSessionCookie,
+      response: {
+        200: t.Void(),
+        400: AuthenticationError,
+      },
+    },
+  )
+  .get(
+    '/authenticated',
+    async ({ env, set, cookie: { session } }) => {
+      set.headers['cache-control'] = 'no-store';
+
+      if (!session?.value) {
+        return false;
+      }
+
+      const [sessionResult] = await env.DB.batch([
+        env.DB.prepare(
+          `
+SELECT 1
+FROM sessions
+WHERE id = ?
+LIMIT 1;
+`,
+        ).bind(session.value),
+        env.DB.prepare(
+          `
+UPDATE sessions
+SET lastSeenAt = ?
+WHERE id = ?;
+`,
+        ).bind(Math.ceil(Date.now() / 1000), session.value),
+      ]);
+
+      if (sessionResult?.results.length === 1) {
+        return true;
+      }
+
+      session.remove();
+      return false;
+    },
+    {
+      response: {
+        200: t.Boolean(),
+      },
+    },
+  )
+  .macro({
+    authenticated: {
+      async resolve({ status, cookie: { session }, env }) {
+        if (!session?.value) {
+          return status(401, null);
+        }
+
+        const userId = await env.DB.prepare(
+          `
+SELECT userId
+FROM sessions
+WHERE id = ?
+LIMIT 1;
+`,
+        )
+          .bind(session.value)
+          .first<number>('userId');
+
+        if (userId) {
+          return {
+            userId,
+          };
+        }
+
+        session.remove();
+        return status(401, null);
+      },
+    },
+  })
+  .guard({
+    as: 'global',
+    authenticated: true,
+    cookie: OptionalSessionCookie,
+    response: {
+      401: t.Void(),
+    },
+  })
+  .post(
+    '/logout',
+    async ({ env, cookie: { session }, userId }) => {
+      await env.DB.prepare(
+        `
+DELETE FROM sessions
+WHERE id = ?
+AND userId = ?;
+`,
+      )
+        .bind(session.value, userId)
+        .run();
+
+      session.remove();
+    },
+    {
+      response: { 200: t.Void() },
+    },
   );
-// .post('/login', async ({ env, body }) => {
-//   const { email, password } = body;
-
-//   const passwordSalt = generateSalt();
-//   const passwordHash = await hashPassword(password, passwordSalt);
-
-//   const user = await getUserByEmail(env, email).first();
-
-//   if (!user) {
-//     return status(
-//       400,
-//       "Hmm, that didn't work. Check your email and password.",
-//     );
-//   }
-
-//   const hashedPassword = await hashPassword(password, user.passwordSalt);
-
-//   if (hashedPassword !== user.passwordHash) {
-//     return new Response(
-//       "Hmm, that didn't work. Check your email and password.",
-//       { status: 400 },
-//     );
-//   }
-
-//   await getUserByEmail(env, {
-//     email,
-//     hashedPassword,
-//   }).run();
-// });
-//   }).run();
-// });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
+import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Form } from '~/components/Form';
@@ -18,15 +19,13 @@ export function Login() {
     try {
       setErrorMessage('');
       setLoggingIn(true);
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
-        body: JSON.stringify({ email, password }),
-        method: 'POST',
+      const { error } = await server.users.login.post({
+        email,
+        password,
       });
 
-      const error = await response.text();
-
-      if (response.status === 400) {
-        setErrorMessage(error);
+      if (error?.status === 400) {
+        setErrorMessage(error.value);
         return;
       }
 
@@ -46,14 +45,18 @@ export function Login() {
     <Form>
       <InputText
         label="Email"
+        type="email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
+        autoComplete="email"
       />
       <InputText
         label="Password"
+        type="password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
         error={errorMessage}
+        autoComplete="current-password"
       />
 
       <ButtonGroup>

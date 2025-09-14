@@ -13,9 +13,31 @@ export const Name = t.String({
 
 export const EmailAddress = t.String({ format: 'email' });
 
-export const CreateUserRequest = t.Object({
-  name: Name,
+export const LoginRequest = t.Object({
   email: EmailAddress,
   password: Password,
+});
+
+export const EmailRequest = t.Object({
+  email: EmailAddress,
+});
+
+export const CreateUserRequest = t.Composite([
+  LoginRequest,
+  t.Object({
+    confirmedPassword: Password,
+    name: Name,
+  }),
+]);
+
+export const ChangePasswordRequest = t.Object({
+  newPassword: Password,
+  currentPassword: Password,
   confirmedPassword: Password,
+});
+
+export const ResetPasswordRequest = t.Object({
+  password: Password,
+  confirmedPassword: Password,
+  token: t.String(),
 });

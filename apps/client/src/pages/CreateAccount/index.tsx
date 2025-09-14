@@ -63,21 +63,27 @@ export function CreateAccount() {
         onChange={(event) => setName(event.target.value)}
         value={name}
         error={errorByName?.name?.message}
+        autoComplete="name"
       />
       <InputText
         label="Email"
+        type="email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
         error={errorByName?.email?.message}
+        autoComplete="email"
       />
       <InputText
         label="Password"
+        type="password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
         error={errorByName?.password?.message}
+        autoComplete="new-password"
       />
       <InputText
         label="Confirm password"
+        type="password"
         onChange={(event) => setConfirmedPassword(event.target.value)}
         value={confirmedPassword}
         error={errorByName?.confirmedPassword?.message}
