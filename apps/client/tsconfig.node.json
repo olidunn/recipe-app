@@ -4,6 +4,7 @@
     "module": "esnext",
     "lib": ["ESNext"],
     "skipLibCheck": true,
+    "tsBuildInfoFile": "./build_cache/tsconfig.node.tsbuildinfo",
 
     /* Bundler mode */
     "moduleResolution": "bundler",

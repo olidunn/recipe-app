@@ -5,6 +5,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "useDefineForClassFields": true,
     "skipLibCheck": true,
+    "tsBuildInfoFile": "./build_cache/tsconfig.app.tsbuildinfo",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
