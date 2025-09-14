@@ -19,6 +19,11 @@ function createServer(env: Env) {
         aot: false,
       }),
     )
+    .onRequest(async () => {
+      if (env.ENVIRONMENT === 'development') {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+    })
     .use(
       swagger({
         documentation: {
