@@ -1,4 +1,4 @@
-import { passwordMaxLength } from './constants';
+import { passwordMaxLength } from '@recipe-app/common/src/users/constants';
 
 export function generateSalt(length = 16): string {
   return (

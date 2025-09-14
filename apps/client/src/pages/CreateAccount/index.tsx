@@ -1,7 +1,11 @@
+import { CreateUserRequest } from '@recipe-app/common/src/users/schemas';
+import { validateNewPassword } from '@recipe-app/common/src/users/validation';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
 import { server } from '~/common/server';
+import type { ErrorByName } from '~/common/utils/schemaValidation';
+import { validate } from '~/common/utils/schemaValidation';
 import { Button } from '~/components/Button';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
@@ -11,33 +15,43 @@ export function CreateAccount() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorByName, setErrorByName] = useState<ErrorByName<
+    typeof CreateUserRequest
+  > | null>(null);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [, setLocation] = useLocation();
 
   async function createAccount() {
     try {
-      setErrorMessage('');
-      setCreatingAccount(true);
-      const { error } = await server.users['create-account'].post({
+      setErrorByName(null);
+
+      const errorMessage = validateNewPassword(password, confirmedPassword);
+      if (errorMessage) {
+        setErrorByName({ password: { message: errorMessage } });
+        return;
+      }
+
+      const body = {
         name,
         email,
         password,
         confirmedPassword,
-      });
-
-      if (error?.status === 400) {
-        setErrorMessage(error.value);
+      };
+      const result = validate(body, CreateUserRequest);
+      if (result.failed) {
+        setErrorByName(result.errorByName);
         return;
       }
 
-      setLocation(paths.home);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('We were unable to create your account.');
+      setCreatingAccount(true);
+      const { error } = await server.users['create-account'].post(body);
+      if (error) {
+        throw error;
       }
+
+      setLocation(paths.home);
+    } catch (_error) {
+      // Display a "Something went wrong" message: 'We were unable to create your account.'
     } finally {
       setCreatingAccount(false);
     }
@@ -49,22 +63,25 @@ export function CreateAccount() {
         label="Name"
         onChange={(event) => setName(event.target.value)}
         value={name}
+        error={errorByName?.name?.message}
       />
       <InputText
         label="Email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
+        error={errorByName?.email?.message}
       />
       <InputText
         label="Password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
-        error={errorMessage}
+        error={errorByName?.password?.message}
       />
       <InputText
         label="Confirm password"
         onChange={(event) => setConfirmedPassword(event.target.value)}
         value={confirmedPassword}
+        error={errorByName?.confirmedPassword?.message}
       />
       <Button
         style={{

@@ -1,7 +1,7 @@
+import { CreateUserRequest } from '@recipe-app/common/src/users/schemas';
+import { validateNewPassword } from '@recipe-app/common/src/users/validation';
 import Elysia, { t } from 'elysia';
-import { passwordMaxLength, passwordMinLength } from './constants';
 import { createUser } from './data';
-import { CreateUserRequest } from './schemas';
 import { generateSalt, hashPassword } from './utils';
 
 export const usersController = new Elysia({
@@ -15,22 +15,9 @@ export const usersController = new Elysia({
     async ({ env, status, body }) => {
       const { email, name, password, confirmedPassword } = body;
 
-      if (password !== confirmedPassword) {
-        return status(400, 'You must enter the same password twice.');
-      }
-
-      if (password.length < passwordMinLength) {
-        return status(
-          400,
-          `Password must be at least ${passwordMinLength} characters long.`,
-        );
-      }
-
-      if (password.length >= passwordMaxLength) {
-        return status(
-          400,
-          `Password must be less than ${passwordMaxLength} characters long.`,
-        );
+      const errorMessage = validateNewPassword(password, confirmedPassword);
+      if (errorMessage) {
+        return status(400, errorMessage);
       }
 
       const passwordSalt = generateSalt();
@@ -78,5 +65,7 @@ export const usersController = new Elysia({
 //   await getUserByEmail(env, {
 //     email,
 //     hashedPassword,
+//   }).run();
+// });
 //   }).run();
 // });
