@@ -4,6 +4,14 @@
   "private": true,
   "type": "module",
   "main": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    },
+    "./typebox-error-messages.global": {
+      "import": "./src/common/typebox-error-messages.global.ts"
+    }
+  },
   "scripts": {
     "typecheck": "tsc -b",
     "clean": "rm -rf dist"

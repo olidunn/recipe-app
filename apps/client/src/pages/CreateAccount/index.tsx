@@ -1,5 +1,4 @@
-import { CreateUserRequest } from '@recipe-app/common/src/users/schemas';
-import { validateNewPassword } from '@recipe-app/common/src/users/validation';
+import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
