@@ -4,6 +4,7 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { paths } from './common/routes';
 import { ButtonGroup } from './components/ButtonGroup';
+import { Header } from './components/Header';
 import { StyledLink } from './components/LinkStyle';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
@@ -50,7 +51,7 @@ body {
     }
 
     @media (min-width: 400px) {
-      width: 60%;
+      /* width: 60%; */
       margin: auto;
     }
 
@@ -71,13 +72,15 @@ export function App() {
       <main>
         <Switch>
           <Route path={paths.home}>
-            <h1>Home</h1>
-            <ButtonGroup>
-              <StyledLink href={paths.recipes}>Recipes</StyledLink>
-              <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
-              <StyledLink href={paths.login}>Login</StyledLink>
-              <Button onClick={logout}>Logout</Button>
-            </ButtonGroup>
+            <Header>
+              <h1>Home</h1>
+              <ButtonGroup>
+                <StyledLink href={paths.recipes}>Recipes</StyledLink>
+                <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+                <StyledLink href={paths.login}>Login</StyledLink>
+                <Button onClick={logout}>Logout</Button>
+              </ButtonGroup>
+            </Header>
           </Route>
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.recipe} component={RecipePage} />
@@ -90,3 +93,4 @@ export function App() {
     </>
   );
 }
+

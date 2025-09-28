@@ -5,6 +5,8 @@ import { Link } from 'wouter';
 import { paths, routes } from '~/common/routes';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
+import { Container } from '~/components/Container';
+import { Header } from '~/components/Header';
 import { StyledLink } from '~/components/LinkStyle';
 
 export function Recipes() {
@@ -39,7 +41,25 @@ export function Recipes() {
 
   return (
     <Container>
-      <h1 style={{ margin: 0 }}>Recipes</h1>
+      <Header>
+        <h1>Recipes</h1>
+        <ButtonGroup>
+          <StyledLink href={paths.home}>Home</StyledLink>
+          <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+          <Button
+            onClick={() => {
+              const confirmed =
+                prompt(`Do you want to delete all recipes?
+                Type "delete" to confirm.`) === 'delete';
+              if (confirmed) {
+                void deleteAllRecipes();
+              }
+            }}
+          >
+            Delete All Recipes
+          </Button>
+        </ButtonGroup>
+      </Header>
       {recipes.length === 0 && !loading && <p>No recipes found</p>}
       {loading && <p>Loading...</p>}
       {recipes.length > 0 && (
@@ -48,28 +68,16 @@ export function Recipes() {
             <RecipeLink
               key={recipe.id}
               href={routes.recipe(recipe.id)}
-              style={{ opacity: loading ? 0.5 : 1, transition: 'opacity 0.5s' }}
+              style={{
+                opacity: loading ? 0.5 : 1,
+                transition: 'opacity 0.5s',
+              }}
             >
               {recipe.name}
             </RecipeLink>
           ))}
         </RecipeList>
       )}
-      <ButtonGroup>
-        <StyledLink href={paths.createRecipe}>Create Recipe</StyledLink>
-        <Button
-          onClick={() => {
-            const confirmed =
-              prompt(`Do you want to delete all recipes?
-Type "delete" to confirm.`) === 'delete';
-            if (confirmed) {
-              void deleteAllRecipes();
-            }
-          }}
-        >
-          Delete All Recipes
-        </Button>
-      </ButtonGroup>
     </Container>
   );
 }
@@ -96,11 +104,4 @@ const ButtonGroup = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  padding: 16px;
 `;

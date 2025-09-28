@@ -1,10 +1,13 @@
 import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
 import { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Redirect, useParams } from 'wouter';
 import { paths, routes } from '~/common/routes';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
+import { Container } from '~/components/Container';
+import { Header } from '~/components/Header';
 import { StyledLink } from '~/components/LinkStyle';
 import { RecipeStep } from '~/components/RecipeStep';
 
@@ -69,40 +72,56 @@ export function RecipePage() {
   const { name, ingredients, steps } = recipe;
 
   return (
-    <div>
-      <h3>{name}</h3>
-      <h4>Ingredients</h4>
-      <ul>
-        {ingredients.map((ingredient) => (
-          <li key={ingredient}>{ingredient}</li>
-        ))}
-      </ul>
-      <h4>Steps</h4>
-      <ul>
-        {steps.map((step) => (
-          <li key={step}>
-            <RecipeStep>{step}</RecipeStep>
-          </li>
-        ))}
-      </ul>
-      <ButtonGroup>
-        <StyledLink href={paths.recipes}>Recipes</StyledLink>
-        <Button
-          onClick={() => {
-            const confirmed =
-              prompt(`
-Do you want to delete this recipe?
-Type "delete" to confirm.
-`) === 'delete';
+    <Container>
+      <Header>
+        <h1>{name}</h1>
+        <ButtonGroup>
+          <StyledLink href={paths.home}>Home</StyledLink>
+          <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+          <StyledLink href={paths.recipes}>Recipes</StyledLink>
+        </ButtonGroup>
+      </Header>
+      <div>
+        <h4>Ingredients</h4>
+        <ul>
+          {ingredients.map((ingredient) => (
+            <li key={ingredient}>{ingredient}</li>
+          ))}
+        </ul>
+        <h4>Steps</h4>
+        <ul>
+          {steps.map((step) => (
+            <li key={step}>
+              <RecipeStepCard>
+                <RecipeStep>{step}</RecipeStep>
+              </RecipeStepCard>
+            </li>
+          ))}
+        </ul>
+        <ButtonGroup>
+          <Button
+            onClick={() => {
+              const confirmed =
+                prompt(`
+              Do you want to delete this recipe?
+              Type "delete" to confirm.
+              `) === 'delete';
 
-            if (confirmed) {
-              void deleteRecipe(recipeId);
-            }
-          }}
-        >
-          Delete Recipe
-        </Button>
-      </ButtonGroup>
-    </div>
+              if (confirmed) {
+                void deleteRecipe(recipeId);
+              }
+            }}
+          >
+            Delete Recipe
+          </Button>
+        </ButtonGroup>
+      </div>
+    </Container>
   );
 }
+
+const RecipeStepCard = styled.div`
+  padding: 12px;
+  border: 1px solid pink;
+  border-radius: 10px;
+`;
