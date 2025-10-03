@@ -81,47 +81,62 @@ export function RecipePage() {
           <StyledLink href={paths.recipes}>Recipes</StyledLink>
         </ButtonGroup>
       </Header>
-      <div>
-        <h4>Ingredients</h4>
-        <ul>
-          {ingredients.map((ingredient) => (
-            <li key={ingredient}>{ingredient}</li>
-          ))}
-        </ul>
-        <h4>Steps</h4>
-        <ul>
-          {steps.map((step) => (
-            <li key={step}>
-              <RecipeStepCard>
-                <RecipeStep>{step}</RecipeStep>
-              </RecipeStepCard>
-            </li>
-          ))}
-        </ul>
-        <ButtonGroup>
-          <Button
-            onClick={() => {
-              const confirmed =
-                prompt(`
+      <RecipeDetails>
+        <div>
+          <h3>Ingredients</h3>
+          <ul>
+            {ingredients.map((ingredient) => (
+              <li key={ingredient}>{ingredient}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3>Steps</h3>
+          <UL>
+            {steps.map((step, index) => (
+              <li key={step}>
+                <RecipeStepCard>
+                  <h3>Step {index + 1}</h3>
+                  <RecipeStep>{step}</RecipeStep>
+                </RecipeStepCard>
+              </li>
+            ))}
+          </UL>
+          <ButtonGroup>
+            <Button
+              onClick={() => {
+                const confirmed =
+                  prompt(`
               Do you want to delete this recipe?
               Type "delete" to confirm.
               `) === 'delete';
 
-              if (confirmed) {
-                void deleteRecipe(recipeId);
-              }
-            }}
-          >
-            Delete Recipe
-          </Button>
-        </ButtonGroup>
-      </div>
+                if (confirmed) {
+                  void deleteRecipe(recipeId);
+                }
+              }}
+            >
+              Delete Recipe
+            </Button>
+          </ButtonGroup>
+        </div>
+      </RecipeDetails>
     </Container>
   );
 }
+
+const UL = styled.ul`
+  list-style: none;
+`;
 
 const RecipeStepCard = styled.div`
   padding: 12px;
   border: 1px solid pink;
   border-radius: 10px;
+`;
+
+const RecipeDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
 `;
