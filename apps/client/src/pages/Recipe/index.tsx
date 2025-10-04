@@ -81,15 +81,17 @@ export function RecipePage() {
           <StyledLink href={paths.recipes}>Recipes</StyledLink>
         </ButtonGroup>
       </Header>
+
       <RecipeDetails>
-        <div>
+        <IngredientsContainer>
           <h3>Ingredients</h3>
           <ul>
             {ingredients.map((ingredient) => (
               <li key={ingredient}>{ingredient}</li>
             ))}
           </ul>
-        </div>
+        </IngredientsContainer>
+
         <div>
           <h3>Steps</h3>
           <UL>
@@ -129,9 +131,16 @@ const UL = styled.ul`
   list-style: none;
 `;
 
-const RecipeStepCard = styled.div`
+const IngredientsContainer = styled.div`
   padding: 12px;
   border: 1px solid pink;
+  border-radius: 10px;
+  height: fit-content;
+`;
+
+const RecipeStepCard = styled.div`
+  padding: 12px;
+  border: 1px solid turquoise;
   border-radius: 10px;
 `;
 
