@@ -45,7 +45,7 @@ function parseIngredients(recipeStepsText: string): string[] {
 }
 
 // Split the recipeStepsText by new lines to create an array of steps
-function parseSteps(recipeStepsText: string): string[] {
+export function parseSteps(recipeStepsText: string): string[] {
   const recipeSteps = recipeStepsText.split(/\n/);
   const userSteps: string[] = [];
 

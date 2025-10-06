@@ -37,8 +37,8 @@ function recordToResponse(recipe: RecipeRecordType): Recipe {
     id: recipe.id,
     name: recipe.name,
     servingSize: recipe.servingSize,
-    steps: recipe.steps.split(','),
-    ingredients: recipe.ingredients.split(','),
+    steps: recipe.steps.split('||'),
+    ingredients: recipe.ingredients.split('||'),
   };
 }
 
@@ -47,7 +47,7 @@ function responseToRecord(recipe: Recipe): RecipeRecordType {
     id: recipe.id,
     name: recipe.name,
     servingSize: recipe.servingSize,
-    steps: recipe.steps.join(','),
-    ingredients: recipe.ingredients.join(','),
+    steps: recipe.steps.join('||'),
+    ingredients: recipe.ingredients.join('||'),
   };
 }

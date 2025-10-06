@@ -70,6 +70,8 @@ export function RecipePage() {
   }
 
   const { name, ingredients, steps } = recipe;
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.log(recipe);
 
   return (
     <Container>
