@@ -53,7 +53,7 @@ export function parseSteps(recipeStepsText: string): string[] {
     const userStep = recipeSteps[index];
 
     if (userStep) {
-      userSteps.push(userStep);
+      userSteps.push(userStep.trim());
     }
   }
 

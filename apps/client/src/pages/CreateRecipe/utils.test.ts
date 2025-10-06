@@ -8,13 +8,18 @@ describe('parseSteps', () => {
     expect(actual).toBeEmpty();
   });
 
-  it('splits into 2 steps when there is 1 new line', () => {
-    const actual = parseSteps('an example\nrecipe');
+  it('splits into 2 steps when there is 2 new lines', () => {
+    const actual = parseSteps('an example\n\nrecipe');
     expect(actual).toEqual(['an example', 'recipe']);
   });
 
-  it('does not split into 2 steps when there is 1 new line and an empty string', () => {
-    const actual = parseSteps('a recipe\n');
+  it('trims single new lines', () => {
+    const actual = parseSteps('\na recipe\n');
+    expect(actual).toEqual(['a recipe']);
+  });
+
+   it('does not split empty steps', () => {
+    const actual = parseSteps('a recipe\n\n');
     expect(actual).toEqual(['a recipe']);
   });
 
