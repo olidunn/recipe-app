@@ -7,7 +7,6 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Container } from '~/components/Container';
-import { Header } from '~/components/Header';
 import { StyledLink } from '~/components/LinkStyle';
 import { RecipeStep } from '~/components/RecipeStep';
 
@@ -70,19 +69,14 @@ export function RecipePage() {
   }
 
   const { name, ingredients, steps } = recipe;
-  // biome-ignore lint/suspicious/noConsole: <explanation>
-  console.log(recipe);
 
   return (
     <Container>
-      <Header>
-        <h1>{name}</h1>
-        <ButtonGroup>
-          <StyledLink href={paths.home}>Home</StyledLink>
-          <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
-          <StyledLink href={paths.recipes}>Recipes</StyledLink>
-        </ButtonGroup>
-      </Header>
+      <h1>{name}</h1>
+      <ButtonGroup>
+        <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+        <StyledLink href={paths.recipes}>Recipes</StyledLink>
+      </ButtonGroup>
 
       <RecipeDetails>
         <IngredientsContainer>

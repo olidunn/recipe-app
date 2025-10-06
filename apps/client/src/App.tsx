@@ -1,10 +1,9 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { Route, Switch, useLocation } from 'wouter';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { paths } from './common/routes';
 import { ButtonGroup } from './components/ButtonGroup';
-import { Header } from './components/Header';
 import { StyledLink } from './components/LinkStyle';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
@@ -51,7 +50,6 @@ body {
     }
 
     @media (min-width: 400px) {
-      /* width: 60%; */
       margin: auto;
     }
 
@@ -94,3 +92,11 @@ export function App() {
   );
 }
 
+const Header = styled.header`
+    background-color: pink;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 5px;
+`;
