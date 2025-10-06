@@ -16,5 +16,13 @@
       "pattern": "recipes.oliver-dunn.com",
       "custom_domain": true
     }
-  ]
+  ],
+  "env": {
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production",
+        "VITE_SERVER_URL": "https://recipes-api.oliver-dunn.com"
+      }
+    }
+  }
 }
