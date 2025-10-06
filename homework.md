@@ -1,0 +1,2 @@
+- Create a new file for the RecipeForm component. This will be used in both CreateRecipe and UpdateRecipe pages. It will have the update and create functions.
+- Remove main navigation from Home page. And make Home page ('/') redirect to '/recipes' (when logged in), otherwise redirect to '/login'.
