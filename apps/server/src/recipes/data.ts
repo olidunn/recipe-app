@@ -60,10 +60,11 @@ export function createRecipe(
   },
 ): D1PreparedStatement {
   const { name, steps, servingSize, ingredients } = data;
+  // TODO IMPORTANT: Replace hardcoded userId with auth userId
   return env.DB.prepare(
     `
-      INSERT INTO recipes (name, steps, servingSize, ingredients)
-      VALUES (?, ?, ?, ?);
+      INSERT INTO recipes (userId, name, steps, servingSize, ingredients)
+      VALUES (1, ?, ?, ?, ?);
       				`,
   ).bind(name, steps, servingSize, ingredients);
 }
