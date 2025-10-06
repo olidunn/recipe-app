@@ -10,6 +10,7 @@
     "includes": [
       "**",
       "!apps/server/worker-configuration.d.ts",
+      "!apps/client/worker-configuration.d.ts",
       "!apps/vanilla"
     ]
   },
