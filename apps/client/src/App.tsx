@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { Route, Switch, useLocation } from 'wouter';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
@@ -50,7 +50,6 @@ body {
     }
 
     @media (min-width: 400px) {
-      width: 60%;
       margin: auto;
     }
 
@@ -71,13 +70,15 @@ export function App() {
       <main>
         <Switch>
           <Route path={paths.home}>
-            <h1>Home</h1>
-            <ButtonGroup>
-              <StyledLink href={paths.recipes}>Recipes</StyledLink>
-              <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
-              <StyledLink href={paths.login}>Login</StyledLink>
-              <Button onClick={logout}>Logout</Button>
-            </ButtonGroup>
+            <Header>
+              <h1>Home</h1>
+              <ButtonGroup>
+                <StyledLink href={paths.recipes}>Recipes</StyledLink>
+                <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+                <StyledLink href={paths.login}>Login</StyledLink>
+                <Button onClick={logout}>Logout</Button>
+              </ButtonGroup>
+            </Header>
           </Route>
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.recipe} component={RecipePage} />
@@ -90,3 +91,12 @@ export function App() {
     </>
   );
 }
+
+const Header = styled.header`
+    background-color: pink;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 5px;
+`;

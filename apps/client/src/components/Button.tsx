@@ -25,4 +25,7 @@ const StyledButton = styled.button`
   border: none;
   font-family: "DM Sans", sans-serif;
   border-radius: 5px;
+  &:hover  {
+    background-color: #8383cf;
+  }
 `;

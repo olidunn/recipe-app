@@ -63,8 +63,8 @@ export const recipesController = new Elysia({
       await createRecipe(env, {
         name: body.name,
         servingSize: body.servingSize,
-        steps: body.steps.join(','),
-        ingredients: body.ingredients.join(','),
+        steps: body.steps.join('||'),
+        ingredients: body.ingredients.join('||'),
       }).run();
     },
     {

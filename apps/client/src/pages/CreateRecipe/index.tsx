@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useLocation } from 'wouter';
 import { paths } from '~/common/routes';
 import { server } from '~/common/server';
@@ -54,36 +55,45 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
   }
 
   return (
-    <Form>
-      <InputText
-        label="Name"
-        onChange={(event) => setRecipeName(event.target.value)}
-        value={recipeName}
-        error={errorMessage}
-      />
+    <Container>
+      <Form>
+        <InputText
+          label="Name"
+          onChange={(event) => setRecipeName(event.target.value)}
+          value={recipeName}
+          error={errorMessage}
+        />
 
-      <InputText
-        label="Serving Size"
-        onChange={(event) => setServingSize(Number(event.target.value))}
-        value={servingSize.toString()}
-        error={errorMessage}
-      />
+        <InputText
+          label="Serving Size"
+          onChange={(event) => setServingSize(Number(event.target.value))}
+          value={servingSize.toString()}
+          error={errorMessage}
+        />
 
-      <TextArea
-        label="Steps"
-        height={200}
-        onChange={(event) => setRecipeString(event.target.value)}
-        value={recipeString}
-      />
+        <TextArea
+          label="Steps"
+          height={200}
+          onChange={(event) => setRecipeString(event.target.value)}
+          value={recipeString}
+        />
 
-      <Button
-        style={{
-          marginLeft: 'auto',
-        }}
-        onClick={save}
-      >
-        {saving ? 'loading...' : 'Save'}
-      </Button>
-    </Form>
+        <Button
+          style={{
+            marginLeft: 'auto',
+          }}
+          onClick={save}
+        >
+          {saving ? 'loading...' : 'Save'}
+        </Button>
+      </Form>
+    </Container>
   );
 }
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  align-items: center;
+  padding: 16px;
+`;

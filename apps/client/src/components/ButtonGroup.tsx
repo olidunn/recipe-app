@@ -11,6 +11,5 @@ export function ButtonGroup({ children }: ButtonGroupProps) {
 const Container = styled.div`
   display: flex;
   gap: 8px;
-  margin-left: auto;
   padding-top: 10px;
 `;
