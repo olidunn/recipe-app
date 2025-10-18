@@ -40,7 +40,7 @@ export const recipesController = new Elysia({
   .get(
     '/:recipeId',
     async ({ env, userId, status, params: { recipeId } }) => {
-      const recipe = await getRecipeById(env, recipeId).first();
+      const recipe = await getRecipeById(env, userId, recipeId).first();
 
       if (!recipe) {
         return status(404, { message: 'Recipe not found' });
@@ -85,6 +85,7 @@ export const recipesController = new Elysia({
 
       await updateRecipeById(env, {
         recipeId,
+        userId,
         ingredients,
         servingSize,
         name,
@@ -106,7 +107,7 @@ export const recipesController = new Elysia({
   .delete(
     '',
     async ({ env, userId }) => {
-      await deleteAllRecipes(env).run();
+      await deleteAllRecipes(env, userId).run();
     },
     {
       response: {
@@ -118,7 +119,7 @@ export const recipesController = new Elysia({
   .delete(
     '/:recipeId',
     async ({ env, userId, params: { recipeId } }) => {
-      await deleteRecipeById(env, recipeId).run();
+      await deleteRecipeById(env, recipeId, userId).run();
     },
     {
       params: t.Object({ recipeId: t.Number() }),
