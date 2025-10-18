@@ -1,5 +1,5 @@
-export function getAllRecipes(env: Env): D1PreparedStatement {
-  return env.DB.prepare('SELECT * FROM recipes LIMIT 100;');
+export function getAllRecipes(env: Env, userId: number): D1PreparedStatement {
+  return env.DB.prepare('SELECT * FROM recipes WHERE userId = ?;');
 }
 
 export function getRecipeById(env: Env, recipeId: number): D1PreparedStatement {
