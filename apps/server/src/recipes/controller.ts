@@ -10,6 +10,7 @@ import {
 } from './data';
 import {
   RecipeMapper,
+  RecipeRecord,
   RecipeRequest,
   RecipeResponse,
   RecipesMapper,
@@ -56,6 +57,28 @@ export const recipesController = new Elysia({
       },
     },
   )
+
+  // GET RECIPE BY ID
+  .get(
+    '/:recipeId/raw',
+    async ({ env, userId, status, params: { recipeId } }) => {
+      const recipe = await getRecipeById(env, userId, recipeId).first();
+
+      if (!recipe) {
+        return status(404, { message: 'Recipe not found' });
+      }
+
+      return Value.Parse(RecipeRecord, recipe);
+    },
+    {
+      params: t.Object({ recipeId: t.Number() }),
+      response: {
+        200: RecipeRecord,
+        404: t.Object({ message: t.String() }),
+      },
+    },
+  )
+
   // CREATE RECIPE
   .post(
     '',
@@ -63,7 +86,7 @@ export const recipesController = new Elysia({
       await createRecipe(env, {
         name: body.name,
         servingSize: body.servingSize,
-        steps: body.steps.join('||'),
+        steps: body.steps.join('\n\n'),
         ingredients: body.ingredients.join('||'),
       }).run();
     },

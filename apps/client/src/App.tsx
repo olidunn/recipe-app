@@ -1,15 +1,16 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Route, Switch, useLocation } from 'wouter';
+import { Redirect, Route, Switch, useLocation } from 'wouter';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
-import { CreateRecipe } from '~/components/RecipeForm';
 import { paths } from './common/routes';
 import { ButtonGroup } from './components/ButtonGroup';
 import { StyledLink } from './components/LinkStyle';
 import { CreateAccount } from './pages/CreateAccount';
+import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
 import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
+import { UpdateRecipe } from './pages/UpdateRecipe';
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -70,6 +71,7 @@ export function App() {
       <main>
         <Switch>
           <Route path={paths.home}>
+            <Redirect to={paths.login} />
             <Header>
               <h1>Home</h1>
               <ButtonGroup>
@@ -81,8 +83,9 @@ export function App() {
             </Header>
           </Route>
           <Route path={paths.recipes} component={Recipes} />
-          <Route path={paths.recipe} component={RecipePage} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
+          <Route path={paths.recipe} component={RecipePage} />
+          <Route path={paths.updateRecipe} component={UpdateRecipe} />
           <Route path={paths.createAccount} component={CreateAccount} />
           <Route path={paths.login} component={Login} />
           <Route>404 Not found</Route>

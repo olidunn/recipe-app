@@ -1,3 +1,4 @@
+import type { RecipeRecordType } from '@recipe-app/server/src/recipes/schemas';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
@@ -9,27 +10,14 @@ import { Form } from './Form';
 import { InputText } from './InputText';
 import { TextArea } from './TextArea';
 
-export function CreateRecipe() {
+type RecipeFormProps = { data: RecipeRecordType; mode: 'create' | 'update' };
+
+export function RecipeForm({ data, mode }: RecipeFormProps) {
   const [saving, setSaving] = useState(false);
   const [_, setLocation] = useLocation();
-  const [recipeName, setRecipeName] = useState('');
-  const [servingSize, setServingSize] = useState(1);
-  const [recipeString, setRecipeString] =
-    useState(`Heat a large pan over medium heat and add {{olive oil}}.
-
-Once the oil is hot, add chopped {{onion}} and sauté until translucent.
-
-Add minced {{garlic}} and cook for another minute.
-
-Add {{diced tomatoes}} and {{vegetable broth}}, stirring to combine.
-
-Stir in {{quinoa}} and bring to a boil.
-
-Reduce heat, cover, and simmer for 15 minutes until quinoa is cooked.
-
-Stir in chopped {{spinach}} and cook until wilted.
-
-Season with {{salt}} and {{black pepper}} to taste before serving.`);
+  const [recipeName, setRecipeName] = useState(data.name);
+  const [servingSize, setServingSize] = useState(data.servingSize);
+  const [recipeString, setRecipeString] = useState(data.steps);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function save() {
@@ -54,8 +42,18 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
     }
   }
 
+  let buttonName = 'Create';
+  if (mode === 'update') {
+    buttonName = 'Update';
+  }
+
+  if (saving) {
+    buttonName = 'saving...';
+  }
+
   return (
     <Container>
+      <h1>{mode === 'create' ? 'Create recipe' : 'Update recipe'}</h1>
       <Form>
         <InputText
           label="Name"
@@ -84,7 +82,7 @@ Season with {{salt}} and {{black pepper}} to taste before serving.`);
           }}
           onClick={save}
         >
-          {saving ? 'loading...' : 'Save'}
+          {buttonName}
         </Button>
       </Form>
     </Container>
