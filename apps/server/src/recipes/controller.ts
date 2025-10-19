@@ -25,8 +25,8 @@ export const recipesController = new Elysia({
   // GET ALL RECIPES
   .get(
     '',
-    async ({ env }) => {
-      const { results } = await getAllRecipes(env).all();
+    async ({ env, userId }) => {
+      const { results } = await getAllRecipes(env, userId).all();
 
       return Value.Decode(RecipesMapper, results);
     },
@@ -39,8 +39,8 @@ export const recipesController = new Elysia({
   // GET RECIPE BY ID
   .get(
     '/:recipeId',
-    async ({ env, status, params: { recipeId } }) => {
-      const recipe = await getRecipeById(env, recipeId).first();
+    async ({ env, userId, status, params: { recipeId } }) => {
+      const recipe = await getRecipeById(env, userId, recipeId).first();
 
       if (!recipe) {
         return status(404, { message: 'Recipe not found' });
@@ -77,7 +77,7 @@ export const recipesController = new Elysia({
   // UPDATE RECIPE
   .post(
     '/:recipeId',
-    async ({ env, body, params: { recipeId } }) => {
+    async ({ env, userId, body, params: { recipeId } }) => {
       const { name, steps, servingSize, ingredients } = Value.Encode(
         RecipeMapper,
         body,
@@ -85,6 +85,7 @@ export const recipesController = new Elysia({
 
       await updateRecipeById(env, {
         recipeId,
+        userId,
         ingredients,
         servingSize,
         name,
@@ -105,8 +106,8 @@ export const recipesController = new Elysia({
   // DELETE ALL RECIPES
   .delete(
     '',
-    async ({ env }) => {
-      await deleteAllRecipes(env).run();
+    async ({ env, userId }) => {
+      await deleteAllRecipes(env, userId).run();
     },
     {
       response: {
@@ -117,8 +118,8 @@ export const recipesController = new Elysia({
   // DELETE RECIPE BY ID
   .delete(
     '/:recipeId',
-    async ({ env, params: { recipeId } }) => {
-      await deleteRecipeById(env, recipeId).run();
+    async ({ env, userId, params: { recipeId } }) => {
+      await deleteRecipeById(env, recipeId, userId).run();
     },
     {
       params: t.Object({ recipeId: t.Number() }),
