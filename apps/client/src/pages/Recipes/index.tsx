@@ -1,4 +1,4 @@
-import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
+import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'wouter';

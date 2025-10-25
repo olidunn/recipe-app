@@ -1,7 +1,7 @@
+import { IntegerPrimaryKey } from '@recipe-app/common';
+import type { Static } from '@sinclair/typebox/type';
 import { Type } from '@sinclair/typebox/type';
-import type { Static } from 'elysia';
 import { t } from 'elysia';
-import { IntegerPrimaryKey } from '../common/schemas';
 
 // Record - data that is stored in the database, also known as Row or Entity
 // Response - data that is sent from the server to the client, types omit the "Response" suffix
@@ -37,7 +37,8 @@ export const RecipesResponseTransform = t
   .Decode((recipes) => recipes.map(recordToResponse))
   .Encode((recipes) => recipes.map(responseToRecord));
 
-export const RecipeResponseTransform = Type.Transform(RecipeRecordSchema)
+export const RecipeResponseTransform = t
+  .Transform(RecipeRecordSchema)
   .Decode(recordToResponse)
   .Encode(responseToRecord);
 

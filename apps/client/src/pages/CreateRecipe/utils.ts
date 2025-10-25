@@ -1,4 +1,4 @@
-import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
+import type { Recipe } from '@recipe-app/common';
 
 export function removeCurlyBrackets(ingredient: string): string {
   return ingredient.slice(2, ingredient.length - 2);

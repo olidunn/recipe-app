@@ -1,4 +1,5 @@
-import { RecipeRequestSchema } from '@recipe-app/server/src/recipes/schemas';
+import type { RecipeResponse } from '@recipe-app/common';
+import { RecipeRequestSchema } from '@recipe-app/common';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
@@ -35,7 +36,7 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
   const [servingSize, setServingSize] = useState(data.servingSize);
   const [recipeString, setRecipeString] = useState(data.steps);
   const [errorByName, setErrorByName] = useState<
-    ErrorByName<typeof RecipeRequestSchema>
+    ErrorByName<typeof RecipeResponse>
   >({});
 
   async function save() {

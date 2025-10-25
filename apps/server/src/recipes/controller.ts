@@ -1,3 +1,11 @@
+import {
+  RecipeRecordSchema,
+  RecipeRequestSchema,
+  RecipeRequestTransform,
+  RecipeResponse,
+  RecipeResponseTransform,
+  RecipesResponseTransform,
+} from '@recipe-app/common';
 import { Value } from '@sinclair/typebox/value';
 import Elysia, { t } from 'elysia';
 import {
@@ -8,14 +16,6 @@ import {
   getRecipeById,
   updateRecipeById,
 } from './data';
-import {
-  RecipeRecordSchema,
-  RecipeRequestSchema,
-  RecipeRequestTransform,
-  RecipeResponse,
-  RecipeResponseTransform,
-  RecipesResponseTransform,
-} from './schemas';
 
 export const recipesController = new Elysia({
   name: 'recipes',
