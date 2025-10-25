@@ -9,27 +9,26 @@ import {
   updateRecipeById,
 } from './data';
 import {
-  RecipeMapper,
-  RecipeRecord,
-  RecipeRequest,
+  RecipeRecordSchema,
+  RecipeRequestSchema,
+  RecipeRequestTransform,
   RecipeResponse,
-  RecipesMapper,
+  RecipeResponseTransform,
+  RecipesResponseTransform,
 } from './schemas';
 
 export const recipesController = new Elysia({
   name: 'recipes',
   tags: ['Recipes'],
-  prefix: '/recipes',
 })
   .decorate('env', {} as Env)
   .decorate('userId', 0)
   // GET ALL RECIPES
   .get(
-    '',
+    '/recipes',
     async ({ env, userId }) => {
       const { results } = await getAllRecipes(env, userId).all();
-
-      return Value.Decode(RecipesMapper, results);
+      return Value.Decode(RecipesResponseTransform, results);
     },
     {
       response: {
@@ -39,7 +38,7 @@ export const recipesController = new Elysia({
   )
   // GET RECIPE BY ID
   .get(
-    '/:recipeId',
+    '/recipes/:recipeId',
     async ({ env, userId, status, params: { recipeId } }) => {
       const recipe = await getRecipeById(env, userId, recipeId).first();
 
@@ -47,7 +46,7 @@ export const recipesController = new Elysia({
         return status(404, { message: 'Recipe not found' });
       }
 
-      return Value.Decode(RecipeMapper, recipe);
+      return Value.Decode(RecipeResponseTransform, recipe);
     },
     {
       params: t.Object({ recipeId: t.Number() }),
@@ -57,10 +56,9 @@ export const recipesController = new Elysia({
       },
     },
   )
-
   // GET RECIPE BY ID
   .get(
-    '/:recipeId/raw',
+    '/recipes/:recipeId/raw',
     async ({ env, userId, status, params: { recipeId } }) => {
       const recipe = await getRecipeById(env, userId, recipeId).first();
 
@@ -68,30 +66,34 @@ export const recipesController = new Elysia({
         return status(404, { message: 'Recipe not found' });
       }
 
-      return Value.Parse(RecipeRecord, recipe);
+      return Value.Parse(RecipeRecordSchema, recipe);
     },
     {
       params: t.Object({ recipeId: t.Number() }),
       response: {
-        200: RecipeRecord,
+        200: RecipeRecordSchema,
         404: t.Object({ message: t.String() }),
       },
     },
   )
-
   // CREATE RECIPE
   .post(
-    '',
+    '/recipes',
     async ({ env, body }) => {
+      const { name, steps, servingSize, ingredients } = Value.Encode(
+        RecipeRequestTransform,
+        body,
+      );
+
       await createRecipe(env, {
-        name: body.name,
-        servingSize: body.servingSize,
-        steps: body.steps.join('\n\n'),
-        ingredients: body.ingredients.join('||'),
+        name,
+        servingSize,
+        steps,
+        ingredients,
       }).run();
     },
     {
-      body: RecipeRequest,
+      body: RecipeRequestSchema,
       response: {
         200: t.Void(),
       },
@@ -99,10 +101,10 @@ export const recipesController = new Elysia({
   )
   // UPDATE RECIPE
   .post(
-    '/:recipeId',
+    '/recipes/:recipeId',
     async ({ env, userId, body, params: { recipeId } }) => {
       const { name, steps, servingSize, ingredients } = Value.Encode(
-        RecipeMapper,
+        RecipeRequestTransform,
         body,
       );
 
@@ -120,7 +122,7 @@ export const recipesController = new Elysia({
         summary: 'Update Recipe by ID',
       },
       params: t.Object({ recipeId: t.Number() }),
-      body: RecipeRequest,
+      body: RecipeRequestSchema,
       response: {
         200: t.Void(),
       },
@@ -128,7 +130,7 @@ export const recipesController = new Elysia({
   )
   // DELETE ALL RECIPES
   .delete(
-    '',
+    '/recipes',
     async ({ env, userId }) => {
       await deleteAllRecipes(env, userId).run();
     },
@@ -140,7 +142,7 @@ export const recipesController = new Elysia({
   )
   // DELETE RECIPE BY ID
   .delete(
-    '/:recipeId',
+    '/recipes/:recipeId',
     async ({ env, userId, params: { recipeId } }) => {
       await deleteRecipeById(env, recipeId, userId).run();
     },

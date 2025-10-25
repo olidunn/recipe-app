@@ -2,7 +2,7 @@ import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'wouter';
-import { paths, routes } from '~/common/routes';
+import { applyParams, paths } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
@@ -48,7 +48,7 @@ export function Recipes() {
           {recipes.map((recipe) => (
             <RecipeLink
               key={recipe.id}
-              href={routes.recipe(recipe.id)}
+              href={applyParams(paths.recipe, { recipeId: recipe.id })}
               style={{
                 opacity: loading ? 0.5 : 1,
                 transition: 'opacity 0.5s',

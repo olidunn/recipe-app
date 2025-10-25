@@ -1,5 +1,16 @@
 export function getAllRecipes(env: Env, userId: number): D1PreparedStatement {
-  return env.DB.prepare('SELECT * FROM recipes WHERE userId = ?;').bind(userId);
+  return env.DB.prepare(`
+SELECT
+  id,
+  name,
+  servingSize,
+  steps,
+  ingredients
+FROM
+  recipes
+WHERE
+  userId = ?;
+`).bind(userId);
 }
 
 export function getRecipeById(
@@ -7,13 +18,19 @@ export function getRecipeById(
   userId: number,
   recipeId: number,
 ): D1PreparedStatement {
-  return env.DB.prepare(
-    `
-SELECT * FROM recipes
-WHERE id = ? AND userId = ?
+  return env.DB.prepare(`
+SELECT
+  id,
+  name,
+  servingSize,
+  steps,
+  ingredients
+FROM
+  recipes
+WHERE
+  id = ? AND userId = ?
 LIMIT 1;
-`,
-  ).bind(recipeId, userId);
+`).bind(recipeId, userId);
 }
 
 export function deleteRecipeById(
@@ -50,12 +67,16 @@ export function updateRecipeById(
   const { name, steps, servingSize, ingredients, recipeId, userId } = data;
   return env.DB.prepare(
     `
-  UPDATE recipes 
-SET name = ?,
-steps = ?,
-servingSize = ?,
-ingredients = ?
-WHERE id == ? AND userId = ?;
+UPDATE
+  recipes 
+SET
+  name = ?,
+  steps = ?,
+  servingSize = ?,
+  ingredients = ?
+WHERE
+  id == ?
+  AND userId = ?;
 `,
   ).bind(name, steps, servingSize, ingredients, recipeId, userId);
 }

@@ -3,38 +3,63 @@ import type { Static } from 'elysia';
 import { t } from 'elysia';
 import { IntegerPrimaryKey } from '../common/schemas';
 
-export const RecipeRecord = t.Object({
+// Record - data that is stored in the database, also known as Row or Entity
+// Response - data that is sent from the server to the client, types omit the "Response" suffix
+// Request - data that is sent from the client to the server
+// Schema - TypeBox / Elysia validation rules, used for creating types, types omit the "Type", "Schema" or "Response" suffixes
+// Transform - conversion utility for validating and converting between Record/Response, or Record/Request
+// - Encode - converts from Response/Request to Record
+// - Decode - converts from Record to Response/Request
+
+export const RecipeRecordSchema = t.Object({
   id: IntegerPrimaryKey(),
   name: t.String({ minLength: 1, maxLength: 50 }),
   servingSize: t.Number({ minimum: 1, maximum: 100 }),
   steps: t.String({ minLength: 1 }),
   ingredients: t.String({ minLength: 1 }),
 });
-export type RecipeRecordType = Static<typeof RecipeRecord>;
+export type RecipeRecord = Static<typeof RecipeRecordSchema>;
 
 export const RecipeResponse = t.Composite([
-  t.Pick(RecipeRecord, ['id', 'name', 'servingSize']),
+  t.Pick(RecipeRecordSchema, ['id', 'name', 'servingSize']),
   t.Object({
-    steps: t.Array(t.String({ minLength: 1 })),
-    ingredients: t.Array(t.String({ minLength: 1 })),
+    steps: t.Array(t.String({ minLength: 1 }), { minItems: 1 }),
+    ingredients: t.Array(t.String({ minLength: 1 }), { minItems: 1 }),
   }),
 ]);
 export type Recipe = Static<typeof RecipeResponse>;
 
-export const RecipeRequest = t.Omit(RecipeResponse, ['id']);
+export const RecipeRequestSchema = t.Omit(RecipeResponse, ['id']);
+export type RecipeRequest = Static<typeof RecipeRequestSchema>;
 
-export const RecipesMapper = t
-  .Transform(t.Array(RecipeRecord))
+export const RecipesResponseTransform = t
+  .Transform(t.Array(RecipeRecordSchema))
   .Decode((recipes) => recipes.map(recordToResponse))
   .Encode((recipes) => recipes.map(responseToRecord));
 
-export const RecipeMapper = Type.Transform(RecipeRecord)
+export const RecipeResponseTransform = Type.Transform(RecipeRecordSchema)
   .Decode(recordToResponse)
   .Encode(responseToRecord);
 
-function recordToResponse(recipe: RecipeRecordType): Recipe {
+function recordToResponse(recipe: RecipeRecord): Recipe {
   return {
+    ...recordToRequest(recipe),
     id: recipe.id,
+  };
+}
+
+function responseToRecord(recipe: Recipe): RecipeRecord {
+  return { ...requestToRecord(recipe), id: recipe.id };
+}
+
+export const RecipeRequestTransform = Type.Transform(
+  t.Omit(RecipeRecordSchema, ['id']),
+)
+  .Decode(recordToRequest)
+  .Encode(requestToRecord);
+
+function recordToRequest(recipe: Omit<RecipeRecord, 'id'>): Omit<Recipe, 'id'> {
+  return {
     name: recipe.name,
     servingSize: recipe.servingSize,
     steps: recipe.steps.split('\n\n'),
@@ -42,9 +67,8 @@ function recordToResponse(recipe: RecipeRecordType): Recipe {
   };
 }
 
-function responseToRecord(recipe: Recipe): RecipeRecordType {
+function requestToRecord(recipe: RecipeRequest): Omit<RecipeRecord, 'id'> {
   return {
-    id: recipe.id,
     name: recipe.name,
     servingSize: recipe.servingSize,
     steps: recipe.steps.join('\n\n'),

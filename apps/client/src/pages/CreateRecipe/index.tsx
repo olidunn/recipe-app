@@ -1,10 +1,8 @@
-import type { RecipeRecordType } from '@recipe-app/server/src/recipes/schemas';
+import type { RecipeFormData } from '~/components/RecipeForm';
 import { RecipeForm } from '~/components/RecipeForm';
 
-const defaultData: RecipeRecordType = {
+const defaultData: RecipeFormData = {
   name: '',
-  id: -1,
-  ingredients: '',
   servingSize: 1,
   steps: `Heat a large pan over medium heat and add {{olive oil}}.
 
@@ -22,6 +20,7 @@ Stir in chopped {{spinach}} and cook until wilted.
 
 Season with {{salt}} and {{black pepper}} to taste before serving.`,
 };
+
 export function CreateRecipe() {
   return <RecipeForm data={defaultData} mode="create" />;
 }

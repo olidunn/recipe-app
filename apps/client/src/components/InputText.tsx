@@ -1,8 +1,4 @@
-import type {
-  ChangeEventHandler,
-  HTMLInputAutoCompleteAttribute,
-  ReactNode,
-} from 'react';
+import type { ChangeEventHandler, HTMLInputAutoCompleteAttribute } from 'react';
 import { useId } from 'react';
 import styled, { css } from 'styled-components';
 
@@ -11,14 +7,14 @@ type InputTextProps = {
   value: string;
   type?: 'text' | 'password' | 'email';
   onChange: ChangeEventHandler<HTMLInputElement>;
-  error?: ReactNode;
+  errorMessage?: string | undefined;
   autoComplete?: HTMLInputAutoCompleteAttribute;
 };
 export function InputText({
   label,
   value,
   onChange,
-  error,
+  errorMessage,
   type = 'text',
   autoComplete,
 }: InputTextProps) {
@@ -34,12 +30,15 @@ export function InputText({
           id={id}
           value={value}
           onChange={onChange}
+          aria-invalid={!!errorMessage}
           aria-errormessage={errorMessageId}
-          $errorOccurred={!!error}
+          $errorOccurred={!!errorMessage}
           autoComplete={autoComplete}
         />
       </Label>
-      {error && <ErrorMessage id={errorMessageId}>{error}</ErrorMessage>}
+      {errorMessage && (
+        <ErrorMessage id={errorMessageId}>{errorMessage}</ErrorMessage>
+      )}
     </div>
   );
 }
@@ -47,7 +46,7 @@ export function InputText({
 type InputProps = {
   $errorOccurred: boolean;
 };
-const Input = styled.input<InputProps>`
+export const Input = styled.input<InputProps>`
   ${({ $errorOccurred }) =>
     $errorOccurred &&
     css`
@@ -56,12 +55,12 @@ const Input = styled.input<InputProps>`
     `}
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   display: flex;
   flex-direction: column;
 `;
 
-const ErrorMessage = styled.div`
+export const ErrorMessage = styled.div`
   color: red;
   font-size: 14px;
 `;

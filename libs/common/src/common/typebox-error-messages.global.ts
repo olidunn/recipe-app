@@ -6,10 +6,6 @@ import {
 } from '@sinclair/typebox/errors';
 
 function errorFunction(error: ErrorFunctionParameter): string {
-  if (error.schema['errorMessage']) {
-    return error.schema['errorMessage'];
-  }
-
   // Nullable unions don't have good error messages yet, so we handle them here and don't return a message for null values.
   if (
     error.errorType === ValueErrorType.Union &&

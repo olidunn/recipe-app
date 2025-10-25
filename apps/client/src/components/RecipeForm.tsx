@@ -1,42 +1,71 @@
-import type { RecipeRecordType } from '@recipe-app/server/src/recipes/schemas';
+import { RecipeRequestSchema } from '@recipe-app/server/src/recipes/schemas';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/routes';
+import { paths } from '~/common/paths';
 import { server } from '~/common/server';
+import type { ErrorByName } from '~/common/utils/schemaValidation';
+import { validate } from '~/common/utils/schemaValidation';
+import { InputNumber } from '~/components/InputNumber';
 import { parseRecipe } from '~/pages/CreateRecipe/utils';
 import { Button } from './Button';
 import { Form } from './Form';
 import { InputText } from './InputText';
 import { TextArea } from './TextArea';
 
-type RecipeFormProps = { data: RecipeRecordType; mode: 'create' | 'update' };
+export type RecipeFormData = {
+  name: string;
+  steps: string;
+  servingSize: number;
+};
 
-export function RecipeForm({ data, mode }: RecipeFormProps) {
+type RecipeFormProps<Mode extends 'create' | 'update'> = {
+  data: RecipeFormData;
+  mode: Mode;
+} & (Mode extends 'update' ? { recipeId: string } : { recipeId?: never });
+
+export function RecipeForm<Mode extends 'create' | 'update'>({
+  data,
+  mode,
+  recipeId,
+}: RecipeFormProps<Mode>) {
   const [saving, setSaving] = useState(false);
   const [_, setLocation] = useLocation();
   const [recipeName, setRecipeName] = useState(data.name);
   const [servingSize, setServingSize] = useState(data.servingSize);
   const [recipeString, setRecipeString] = useState(data.steps);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorByName, setErrorByName] = useState<
+    ErrorByName<typeof RecipeRequestSchema>
+  >({});
 
   async function save() {
     try {
       setSaving(true);
+
       const recipe = parseRecipe(recipeName, recipeString, servingSize);
-      const { error } = await server.recipes.post(recipe);
+      const validation = validate(recipe, RecipeRequestSchema);
+
+      if (validation.failed) {
+        setErrorByName(validation.errorByName);
+        return;
+      }
+
+      const { error } =
+        mode === 'create'
+          ? await server.recipes.post(recipe)
+          : // biome-ignore lint/style/noNonNullAssertion: We use type constraints to ensure recipeId is defined in update mode
+            await server.recipes({ recipeId: recipeId! }).post(recipe);
 
       if (error) {
         throw error;
       }
 
       setLocation(paths.recipes);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('We were unable to save your recipe.');
-      }
+    } catch (_error) {
+      // TODO: Replace with a toast using the sonner library
+      setErrorByName({
+        name: { message: 'We were unable to save your recipe.' },
+      });
     } finally {
       setSaving(false);
     }
@@ -59,14 +88,14 @@ export function RecipeForm({ data, mode }: RecipeFormProps) {
           label="Name"
           onChange={(event) => setRecipeName(event.target.value)}
           value={recipeName}
-          error={errorMessage}
+          errorMessage={errorByName.name?.message}
         />
 
-        <InputText
+        <InputNumber
           label="Serving Size"
-          onChange={(event) => setServingSize(Number(event.target.value))}
-          value={servingSize.toString()}
-          error={errorMessage}
+          onChange={setServingSize}
+          value={servingSize}
+          errorMessage={errorByName.servingSize?.message}
         />
 
         <TextArea
@@ -74,6 +103,9 @@ export function RecipeForm({ data, mode }: RecipeFormProps) {
           height={200}
           onChange={(event) => setRecipeString(event.target.value)}
           value={recipeString}
+          errorMessage={
+            errorByName.steps?.message || errorByName.ingredients?.message
+          }
         />
 
         <Button

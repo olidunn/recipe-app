@@ -1,7 +1,7 @@
 import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/routes';
+import { paths } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';
@@ -62,7 +62,7 @@ export function CreateAccount() {
         label="Name"
         onChange={(event) => setName(event.target.value)}
         value={name}
-        error={errorByName?.name?.message}
+        errorMessage={errorByName?.name?.message}
         autoComplete="name"
       />
       <InputText
@@ -70,7 +70,7 @@ export function CreateAccount() {
         type="email"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
-        error={errorByName?.email?.message}
+        errorMessage={errorByName?.email?.message}
         autoComplete="email"
       />
       <InputText
@@ -78,7 +78,7 @@ export function CreateAccount() {
         type="password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
-        error={errorByName?.password?.message}
+        errorMessage={errorByName?.password?.message}
         autoComplete="new-password"
       />
       <InputText
@@ -86,7 +86,7 @@ export function CreateAccount() {
         type="password"
         onChange={(event) => setConfirmedPassword(event.target.value)}
         value={confirmedPassword}
-        error={errorByName?.confirmedPassword?.message}
+        errorMessage={errorByName?.confirmedPassword?.message}
       />
       <Button
         style={{

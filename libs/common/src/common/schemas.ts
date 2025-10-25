@@ -29,11 +29,3 @@ export function Timestamp() {
     readOnly: true,
   });
 }
-
-export function HexColor() {
-  return Type.String({
-    pattern: '^#([0-9a-fA-F]{3}){1,2}$',
-    errorMessage:
-      'Color must be a valid 3 or 6 digit hex code (e.g. #f00 or #FF0000)',
-  });
-}

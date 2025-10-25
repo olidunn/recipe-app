@@ -2,7 +2,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Redirect, Route, Switch, useLocation } from 'wouter';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
-import { paths } from './common/routes';
+import { paths } from './common/paths';
 import { ButtonGroup } from './components/ButtonGroup';
 import { StyledLink } from './components/LinkStyle';
 import { CreateAccount } from './pages/CreateAccount';

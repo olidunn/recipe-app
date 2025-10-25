@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/routes';
+import { paths } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
@@ -55,7 +55,7 @@ export function Login() {
         type="password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
-        error={errorMessage}
+        errorMessage={errorMessage}
         autoComplete="current-password"
       />
 
