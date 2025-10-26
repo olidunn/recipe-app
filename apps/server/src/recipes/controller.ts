@@ -79,13 +79,14 @@ export const recipesController = new Elysia({
   // CREATE RECIPE
   .post(
     '/recipes',
-    async ({ env, body }) => {
+    async ({ env, userId, body }) => {
       const { name, steps, servingSize, ingredients } = Value.Encode(
         RecipeRequestTransform,
         body,
       );
 
       await createRecipe(env, {
+        userId,
         name,
         servingSize,
         steps,

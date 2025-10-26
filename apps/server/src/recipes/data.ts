@@ -84,18 +84,19 @@ WHERE
 export function createRecipe(
   env: Env,
   data: {
+    userId: number;
     name: string;
     steps: string;
     servingSize: number;
     ingredients: string;
   },
 ): D1PreparedStatement {
-  const { name, steps, servingSize, ingredients } = data;
+  const { userId, name, steps, servingSize, ingredients } = data;
   // TODO IMPORTANT: Replace hardcoded userId with auth userId
   return env.DB.prepare(
     `
       INSERT INTO recipes (userId, name, steps, servingSize, ingredients)
-      VALUES (1, ?, ?, ?, ?);
+      VALUES (?, ?, ?, ?, ?);
       				`,
-  ).bind(name, steps, servingSize, ingredients);
+  ).bind(userId, name, steps, servingSize, ingredients);
 }
