@@ -92,7 +92,6 @@ export function createRecipe(
   },
 ): D1PreparedStatement {
   const { userId, name, steps, servingSize, ingredients } = data;
-  // TODO IMPORTANT: Replace hardcoded userId with auth userId
   return env.DB.prepare(
     `
       INSERT INTO recipes (userId, name, steps, servingSize, ingredients)
