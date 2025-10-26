@@ -3,7 +3,7 @@ import { RecipeRequestSchema } from '@recipe-app/common';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/paths';
+import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';
@@ -61,7 +61,7 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
         throw error;
       }
 
-      setLocation(paths.recipes);
+      setLocation(to('/recipes', {}));
     } catch (_error) {
       // TODO: Replace with a toast using the sonner library
       setErrorByName({

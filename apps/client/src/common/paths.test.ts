@@ -1,15 +1,13 @@
 import { describe, expect, it } from 'bun:test';
-import { applyParams } from '~/common/paths';
+import { to } from '~/common/paths';
 
 describe('applyParams', () => {
   it('replaces a single param', () => {
-    expect(applyParams('/recipes/:recipeId', { recipeId: 1 })).toBe(
-      '/recipes/1',
-    );
+    expect(to('/recipes/:recipeId', { recipeId: 1 })).toBe('/recipes/1');
   });
 
   it('replaces a single param', () => {
-    expect(applyParams('/recipes/:recipeId/update', { recipeId: 1 })).toBe(
+    expect(to('/recipes/:recipeId/update', { recipeId: 1 })).toBe(
       '/recipes/1/update',
     );
   });

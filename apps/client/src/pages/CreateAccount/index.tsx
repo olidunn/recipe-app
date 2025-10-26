@@ -1,7 +1,7 @@
 import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/paths';
+import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';
@@ -48,7 +48,7 @@ export function CreateAccount() {
         throw error;
       }
 
-      setLocation(paths.home);
+      setLocation(to('/', {}));
     } catch (_error) {
       // Display a "Something went wrong" message: 'We were unable to create your account.'
     } finally {

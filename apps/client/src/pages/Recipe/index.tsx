@@ -2,7 +2,7 @@ import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Redirect, useParams } from 'wouter';
-import { applyParams, paths } from '~/common/paths';
+import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
@@ -57,7 +57,7 @@ export function RecipePage() {
   // and it will be returned if the left side is null or undefined.
 
   if (shouldRedirect) {
-    return <Redirect to={paths.recipes} />;
+    return <Redirect to={to('/recipes', {})} />;
   }
 
   if (loading) {
@@ -74,10 +74,10 @@ export function RecipePage() {
     <Container>
       <h1>{name}</h1>
       <ButtonGroup>
-        <StyledLink href={applyParams(paths.updateRecipe, { recipeId })}>
+        <StyledLink to={to('/recipes/:recipeId/update', { recipeId })}>
           Update recipe
         </StyledLink>
-        <StyledLink href={paths.recipes}>Recipes</StyledLink>
+        <StyledLink to={to('/recipes', {})}>Recipes</StyledLink>
       </ButtonGroup>
 
       <RecipeDetails>

@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { Redirect, Route, Switch } from 'wouter';
-import { paths } from './common/paths';
+import { paths, to } from './common/paths';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
@@ -60,7 +60,7 @@ export function App() {
       <main>
         <Switch>
           <Route path={paths.home}>
-            <Redirect to={paths.recipes} />
+            <Redirect to={to('/recipes', {})} />
           </Route>
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.createRecipe} component={CreateRecipe} />

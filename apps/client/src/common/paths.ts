@@ -8,7 +8,7 @@ export const paths = {
   login: '/login',
 } as const;
 
-export function applyParams<Path extends Paths>(
+export function to<Path extends Paths>(
   path: Path,
   params: ParamsArg<Path>,
 ): string {
