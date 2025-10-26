@@ -1,7 +1,7 @@
-import type { Static, TSchema } from '@sinclair/typebox';
+import type { Static, TObject } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 
-export type ErrorByName<Schema extends TSchema> = Partial<
+export type ErrorByName<Schema extends TObject> = Partial<
   Record<keyof Schema['static'], { message: string | undefined }>
 >;
 
@@ -9,12 +9,12 @@ type SuccessResult = {
   failed: false;
 };
 
-type FailureResult<Schema extends TSchema> = {
+type FailureResult<Schema extends TObject> = {
   failed: true;
   errorByName: ErrorByName<Schema>;
 };
 
-export function validate<Schema extends TSchema>(
+export function validate<Schema extends TObject>(
   data: Static<Schema>,
   schema: Schema,
 ): SuccessResult | FailureResult<Schema> {

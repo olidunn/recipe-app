@@ -1,15 +1,12 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import { Route, Switch, useLocation } from 'wouter';
-import { server } from '~/common/server';
-import { Button } from '~/components/Button';
-import { paths } from './common/routes';
-import { ButtonGroup } from './components/ButtonGroup';
-import { StyledLink } from './components/LinkStyle';
+import { createGlobalStyle } from 'styled-components';
+import { Redirect, Route, Switch } from 'wouter';
+import { paths, to } from './common/paths';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
 import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
+import { UpdateRecipe } from './pages/UpdateRecipe';
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -57,32 +54,18 @@ body {
 `;
 
 export function App() {
-  const [, setLocation] = useLocation();
-
-  async function logout() {
-    await server.users.logout.post();
-    setLocation(paths.home);
-  }
-
   return (
     <>
       <GlobalStyle />
       <main>
         <Switch>
           <Route path={paths.home}>
-            <Header>
-              <h1>Home</h1>
-              <ButtonGroup>
-                <StyledLink href={paths.recipes}>Recipes</StyledLink>
-                <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
-                <StyledLink href={paths.login}>Login</StyledLink>
-                <Button onClick={logout}>Logout</Button>
-              </ButtonGroup>
-            </Header>
+            <Redirect to={to('/recipes', {})} />
           </Route>
           <Route path={paths.recipes} component={Recipes} />
-          <Route path={paths.recipe} component={RecipePage} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
+          <Route path={paths.recipe} component={RecipePage} />
+          <Route path={paths.updateRecipe} component={UpdateRecipe} />
           <Route path={paths.createAccount} component={CreateAccount} />
           <Route path={paths.login} component={Login} />
           <Route>404 Not found</Route>
@@ -91,12 +74,3 @@ export function App() {
     </>
   );
 }
-
-const Header = styled.header`
-    background-color: pink;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 5px;
-`;

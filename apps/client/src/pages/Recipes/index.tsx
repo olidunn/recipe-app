@@ -1,8 +1,8 @@
-import type { Recipe } from '@recipe-app/server/src/recipes/schemas';
+import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'wouter';
-import { paths, routes } from '~/common/routes';
+import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
@@ -48,7 +48,7 @@ export function Recipes() {
           {recipes.map((recipe) => (
             <RecipeLink
               key={recipe.id}
-              href={routes.recipe(recipe.id)}
+              to={to('/recipes/:recipeId', { recipeId: recipe.id })}
               style={{
                 opacity: loading ? 0.5 : 1,
                 transition: 'opacity 0.5s',
@@ -60,7 +60,7 @@ export function Recipes() {
         </RecipeList>
       )}
       <ButtonGroup>
-        <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
+        <StyledLink to={to('/recipes/create', {})}>Create recipe</StyledLink>
         <Button
           onClick={() => {
             const confirmed =

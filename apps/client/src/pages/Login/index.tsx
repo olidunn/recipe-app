@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { paths } from '~/common/routes';
+import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
@@ -29,7 +29,7 @@ export function Login() {
         return;
       }
 
-      setLocation(paths.home);
+      setLocation(to('/', {}));
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -55,12 +55,12 @@ export function Login() {
         type="password"
         onChange={(event) => setPassword(event.target.value)}
         value={password}
-        error={errorMessage}
+        errorMessage={errorMessage}
         autoComplete="current-password"
       />
 
       <ButtonGroup>
-        <StyledLink href={paths.createAccount}>Create Account</StyledLink>
+        <StyledLink to={to('/create-account', {})}>Create Account</StyledLink>
 
         <Button
           style={{

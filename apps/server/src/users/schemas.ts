@@ -28,7 +28,7 @@ export const SessionResponse = Type.Composite([
 ]);
 export type Session = Static<typeof SessionResponse>;
 
-export const SessionMapper = Type.Transform(SessionRecord)
+export const SessionTransform = Type.Transform(SessionRecord)
   .Decode((value) => {
     const { browser, os } = UAParser(value.userAgent ?? undefined);
 

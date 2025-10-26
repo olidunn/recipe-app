@@ -1,16 +1,10 @@
+import type { Recipe } from '@recipe-app/common';
+
 export function removeCurlyBrackets(ingredient: string): string {
   return ingredient.slice(2, ingredient.length - 2);
 }
 
 export const ingredientPattern = /\{\{.*?\}\}/g;
-
-export type Recipe = {
-  id: string;
-  name: string;
-  steps: string[];
-  servingSize: number;
-  ingredients: string[];
-};
 
 export function parseRecipe(
   recipeName: string,
