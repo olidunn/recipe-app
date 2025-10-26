@@ -18,7 +18,7 @@ type BaseInputNumberProps = {
   /**
    * @default false
    */
-  allowNegative?: boolean;
+  allowNegatives?: boolean;
 };
 
 type NullableInputNumberProps = BaseInputNumberProps & {
@@ -44,7 +44,7 @@ export function InputNumber({
   nullable = false,
   disabled = false,
   totalDecimals = 0,
-  allowNegative = false,
+  allowNegatives = false,
 }: InputNumberProps): ReactElement {
   const id = useId();
   const errorMessageId = `${id}-error`;
@@ -67,7 +67,7 @@ export function InputNumber({
       return;
     }
 
-    const numericValue = allowNegative
+    const numericValue = allowNegatives
       ? Number(event.target.value)
       : Math.abs(Number(event.target.value));
 
