@@ -6,11 +6,18 @@ type ButtonProps = {
   onClick: MouseEventHandler<HTMLButtonElement>;
   className?: string;
   style?: CSSProperties;
+  loading?: boolean;
 };
-export function Button({ children, className, onClick, style }: ButtonProps) {
+export function Button({
+  children,
+  className,
+  onClick,
+  style,
+  loading = false,
+}: ButtonProps) {
   return (
     <StyledButton style={style} className={className} onClick={onClick}>
-      {children}
+      {loading ? 'loading...' : children}
     </StyledButton>
   );
 }

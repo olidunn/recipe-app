@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
+import { authenticatedKey } from '~/common/data/users';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
@@ -14,6 +16,7 @@ export function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
   const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
 
   async function login() {
     try {
@@ -29,7 +32,12 @@ export function Login() {
         return;
       }
 
-      setLocation(to('/', {}));
+      if (error) {
+        throw error;
+      }
+
+      queryClient.setQueryData(authenticatedKey, true);
+      setLocation(to('/', {}), { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -67,8 +75,9 @@ export function Login() {
             marginLeft: 'auto',
           }}
           onClick={login}
+          loading={loggingIn}
         >
-          {loggingIn ? 'loading...' : 'Login'}
+          Login
         </Button>
       </ButtonGroup>
     </Form>

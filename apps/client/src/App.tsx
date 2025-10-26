@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { Redirect, Route, Switch } from 'wouter';
+import { useAuthenticated } from '~/common/data/users';
 import { paths, to } from './common/paths';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
@@ -54,13 +55,17 @@ body {
 `;
 
 export function App() {
+  const { data: authenticated } = useAuthenticated();
+
   return (
     <>
       <GlobalStyle />
       <main>
         <Switch>
           <Route path={paths.home}>
-            <Redirect to={to('/recipes', {})} />
+            <Redirect
+              to={authenticated ? to('/recipes', {}) : to('/login', {})}
+            />
           </Route>
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.createRecipe} component={CreateRecipe} />

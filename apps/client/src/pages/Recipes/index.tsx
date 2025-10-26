@@ -1,7 +1,7 @@
 import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
@@ -11,6 +11,8 @@ import { StyledLink } from '~/components/LinkStyle';
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [, setLocation] = useLocation();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const loadData = useCallback(async () => {
     const { data, error } = await server.recipes.get();
@@ -36,6 +38,23 @@ export function Recipes() {
 
     setRecipes([]);
     setLoading(false);
+  }
+
+  async function logout() {
+    try {
+      setLoggingOut(true);
+      const { error } = await server.users.logout.post();
+
+      if (error) {
+        throw error;
+      }
+
+      setLocation(to('/login', {}));
+    } catch (_error) {
+      // TODO handle with sonner
+    } finally {
+      setLoggingOut(false);
+    }
   }
 
   return (
@@ -74,6 +93,9 @@ export function Recipes() {
           Delete All Recipes
         </Button>
       </ButtonGroup>
+      <Button onClick={logout} loading={loggingOut}>
+        Log out
+      </Button>
     </Container>
   );
 }

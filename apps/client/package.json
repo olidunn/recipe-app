@@ -16,6 +16,7 @@
   "dependencies": {
     "@elysiajs/eden": "^1.4.1",
     "@recipe-app/common": "workspace:*",
+    "@tanstack/react-query": "^5.90.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "styled-components": "^6.1.19",
