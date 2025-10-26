@@ -1,10 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import { Redirect, Route, Switch, useLocation } from 'wouter';
-import { server } from '~/common/server';
-import { Button } from '~/components/Button';
+import { createGlobalStyle } from 'styled-components';
+import { Redirect, Route, Switch } from 'wouter';
 import { paths } from './common/paths';
-import { ButtonGroup } from './components/ButtonGroup';
-import { StyledLink } from './components/LinkStyle';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
@@ -58,29 +54,13 @@ body {
 `;
 
 export function App() {
-  const [, setLocation] = useLocation();
-
-  async function logout() {
-    await server.users.logout.post();
-    setLocation(paths.home);
-  }
-
   return (
     <>
       <GlobalStyle />
       <main>
         <Switch>
           <Route path={paths.home}>
-            <Redirect to={paths.login} />
-            <Header>
-              <h1>Home</h1>
-              <ButtonGroup>
-                <StyledLink href={paths.recipes}>Recipes</StyledLink>
-                <StyledLink href={paths.createRecipe}>Create recipe</StyledLink>
-                <StyledLink href={paths.login}>Login</StyledLink>
-                <Button onClick={logout}>Logout</Button>
-              </ButtonGroup>
-            </Header>
+            <Redirect to={paths.recipes} />
           </Route>
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
@@ -94,12 +74,3 @@ export function App() {
     </>
   );
 }
-
-const Header = styled.header`
-    background-color: pink;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 5px;
-`;
