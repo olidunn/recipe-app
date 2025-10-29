@@ -16,6 +16,7 @@ export function Recipes() {
 
   const loadData = useCallback(async () => {
     const { data, error } = await server.recipes.get();
+
     if (error) {
       throw error;
     }
@@ -74,6 +75,12 @@ export function Recipes() {
               }}
             >
               {recipe.name}
+              <RecipeLinkSubheading>
+                <br />
+                serving size: {recipe.servingSize}
+                <br />
+                ingredients: {recipe.ingredients.length}
+              </RecipeLinkSubheading>
             </RecipeLink>
           ))}
         </RecipeList>
@@ -109,6 +116,11 @@ const RecipeLink = styled(Link)`
   color: black;
   font-weight: bold;
   box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
+`;
+
+const RecipeLinkSubheading = styled.p`
+  font-weight: normal;
+  margin: 0;
 `;
 
 const RecipeList = styled.div`

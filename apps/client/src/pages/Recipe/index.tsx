@@ -68,7 +68,7 @@ export function RecipePage() {
     return <div>Recipe not found</div>;
   }
 
-  const { name, ingredients, steps } = recipe;
+  const { name, ingredients, servingSize, steps } = recipe;
 
   return (
     <Container>
@@ -82,7 +82,7 @@ export function RecipePage() {
 
       <RecipeDetails>
         <IngredientsContainer>
-          <h3>Ingredients</h3>
+          <h3>Ingredients({ingredients.length})</h3>
           <ul>
             {ingredients.map((ingredient) => (
               <li key={ingredient}>{ingredient}</li>
@@ -91,6 +91,7 @@ export function RecipePage() {
         </IngredientsContainer>
 
         <div>
+          <h3>Serving size: {servingSize}</h3>
           <h3>Steps</h3>
           <UL>
             {steps.map((step, index) => (
