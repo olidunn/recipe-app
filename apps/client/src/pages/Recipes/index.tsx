@@ -78,8 +78,6 @@ export function Recipes() {
               <RecipeLinkSubheading>
                 <br />
                 serving size: {recipe.servingSize}
-                <br />
-                ingredients: {recipe.ingredients.length}
               </RecipeLinkSubheading>
             </RecipeLink>
           ))}
