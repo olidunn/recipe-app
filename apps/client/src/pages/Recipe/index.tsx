@@ -7,7 +7,7 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Container } from '~/components/Container';
-import { StyledLink } from '~/components/LinkStyle';
+import { StyledLink } from '~/components/Link';
 import { RecipeStep } from '~/components/RecipeStep';
 
 // useParams to access id parameter

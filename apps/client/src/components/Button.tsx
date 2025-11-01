@@ -1,8 +1,11 @@
 import type { CSSProperties, MouseEventHandler, ReactNode } from 'react';
 import styled from 'styled-components';
+import type { IconType } from './Icon';
+import { Icon } from './Icon';
 
 type ButtonProps = {
   children: ReactNode;
+  icon?: IconType | undefined;
   onClick: MouseEventHandler<HTMLButtonElement>;
   ariaLabel?: string | undefined;
   className?: string | undefined;
@@ -11,6 +14,7 @@ type ButtonProps = {
 };
 export function Button({
   children,
+  icon,
   ariaLabel,
   className,
   onClick,
@@ -24,6 +28,7 @@ export function Button({
       onClick={onClick}
       aria-label={ariaLabel}
     >
+      {icon && <Icon type={icon} />}
       {loading ? 'loading...' : children}
     </StyledButton>
   );

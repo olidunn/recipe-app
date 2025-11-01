@@ -6,7 +6,7 @@ import { paths, to } from './common/paths';
 import { server } from './common/server';
 import { Button } from './components/Button';
 import { IconButton } from './components/IconButton';
-import { StyledLink } from './components/LinkStyle';
+import { Link } from './components/Link';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
@@ -122,11 +122,13 @@ export function App() {
               />
               {navMenuIsOpen && (
                 <NavMenu>
-                  <Button onClick={logout} loading={loggingOut}>
+                  <Button onClick={logout} icon="logout" loading={loggingOut}>
                     Log out
                   </Button>
 
-                  <StyledLink to={to('/')}>Change Password</StyledLink>
+                  <Link icon="password" to={to('/')}>
+                    Change Password
+                  </Link>
                 </NavMenu>
               )}
             </>

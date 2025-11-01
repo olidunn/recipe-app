@@ -6,7 +6,7 @@ import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { StyledLink } from '~/components/LinkStyle';
+import { StyledLink } from '~/components/Link';
 
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
