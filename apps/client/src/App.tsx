@@ -55,18 +55,12 @@ body {
 `;
 
 export function App() {
-  const { data: authenticated } = useAuthenticated();
-
   return (
     <>
       <GlobalStyle />
       <main>
         <Switch>
-          <Route path={paths.home}>
-            <Redirect
-              to={authenticated ? to('/recipes', {}) : to('/login', {})}
-            />
-          </Route>
+          <Route path={paths.home} component={HomeRedirection} />
           <Route path={paths.recipes} component={Recipes} />
           <Route path={paths.createRecipe} component={CreateRecipe} />
           <Route path={paths.recipe} component={RecipePage} />
@@ -77,5 +71,17 @@ export function App() {
         </Switch>
       </main>
     </>
+  );
+}
+
+function HomeRedirection() {
+  const { data: authenticated, isLoading } = useAuthenticated();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <Redirect to={authenticated ? to('/recipes', {}) : to('/login', {})} />
   );
 }
