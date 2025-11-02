@@ -28,7 +28,12 @@ export function Button({
       onClick={onClick}
       aria-label={ariaLabel}
     >
-      {icon && <Icon type={icon} />}
+      {icon && (
+        <span>
+          <Icon type={icon} />
+        </span>
+      )}
+
       {loading ? 'loading...' : children}
     </StyledButton>
   );
