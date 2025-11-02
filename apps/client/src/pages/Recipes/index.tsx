@@ -76,8 +76,7 @@ export function Recipes() {
             >
               {recipe.name}
               <RecipeLinkSubheading>
-                <br />
-                serving size: {recipe.servingSize}
+                Serves {recipe.servingSize}
               </RecipeLinkSubheading>
             </RecipeLink>
           ))}
@@ -106,6 +105,9 @@ export function Recipes() {
 }
 
 const RecipeLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   background-color: pink;
   display: grid;
   padding: 10px;
