@@ -82,7 +82,7 @@ export function RecipePage() {
 
       <RecipeDetails>
         <IngredientsContainer>
-          <h3>Ingredients({ingredients.length})</h3>
+          <h3>Ingredients ({ingredients.length})</h3>
           <ul>
             {ingredients.map((ingredient) => (
               <li key={ingredient}>{ingredient}</li>
