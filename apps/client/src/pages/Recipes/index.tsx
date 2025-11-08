@@ -1,12 +1,11 @@
 import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'wouter';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { StyledLink } from '~/components/Link';
+import { Link } from '~/components/Link';
 
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -64,7 +63,7 @@ export function Recipes() {
         </RecipeList>
       )}
       <ButtonGroup>
-        <StyledLink to={to('/recipes/create')}>Create recipe</StyledLink>
+        <Link to={to('/recipes/create')}>Create recipe</Link>
         <Button
           onClick={() => {
             const confirmed =

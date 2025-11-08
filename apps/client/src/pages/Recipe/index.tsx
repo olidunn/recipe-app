@@ -7,7 +7,7 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Container } from '~/components/Container';
-import { StyledLink } from '~/components/Link';
+import { Link } from '~/components/Link';
 import { RecipeStep } from '~/components/RecipeStep';
 
 // useParams to access id parameter
@@ -74,10 +74,10 @@ export function RecipePage() {
     <Container>
       <h1>{name}</h1>
       <ButtonGroup>
-        <StyledLink to={to('/recipes/:recipeId/update', { recipeId })}>
+        <Link to={to('/recipes/:recipeId/update', { recipeId })}>
           Update recipe
-        </StyledLink>
-        <StyledLink to={to('/recipes')}>Recipes</StyledLink>
+        </Link>
+        <Link to={to('/recipes')}>Recipes</Link>
       </ButtonGroup>
 
       <RecipeDetails>

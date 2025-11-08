@@ -18,7 +18,7 @@ export function Link({ children, icon, ...restProps }: LinkProps) {
   );
 }
 
-export const StyledLink = styled(WouterLink)`
+const StyledLink = styled(WouterLink)`
   color: #e8e9eb;
   background-color: #8c8b91;
   padding: 8px 10px;
