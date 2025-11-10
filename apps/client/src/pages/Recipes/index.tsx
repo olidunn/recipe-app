@@ -49,10 +49,6 @@ export function Recipes() {
             <RecipeLink
               key={recipe.id}
               to={to('/recipes/:recipeId', { recipeId: recipe.id })}
-              // style={{
-              //   opacity: loading ? 0.5 : 1,
-              //   transition: 'opacity 0.5s',
-              // }}
             >
               {recipe.name}
               <RecipeLinkSubheading>
