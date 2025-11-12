@@ -1,6 +1,6 @@
 import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
@@ -77,18 +77,28 @@ export function Recipes() {
   );
 }
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
 const RecipeLink = styled(Link)`
+  background-color: pink;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background-color: pink;
-  display: grid;
   padding: 10px;
   border-radius: 10px;
   text-decoration: none;
   color: black;
   font-weight: bold;
   box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
+  animation: ${fadeIn} 0.5s; 
 `;
 
 const RecipeLinkSubheading = styled.p`
