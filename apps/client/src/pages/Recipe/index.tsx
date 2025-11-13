@@ -57,7 +57,7 @@ export function RecipePage() {
   // and it will be returned if the left side is null or undefined.
 
   if (shouldRedirect) {
-    return <Redirect to={to('/recipes', {})} />;
+    return <Redirect to={to('/recipes')} />;
   }
 
   if (loading) {
@@ -77,7 +77,7 @@ export function RecipePage() {
         <StyledLink to={to('/recipes/:recipeId/update', { recipeId })}>
           Update recipe
         </StyledLink>
-        <StyledLink to={to('/recipes', {})}>Recipes</StyledLink>
+        <StyledLink to={to('/recipes')}>Recipes</StyledLink>
       </ButtonGroup>
 
       <RecipeDetails>

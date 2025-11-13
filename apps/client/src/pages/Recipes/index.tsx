@@ -50,7 +50,7 @@ export function Recipes() {
         throw error;
       }
 
-      setLocation(to('/login', {}));
+      setLocation(to('/login'));
     } catch (_error) {
       // TODO handle with sonner
     } finally {
@@ -83,7 +83,7 @@ export function Recipes() {
         </RecipeList>
       )}
       <ButtonGroup>
-        <StyledLink to={to('/recipes/create', {})}>Create recipe</StyledLink>
+        <StyledLink to={to('/recipes/create')}>Create recipe</StyledLink>
         <Button
           onClick={() => {
             const confirmed =

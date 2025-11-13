@@ -61,7 +61,7 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
         throw error;
       }
 
-      setLocation(to('/recipes', {}));
+      setLocation(to('/recipes'));
     } catch (_error) {
       // TODO: Replace with a toast using the sonner library
       setErrorByName({
