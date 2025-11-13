@@ -1,12 +1,14 @@
+import type { CSSProperties } from 'styled-components';
 import styled from 'styled-components';
 import type { LinkProps as WouterLinkProps } from 'wouter';
 import { Link as WouterLink } from 'wouter';
 import type { IconType } from './Icon';
 import { Icon } from './Icon';
 
-type LinkProps = Omit<WouterLinkProps, 'asChild' | 'href' | 'to'> & {
+type LinkProps = Omit<WouterLinkProps, 'asChild' | 'href' | 'to' | 'style'> & {
   icon?: IconType;
   to: string;
+  style?: CSSProperties;
 };
 
 export function Link({ children, icon, ...restProps }: LinkProps) {
