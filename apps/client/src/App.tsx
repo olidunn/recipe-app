@@ -1,7 +1,12 @@
-import { createGlobalStyle } from 'styled-components';
-import { Redirect, Route, Switch } from 'wouter';
+import { useState } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import { Redirect, Route, Switch, useLocation } from 'wouter';
 import { useAuthenticated } from '~/common/data/users';
 import { paths, to } from './common/paths';
+import { server } from './common/server';
+import { Button } from './components/Button';
+import { IconButton } from './components/IconButton';
+import { Link } from './components/Link';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
@@ -18,6 +23,7 @@ body {
     font-style: normal;
   }
 
+
   /* ul is a CSS selector, that targets ALL ul elements in the document */
   ul,
   ol {
@@ -30,8 +36,18 @@ body {
     list-style-position: inside;
   }
 
+  header {
+    background-color: aliceblue;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
   main {
-    margin: 0 20px;
+    margin: 0;
+    margin-top: 40px;
+
 
     @media (max-width: 1200px) {
       font-size: 30px;
@@ -47,17 +63,78 @@ body {
       font-size: 20px;
     }
 
-    @media (min-width: 400px) {
-      margin: auto;
-    }
-
   }
 `;
 
+const NavMenu = styled.div`
+  position: absolute;
+  top: 40px;
+  padding: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  background-color: aliceblue;
+`;
+
+const Nav = styled.nav`
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export function App() {
+  const { data: authenticated } = useAuthenticated();
+  const [, setLocation] = useLocation();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [navMenuIsOpen, setNavMenuIsOpen] = useState(false);
+
+  async function logout() {
+    try {
+      setLoggingOut(true);
+      const { error } = await server.users.logout.post();
+
+      if (error) {
+        throw error;
+      }
+
+      setLocation(to('/login'));
+    } catch (_error) {
+      // TODO handle with sonner
+    } finally {
+      setLoggingOut(false);
+    }
+  }
+
   return (
     <>
       <GlobalStyle />
+      <header>
+        <Nav>
+          {authenticated && (
+            <>
+              <IconButton
+                onClick={() => {
+                  setNavMenuIsOpen((state) => !state);
+                }}
+                type="menu"
+                ariaLabel="open menu"
+              />
+              {navMenuIsOpen && (
+                <NavMenu>
+                  <Button onClick={logout} icon="logout" loading={loggingOut}>
+                    Log out
+                  </Button>
+
+                  <Link icon="password" to={to('/')}>
+                    Change Password
+                  </Link>
+                </NavMenu>
+              )}
+            </>
+          )}
+        </Nav>
+      </header>
       <main>
         <Switch>
           <Route path={paths.home} component={HomeRedirection} />

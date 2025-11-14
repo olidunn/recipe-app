@@ -8,7 +8,7 @@ import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
-import { StyledLink } from '~/components/LinkStyle';
+import { Link } from '~/components/Link';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -68,7 +68,7 @@ export function Login() {
       />
 
       <ButtonGroup>
-        <StyledLink to={to('/create-account')}>Create Account</StyledLink>
+        <Link to={to('/create-account')}>Create Account</Link>
 
         <Button
           style={{

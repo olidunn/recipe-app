@@ -1,18 +1,15 @@
 import type { Recipe } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Link, useLocation } from 'wouter';
+import styled, { keyframes } from 'styled-components';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { StyledLink } from '~/components/LinkStyle';
+import { Link } from '~/components/Link';
 
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
-  const [, setLocation] = useLocation();
-  const [loggingOut, setLoggingOut] = useState(false);
 
   const loadData = useCallback(async () => {
     const { data, error } = await server.recipes.get();
@@ -41,23 +38,6 @@ export function Recipes() {
     setLoading(false);
   }
 
-  async function logout() {
-    try {
-      setLoggingOut(true);
-      const { error } = await server.users.logout.post();
-
-      if (error) {
-        throw error;
-      }
-
-      setLocation(to('/login'));
-    } catch (_error) {
-      // TODO handle with sonner
-    } finally {
-      setLoggingOut(false);
-    }
-  }
-
   return (
     <Container>
       <h1>Recipes</h1>
@@ -69,10 +49,6 @@ export function Recipes() {
             <RecipeLink
               key={recipe.id}
               to={to('/recipes/:recipeId', { recipeId: recipe.id })}
-              style={{
-                opacity: loading ? 0.5 : 1,
-                transition: 'opacity 0.5s',
-              }}
             >
               {recipe.name}
               <RecipeLinkSubheading>
@@ -83,7 +59,7 @@ export function Recipes() {
         </RecipeList>
       )}
       <ButtonGroup>
-        <StyledLink to={to('/recipes/create')}>Create recipe</StyledLink>
+        <Link to={to('/recipes/create')}>Create recipe</Link>
         <Button
           onClick={() => {
             const confirmed =
@@ -97,25 +73,32 @@ export function Recipes() {
           Delete All Recipes
         </Button>
       </ButtonGroup>
-      <Button onClick={logout} loading={loggingOut}>
-        Log out
-      </Button>
     </Container>
   );
 }
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
 const RecipeLink = styled(Link)`
+  background-color: pink;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background-color: pink;
-  display: grid;
   padding: 10px;
   border-radius: 10px;
   text-decoration: none;
   color: black;
   font-weight: bold;
   box-shadow: 2px 2px 10px 2px rgba(48, 47, 47, 0.2);
+  animation: ${fadeIn} 0.5s; 
 `;
 
 const RecipeLinkSubheading = styled.p`
