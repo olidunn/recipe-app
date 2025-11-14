@@ -8,35 +8,46 @@ export const paths = {
   login: '/login',
 } as const;
 
-export function to<Path extends Paths>(
-  path: Path,
-  params: ParamsArg<Path>,
+type Path = (typeof paths)[keyof typeof paths];
+
+/**
+ * Returns the URL using the provided path and params.
+ * Params are required and type-safe when the path has param literals.
+ */
+export function to<P extends Path>(
+  path: P,
+  ...args: PathParamLiteral<P> extends never
+    ? [] // no params allowed
+    : [params: PathParams<P>] // params required
 ): string {
-  return path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
-    const value = params[key as ExtractParams<Path>];
+  const params = args[0];
+  if (!params) {
+    return path;
+  }
+
+  return path.replace(/:([a-zA-Z0-9_]+)/g, (_, key: PathParamLiteral<P>) => {
+    const value = params[key];
+
     if (value === undefined) {
       throw new Error(`Missing param: ${key}`);
     }
-    return String(value);
+
+    return `${value}`;
   });
 }
 
-type RecursiveStringExtraction<T> = T extends string
-  ? T
-  : T extends object
-    ? RecursiveStringExtraction<T[keyof T]>
-    : never;
-
-type Paths = RecursiveStringExtraction<typeof paths>;
-
-type ExtractParams<Path extends string> =
-  Path extends `${string}:${infer Param}/${infer Rest}`
-    ? Param | ExtractParams<Rest>
-    : Path extends `${string}:${infer Param}`
+/**
+ * A type union of string literals from a given path.
+ *
+ * @example 'category/:categoryId/books/:bookId' -> 'categoryId' | 'bookId'
+ */
+type PathParamLiteral<P extends string> =
+  P extends `${string}:${infer Param}/${infer Rest}`
+    ? Param | PathParamLiteral<Rest>
+    : P extends `${string}:${infer Param}`
       ? Param
       : never;
 
-type ParamsArg<Path extends string> = Record<
-  ExtractParams<Path>,
-  string | number
->;
+type PathParams<P extends string> = PathParamLiteral<P> extends never
+  ? never
+  : Record<PathParamLiteral<P>, string | number>;

@@ -37,7 +37,7 @@ export function Login() {
       }
 
       queryClient.setQueryData(authenticatedKey, true);
-      setLocation(to('/', {}), { replace: true });
+      setLocation(to('/'), { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -68,7 +68,7 @@ export function Login() {
       />
 
       <ButtonGroup>
-        <StyledLink to={to('/create-account', {})}>Create Account</StyledLink>
+        <StyledLink to={to('/create-account')}>Create Account</StyledLink>
 
         <Button
           style={{

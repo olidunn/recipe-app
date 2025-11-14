@@ -48,7 +48,7 @@ export function CreateAccount() {
         throw error;
       }
 
-      setLocation(to('/', {}));
+      setLocation(to('/'));
     } catch (_error) {
       // Display a "Something went wrong" message: 'We were unable to create your account.'
     } finally {

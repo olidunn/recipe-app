@@ -81,7 +81,5 @@ function HomeRedirection() {
     return <div>Loading...</div>;
   }
 
-  return (
-    <Redirect to={authenticated ? to('/recipes', {}) : to('/login', {})} />
-  );
+  return <Redirect to={authenticated ? to('/recipes') : to('/login')} />;
 }
