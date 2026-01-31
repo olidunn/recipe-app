@@ -30,9 +30,11 @@ const StyledLink = styled(WouterLink)`
   border: none;
   font-family: "DM Sans", sans-serif;
   text-decoration: none;
+
   &:hover  {
     background-color: #8383cf;
   }
+  
   border-radius: 5px;
   display: inline-flex;
   align-items: center;
