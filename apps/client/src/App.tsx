@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Redirect, Route, Switch, useLocation } from 'wouter';
+import {
+  Redirect,
+  Route,
+  Switch,
+  useLocation,
+  Link as WouterLink,
+} from 'wouter';
 import { useAuthenticated } from '~/common/data/users';
 import { paths, to } from './common/paths';
 import { server } from './common/server';
@@ -67,8 +73,9 @@ body {
 `;
 
 const NavMenu = styled.div`
-  position: absolute;
-  top: 40px;
+  position: fixed;
+  right: 0px;
+  top: 56px;
   padding: 10px;
   gap: 10px;
   display: flex;
@@ -79,8 +86,10 @@ const NavMenu = styled.div`
 
 const Nav = styled.nav`
   position: relative;
+  padding: 8px 16px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export function App() {
@@ -113,6 +122,16 @@ export function App() {
         <Nav>
           {authenticated && (
             <>
+              <WouterLink
+                style={{
+                  color: 'black',
+                  textDecoration: 'none',
+                  fontSize: '18px',
+                }}
+                to={to('/')}
+              >
+                Recipe App
+              </WouterLink>
               <IconButton
                 onClick={() => {
                   setNavMenuIsOpen((state) => !state);
@@ -120,6 +139,7 @@ export function App() {
                 type="menu"
                 ariaLabel="open menu"
               />
+
               {navMenuIsOpen && (
                 <NavMenu>
                   <Button onClick={logout} icon="logout" loading={loggingOut}>
