@@ -8,6 +8,7 @@ import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';
 import { Container } from '~/components/Container';
 import { Link } from '~/components/Link';
+import { Loading } from '~/components/Loading';
 import { RecipeStep } from '~/components/RecipeStep';
 
 // useParams to access id parameter
@@ -61,7 +62,7 @@ export function RecipePage() {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading size={30} />;
   }
 
   if (recipe === null) {

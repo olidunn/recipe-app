@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'wouter';
 import { server } from '~/common/server';
+import { Loading } from '~/components/Loading';
 import type { RecipeFormData } from '~/components/RecipeForm';
 import { RecipeForm } from '~/components/RecipeForm';
 
@@ -35,7 +36,7 @@ export function UpdateRecipe() {
   }, [loadData]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading size={30} />;
   }
 
   if (recipe === null) {

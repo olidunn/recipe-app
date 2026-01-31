@@ -2,6 +2,7 @@ import type { CSSProperties, MouseEventHandler, ReactNode } from 'react';
 import styled from 'styled-components';
 import type { IconType } from './Icon';
 import { Icon } from './Icon';
+import { Loading } from './Loading';
 
 type ButtonProps = {
   children: ReactNode;
@@ -30,13 +31,14 @@ export function Button({
     >
       {icon && <Icon type={icon} />}
 
-      {loading ? 'loading...' : children}
+      {loading ? <Loading size={30} /> : children}
     </StyledButton>
   );
 }
 
 const StyledButton = styled.button`
   color: #e8e9eb;
+  position: relative;
   display: inline-flex;
   gap: 8px;
   align-items: center;

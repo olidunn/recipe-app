@@ -13,12 +13,15 @@ import { server } from './common/server';
 import { Button } from './components/Button';
 import { IconButton } from './components/IconButton';
 import { Link } from './components/Link';
+import { Loading } from './components/Loading';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
 import { Login } from './pages/Login';
 import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
 import { UpdateRecipe } from './pages/UpdateRecipe';
+
+const navHeight = 56;
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -52,7 +55,7 @@ body {
 
   main {
     margin: 0;
-    margin-top: 40px;
+    margin-top: ${navHeight}px;
 
 
     @media (max-width: 1200px) {
@@ -75,7 +78,7 @@ body {
 const NavMenu = styled.div`
   position: fixed;
   right: 0px;
-  top: 56px;
+  top: ${navHeight}px;
   padding: 10px;
   gap: 10px;
   display: flex;
@@ -175,7 +178,7 @@ function HomeRedirection() {
   const { data: authenticated, isLoading } = useAuthenticated();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading size={30} />;
   }
 
   return <Redirect to={authenticated ? to('/recipes') : to('/login')} />;

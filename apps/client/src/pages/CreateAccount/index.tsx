@@ -93,8 +93,9 @@ export function CreateAccount() {
           marginLeft: 'auto',
         }}
         onClick={createAccount}
+        loading={creatingAccount}
       >
-        {creatingAccount ? 'loading...' : 'Create account'}
+        Create account
       </Button>
     </Form>
   );

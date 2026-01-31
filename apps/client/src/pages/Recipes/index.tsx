@@ -6,6 +6,7 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Link } from '~/components/Link';
+import { Loading } from '~/components/Loading';
 
 export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -42,7 +43,7 @@ export function Recipes() {
     <Container>
       <h1>Recipes</h1>
       {recipes.length === 0 && !loading && <p>No recipes found</p>}
-      {loading && <p>Loading...</p>}
+      {loading && <Loading size={30} />}
       {recipes.length > 0 && (
         <RecipeList>
           {recipes.map((recipe) => (
