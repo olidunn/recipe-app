@@ -17,7 +17,7 @@ type BaseInputNumberProps = RequiredAriaLabelProps &
     /**
      * @default false
      */
-    allowNegative?: boolean;
+    allowNegativeValues?: boolean;
     minValue?: number | undefined;
     maxValue?: number | undefined;
     style?: CSSProperties | undefined;
@@ -50,7 +50,7 @@ export function InputNumber({
   nullable = false,
   disabled = false,
   totalDecimals = 0,
-  allowNegative = false,
+  allowNegativeValues = false,
   minValue,
   maxValue,
   inputFirst = false,
@@ -69,7 +69,7 @@ export function InputNumber({
           errorMessage={errorMessage}
           disabled={disabled}
           totalDecimals={totalDecimals}
-          allowNegative={allowNegative}
+          allowNegativeValues={allowNegativeValues}
           minValue={minValue}
           maxValue={maxValue}
           style={style}
@@ -89,7 +89,7 @@ export function InputNumber({
       errorMessage={errorMessage}
       disabled={disabled}
       totalDecimals={totalDecimals}
-      allowNegative={allowNegative}
+      allowNegativeValues={allowNegativeValues}
       minValue={minValue}
       maxValue={maxValue}
       style={style}
@@ -105,7 +105,7 @@ type InnerInputNumberProps = {
   nullable: boolean;
   disabled: boolean;
   totalDecimals: number;
-  allowNegative: boolean;
+  allowNegativeValues: boolean;
   minValue: number | undefined;
   maxValue: number | undefined;
   label: string | undefined;
@@ -121,7 +121,7 @@ function InnerInputNumber({
   nullable,
   disabled,
   totalDecimals,
-  allowNegative,
+  allowNegativeValues,
   minValue,
   maxValue,
   label,
@@ -158,7 +158,7 @@ function InnerInputNumber({
       return;
     }
 
-    const numericValue = allowNegative
+    const numericValue = allowNegativeValues
       ? Number(event.target.value)
       : Math.abs(Number(event.target.value));
 
