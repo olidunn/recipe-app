@@ -111,18 +111,18 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
         />
 
         <InputNumber
-          label="Cooking Minutes"
-          onChange={setCookingMinutes}
-          value={cookingMinutes}
-          errorMessage={errorByName.cookingMinutes?.message}
+          label="Preparation Time"
+          onChange={setPreparationMinutes}
+          value={preparationMinutes}
+          errorMessage={errorByName.preparationMinutes?.message}
           nullable
         />
 
         <InputNumber
-          label="Preparation Minutes"
-          onChange={setPreparationMinutes}
-          value={preparationMinutes}
-          errorMessage={errorByName.preparationMinutes?.message}
+          label="Cooking Time"
+          onChange={setCookingMinutes}
+          value={cookingMinutes}
+          errorMessage={errorByName.cookingMinutes?.message}
           nullable
         />
 

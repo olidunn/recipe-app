@@ -100,11 +100,12 @@ export function RecipePage() {
 
         <div>
           <h3>Serving size: {servingSize}</h3>
+
           {preparationMinutes && (
-            <h3>Preparation Minutes: {preparationMinutes}</h3>
+            <h3>Preparation Time: {preparationMinutes}m</h3>
           )}
 
-          {cookingMinutes && <h3>Cooking Minutes: {cookingMinutes}</h3>}
+          {cookingMinutes && <h3>Cooking Time: {cookingMinutes}m</h3>}
 
           <h3>Steps</h3>
           <UL>
