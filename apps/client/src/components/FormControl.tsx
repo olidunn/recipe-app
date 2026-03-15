@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
-type FormControlProps = {
+export type FormControlProps = {
   label: ReactNode;
   children: ReactNode;
   optional?: boolean;
@@ -18,7 +18,7 @@ export function FormControl({
   loading = false,
 }: FormControlProps): ReactElement {
   return (
-    <Label fitContent={fitContent} inputFirst={inputFirst} loading={loading}>
+    <Label $fitContent={fitContent} $inputFirst={inputFirst} $loading={loading}>
       {inputFirst && children}
       <LabelText>
         {label}
@@ -30,9 +30,9 @@ export function FormControl({
 }
 
 type LabelProps = {
-  fitContent?: boolean;
-  inputFirst?: boolean;
-  loading?: boolean;
+  $fitContent?: boolean;
+  $inputFirst?: boolean;
+  $loading?: boolean;
 };
 const Label = styled.label<LabelProps>`
   display: flex;
@@ -41,22 +41,22 @@ const Label = styled.label<LabelProps>`
 
   cursor: pointer;
 
-  ${({ fitContent }) =>
-    fitContent &&
+  ${({ $fitContent }) =>
+    $fitContent &&
     css`
       max-width: fit-content;
     `};
 
-  ${({ inputFirst }) =>
-    inputFirst &&
+  ${({ $inputFirst }) =>
+    $inputFirst &&
     css`
       flex-direction: row;
       align-items: center;
       gap: 8px;
     `};
 
-  ${({ loading }) =>
-    loading &&
+  ${({ $loading }) =>
+    $loading &&
     css`
       cursor: wait;
     `};
