@@ -1,4 +1,4 @@
-import { IntegerPrimaryKey } from '@recipe-app/common';
+import { IntegerPrimaryKey, Nullable } from '@recipe-app/common';
 import type { Static } from '@sinclair/typebox/type';
 import { Type } from '@sinclair/typebox/type';
 import { t } from 'elysia';
@@ -15,13 +15,21 @@ export const RecipeRecordSchema = t.Object({
   id: IntegerPrimaryKey(),
   name: t.String({ minLength: 1, maxLength: 50 }),
   servingSize: t.Number({ minimum: 1, maximum: 100 }),
+  preparationMinutes: Nullable(t.Number({ minimum: 1, maximum: 500 })),
+  cookingMinutes: Nullable(t.Number({ minimum: 1, maximum: 500 })),
   steps: t.String({ minLength: 1 }),
   ingredients: t.String({ minLength: 1 }),
 });
 export type RecipeRecord = Static<typeof RecipeRecordSchema>;
 
 export const RecipeResponse = t.Composite([
-  t.Pick(RecipeRecordSchema, ['id', 'name', 'servingSize']),
+  t.Pick(RecipeRecordSchema, [
+    'id',
+    'name',
+    'servingSize',
+    'preparationMinutes',
+    'cookingMinutes',
+  ]),
   t.Object({
     steps: t.Array(t.String({ minLength: 1 }), { minItems: 1 }),
     ingredients: t.Array(t.String({ minLength: 1 }), { minItems: 1 }),
@@ -63,6 +71,8 @@ function recordToRequest(recipe: Omit<RecipeRecord, 'id'>): Omit<Recipe, 'id'> {
   return {
     name: recipe.name,
     servingSize: recipe.servingSize,
+    preparationMinutes: recipe.preparationMinutes,
+    cookingMinutes: recipe.cookingMinutes,
     steps: recipe.steps.split('\n\n'),
     ingredients: recipe.ingredients.split('||'),
   };
@@ -72,6 +82,8 @@ function requestToRecord(recipe: RecipeRequest): Omit<RecipeRecord, 'id'> {
   return {
     name: recipe.name,
     servingSize: recipe.servingSize,
+    preparationMinutes: recipe.preparationMinutes,
+    cookingMinutes: recipe.cookingMinutes,
     steps: recipe.steps.join('\n\n'),
     ingredients: recipe.ingredients.join('||'),
   };

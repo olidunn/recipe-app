@@ -4,6 +4,8 @@ SELECT
   id,
   name,
   servingSize,
+  preparationMinutes,
+  cookingMinutes,
   steps,
   ingredients
 FROM
@@ -23,6 +25,8 @@ SELECT
   id,
   name,
   servingSize,
+  preparationMinutes,
+  cookingMinutes,
   steps,
   ingredients
 FROM
@@ -61,10 +65,21 @@ export function updateRecipeById(
     name: string;
     steps: string;
     servingSize: number;
+    preparationMinutes: number | null;
+    cookingMinutes: number | null;
     ingredients: string;
   },
 ): D1PreparedStatement {
-  const { name, steps, servingSize, ingredients, recipeId, userId } = data;
+  const {
+    name,
+    steps,
+    servingSize,
+    preparationMinutes,
+    cookingMinutes,
+    ingredients,
+    recipeId,
+    userId,
+  } = data;
   return env.DB.prepare(
     `
 UPDATE
@@ -73,12 +88,23 @@ SET
   name = ?,
   steps = ?,
   servingSize = ?,
+  preparationMinutes = ?,
+  cookingMinutes = ?,
   ingredients = ?
 WHERE
   id == ?
   AND userId = ?;
 `,
-  ).bind(name, steps, servingSize, ingredients, recipeId, userId);
+  ).bind(
+    name,
+    steps,
+    servingSize,
+    preparationMinutes,
+    cookingMinutes,
+    ingredients,
+    recipeId,
+    userId,
+  );
 }
 
 export function createRecipe(
@@ -88,14 +114,32 @@ export function createRecipe(
     name: string;
     steps: string;
     servingSize: number;
+    preparationMinutes: number | null;
+    cookingMinutes: number | null;
     ingredients: string;
   },
 ): D1PreparedStatement {
-  const { userId, name, steps, servingSize, ingredients } = data;
+  const {
+    userId,
+    name,
+    steps,
+    servingSize,
+    preparationMinutes,
+    cookingMinutes,
+    ingredients,
+  } = data;
   return env.DB.prepare(
     `
-      INSERT INTO recipes (userId, name, steps, servingSize, ingredients)
-      VALUES (?, ?, ?, ?, ?);
+      INSERT INTO recipes (userId, name, steps, servingSize, preparationMinutes, cookingMinutes, ingredients)
+      VALUES (?, ?, ?, ?, ?, ?, ?);
       				`,
-  ).bind(userId, name, steps, servingSize, ingredients);
+  ).bind(
+    userId,
+    name,
+    steps,
+    servingSize,
+    preparationMinutes,
+    cookingMinutes,
+    ingredients,
+  );
 }

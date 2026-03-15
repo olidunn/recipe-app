@@ -10,11 +10,15 @@ export function parseRecipe(
   recipeName: string,
   recipeString: string,
   servingSize: number,
+  preparationMinutes: number | null,
+  cookingMinutes: number | null,
 ): Omit<Recipe, 'id'> {
   return {
     name: recipeName,
     steps: parseSteps(recipeString),
     servingSize,
+    preparationMinutes,
+    cookingMinutes,
     ingredients: parseIngredients(recipeString),
   };
 }

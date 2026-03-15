@@ -80,7 +80,7 @@ export const recipesController = new Elysia({
   .post(
     '/recipes',
     async ({ env, userId, body }) => {
-      const { name, steps, servingSize, ingredients } = Value.Encode(
+      const { name, steps, servingSize, preparationMinutes, cookingMinutes, ingredients } = Value.Encode(
         RecipeRequestTransform,
         body,
       );
@@ -89,6 +89,8 @@ export const recipesController = new Elysia({
         userId,
         name,
         servingSize,
+        preparationMinutes,
+        cookingMinutes,
         steps,
         ingredients,
       }).run();
@@ -104,7 +106,7 @@ export const recipesController = new Elysia({
   .post(
     '/recipes/:recipeId',
     async ({ env, userId, body, params: { recipeId } }) => {
-      const { name, steps, servingSize, ingredients } = Value.Encode(
+      const { name, steps, servingSize, preparationMinutes, cookingMinutes, ingredients } = Value.Encode(
         RecipeRequestTransform,
         body,
       );
@@ -114,6 +116,8 @@ export const recipesController = new Elysia({
         userId,
         ingredients,
         servingSize,
+        preparationMinutes,
+        cookingMinutes,
         name,
         steps,
       }).run();

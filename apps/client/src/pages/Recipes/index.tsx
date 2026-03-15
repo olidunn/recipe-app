@@ -55,6 +55,18 @@ export function Recipes() {
               <RecipeLinkSubheading>
                 Serves {recipe.servingSize}
               </RecipeLinkSubheading>
+
+              {recipe.preparationMinutes && (
+                <RecipeLinkSubheading>
+                  Preparation Time: {recipe.preparationMinutes}m
+                </RecipeLinkSubheading>
+              )}
+
+              {recipe.cookingMinutes && (
+                <RecipeLinkSubheading>
+                  Cooking Time: {recipe.cookingMinutes}m
+                </RecipeLinkSubheading>
+              )}
             </RecipeLink>
           ))}
         </RecipeList>
