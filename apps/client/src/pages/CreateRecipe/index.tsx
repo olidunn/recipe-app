@@ -4,6 +4,8 @@ import { RecipeForm } from '~/components/RecipeForm';
 const defaultData: RecipeFormData = {
   name: '',
   servingSize: 1,
+  preparationMinutes: null,
+  cookingMinutes: null,
   steps: `Heat a large pan over medium heat and add {{olive oil}}.
 
 Once the oil is hot, add chopped {{onion}} and sauté until translucent.

@@ -22,6 +22,8 @@ export function UpdateRecipe() {
       setRecipe({
         name: data.name,
         servingSize: data.servingSize,
+        preparationMinutes: data.preparationMinutes,
+        cookingMinutes: data.cookingMinutes,
         steps: data.steps,
       });
     } catch (_error) {

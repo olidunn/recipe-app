@@ -1,4 +1,4 @@
-import type { RecipeResponse } from '@recipe-app/common';
+import type { RecipeRequest, RecipeResponse } from '@recipe-app/common';
 import { RecipeRequestSchema } from '@recipe-app/common';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -15,10 +15,11 @@ import { InputText } from './InputText';
 import { TextArea } from './TextArea';
 
 export type RecipeFormData = {
-  name: string;
   steps: string;
-  servingSize: number;
-};
+} & Pick<
+  RecipeRequest,
+  'name' | 'servingSize' | 'preparationMinutes' | 'cookingMinutes'
+>;
 
 type RecipeFormProps<Mode extends 'create' | 'update'> = {
   data: RecipeFormData;
@@ -34,6 +35,10 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
   const [_, setLocation] = useLocation();
   const [recipeName, setRecipeName] = useState(data.name);
   const [servingSize, setServingSize] = useState(data.servingSize);
+  const [preparationMinutes, setPreparationMinutes] = useState(
+    data.preparationMinutes,
+  );
+  const [cookingMinutes, setCookingMinutes] = useState(data.cookingMinutes);
   const [recipeString, setRecipeString] = useState(data.steps);
   const [errorByName, setErrorByName] = useState<
     ErrorByName<typeof RecipeResponse>
@@ -43,7 +48,13 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
     try {
       setSaving(true);
 
-      const recipe = parseRecipe(recipeName, recipeString, servingSize);
+      const recipe = parseRecipe(
+        recipeName,
+        recipeString,
+        servingSize,
+        preparationMinutes,
+        cookingMinutes,
+      );
       const validation = validate(recipe, RecipeRequestSchema);
 
       if (validation.failed) {
@@ -97,6 +108,22 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
           onChange={setServingSize}
           value={servingSize}
           errorMessage={errorByName.servingSize?.message}
+        />
+
+        <InputNumber
+          label="Cooking Minutes"
+          onChange={setCookingMinutes}
+          value={cookingMinutes}
+          errorMessage={errorByName.cookingMinutes?.message}
+          nullable
+        />
+
+        <InputNumber
+          label="Preparation Minutes"
+          onChange={setPreparationMinutes}
+          value={preparationMinutes}
+          errorMessage={errorByName.preparationMinutes?.message}
+          nullable
         />
 
         <TextArea
