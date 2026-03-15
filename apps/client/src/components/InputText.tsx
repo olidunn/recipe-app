@@ -1,45 +1,98 @@
-import type { ChangeEventHandler, HTMLInputAutoCompleteAttribute } from 'react';
+import type {
+  ChangeEventHandler,
+  HTMLInputAutoCompleteAttribute,
+  ReactElement,
+} from 'react';
 import { useId } from 'react';
 import styled, { css } from 'styled-components';
+import type { RequiredAriaLabelProps } from '~/common/types';
+import { FormControl } from '~/components/FormControl';
+import { ValidationError } from '~/components/ValidationError';
 
-type InputTextProps = {
-  label: string;
+type InputTextProps = RequiredAriaLabelProps & {
   value: string;
-  type?: 'text' | 'password' | 'email';
   onChange: ChangeEventHandler<HTMLInputElement>;
+  type?: 'text' | 'password' | 'email';
   errorMessage?: string | undefined;
-  autoComplete?: HTMLInputAutoCompleteAttribute;
+  autoComplete?: HTMLInputAutoCompleteAttribute | undefined;
 };
 export function InputText({
-  label,
   value,
   onChange,
-  errorMessage,
   type = 'text',
+  errorMessage,
   autoComplete,
-}: InputTextProps) {
+  label,
+  ariaLabel,
+}: InputTextProps): ReactElement {
+  if (label) {
+    return (
+      <FormControl label={label}>
+        <InnerInputText
+          value={value}
+          onChange={onChange}
+          type={type}
+          errorMessage={errorMessage}
+          autoComplete={autoComplete}
+          label={label}
+          ariaLabel={ariaLabel}
+        />
+      </FormControl>
+    );
+  }
+
+  return (
+    <InnerInputText
+      value={value}
+      onChange={onChange}
+      type={type}
+      errorMessage={errorMessage}
+      autoComplete={autoComplete}
+      label={label}
+      ariaLabel={ariaLabel}
+    />
+  );
+}
+
+type InnerInputTextProps = {
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  type: 'text' | 'password' | 'email';
+  errorMessage: string | undefined;
+  autoComplete: HTMLInputAutoCompleteAttribute | undefined;
+  label: string | undefined;
+  ariaLabel: string | undefined;
+};
+
+function InnerInputText({
+  ariaLabel,
+  autoComplete,
+  errorMessage,
+  label,
+  onChange,
+  type,
+  value,
+}: InnerInputTextProps): ReactElement {
   const id = useId();
   const errorMessageId = `${id}-error`;
 
   return (
-    <div>
-      <Label htmlFor={id}>
-        {label}
-        <Input
-          type={type}
-          id={id}
-          value={value}
-          onChange={onChange}
-          aria-invalid={!!errorMessage}
-          aria-errormessage={errorMessageId}
-          $errorOccurred={!!errorMessage}
-          autoComplete={autoComplete}
-        />
-      </Label>
+    <>
+      <Input
+        type={type}
+        id={id}
+        value={value}
+        onChange={onChange}
+        aria-invalid={!!errorMessage}
+        aria-errormessage={errorMessageId}
+        $errorOccurred={!!errorMessage}
+        autoComplete={autoComplete}
+        aria-label={ariaLabel || label}
+      />
       {errorMessage && (
-        <ErrorMessage id={errorMessageId}>{errorMessage}</ErrorMessage>
+        <ValidationError id={errorMessageId} message={errorMessage} />
       )}
-    </div>
+    </>
   );
 }
 
@@ -53,14 +106,4 @@ export const Input = styled.input<InputProps>`
       border-color: red;
       background-color: #ffcccc;
     `}
-`;
-
-export const Label = styled.label`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const ErrorMessage = styled.div`
-  color: red;
-  font-size: 14px;
 `;
