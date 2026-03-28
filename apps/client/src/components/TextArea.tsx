@@ -1,16 +1,23 @@
+import { kebabCase } from '@recipe-app/common';
 import type { ChangeEventHandler } from 'react';
-import { useId } from 'react';
 import styled, { css } from 'styled-components';
-import type { RequiredAriaLabelProps } from '~/common/types';
+import type {
+  InnerRequiredAriaLabelProps,
+  RequiredAriaLabelProps,
+} from '~/common/utils/component';
+import { getAriaLabel } from '~/common/utils/component';
 import { FormControl } from '~/components/FormControl';
 import { ValidationError } from '~/components/ValidationError';
 
-type TextAreaProps = RequiredAriaLabelProps & {
+type BaseTextAreaProps = {
   value: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
-  height?: number;
+  height?: number | undefined;
   errorMessage?: string | undefined;
 };
+
+type TextAreaProps = BaseTextAreaProps & RequiredAriaLabelProps;
+
 export function TextArea({
   value,
   onChange,
@@ -46,24 +53,17 @@ export function TextArea({
   );
 }
 
-type InnerTextAreaProps = {
-  value: string;
-  onChange: ChangeEventHandler<HTMLTextAreaElement>;
-  height: number | undefined;
-  errorMessage: string | undefined;
-  label: string | undefined;
-  ariaLabel: string | undefined;
-};
 function InnerTextArea({
   value,
   onChange,
   height,
   errorMessage,
   label,
-  ariaLabel,
-}: InnerTextAreaProps) {
-  const id = useId();
-  const errorMessageId = `${id}-error`;
+  ariaLabel: propAriaLabel,
+}: InnerRequiredAriaLabelProps<BaseTextAreaProps>) {
+  const ariaLabel = getAriaLabel(label, propAriaLabel);
+  const id = `${kebabCase(ariaLabel)}-input-text`;
+  const errorMessageId = errorMessage ? `${id}-error` : undefined;
 
   return (
     <>
@@ -75,9 +75,9 @@ function InnerTextArea({
         $errorOccurred={!!errorMessage}
         aria-invalid={!!errorMessage}
         aria-errormessage={errorMessageId}
-        aria-label={ariaLabel || label}
+        aria-label={ariaLabel}
       />
-      {errorMessage && (
+      {errorMessageId && errorMessage && (
         <ValidationError id={errorMessageId} message={errorMessage} />
       )}
     </>

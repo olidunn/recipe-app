@@ -1,13 +1,23 @@
+import type { StrictOmit } from '@recipe-app/common';
+import { kebabCase } from '@recipe-app/common';
 import type { CSSProperties, FocusEvent, ReactElement } from 'react';
-import { useEffect, useId, useRef } from 'react';
-import type { RequiredAriaLabelProps } from '~/common/types';
+import { useEffect, useRef } from 'react';
+import type {
+  InnerRequiredAriaLabelProps,
+  RequiredAriaLabelProps,
+} from '~/common/utils/component';
+import { getAriaLabel } from '~/common/utils/component';
 import type { FormControlProps } from '~/components/FormControl';
 import { FormControl } from '~/components/FormControl';
-import { Input } from '~/components/InputText';
 import { ValidationError } from '~/components/ValidationError';
 
 type BaseInputNumberProps = RequiredAriaLabelProps &
-  Pick<FormControlProps, 'inputFirst' | 'optional'> & {
+  Pick<FormControlProps, 'inputFirst'> & {
+    /**
+     * When set to false, the input will be `required`.
+     * @default undefined
+     */
+    optional?: boolean | undefined;
     errorMessage?: string | undefined;
     disabled?: boolean;
     /**
@@ -46,7 +56,7 @@ export function InputNumber({
   onChange,
   value,
   errorMessage,
-  optional = false,
+  optional,
   nullable = false,
   disabled = false,
   totalDecimals = 0,
@@ -97,22 +107,6 @@ export function InputNumber({
   );
 }
 
-type InnerInputNumberProps = {
-  value: number | null;
-  onChange: ((value: number | null) => void) | ((value: number) => void);
-  errorMessage: string | undefined;
-  optional: boolean;
-  nullable: boolean;
-  disabled: boolean;
-  totalDecimals: number;
-  allowNegativeValues: boolean;
-  minValue: number | undefined;
-  maxValue: number | undefined;
-  label: string | undefined;
-  ariaLabel: string | undefined;
-  style: CSSProperties | undefined;
-};
-
 function InnerInputNumber({
   value,
   onChange,
@@ -125,11 +119,13 @@ function InnerInputNumber({
   minValue,
   maxValue,
   label,
-  ariaLabel,
+  ariaLabel: propAriaLabel,
   style,
-}: InnerInputNumberProps): ReactElement {
-  const id = useId();
-  const errorMessageId = `${id}-error`;
+}: InnerRequiredAriaLabelProps<
+  StrictOmit<InputNumberProps, 'inputFirst'>
+>): ReactElement {
+  const ariaLabel = getAriaLabel(label, propAriaLabel);
+  const id = `${kebabCase(ariaLabel)}-input-number`;
   const inputRef = useRef<HTMLInputElement>(null);
   const prevValueRef = useRef(value);
 
@@ -180,10 +176,13 @@ function InnerInputNumber({
     onChange(Number(roundedNumber));
   }
 
+  const errorMessageId = errorMessage ? `${id}-error` : undefined;
+
   return (
     <>
-      <Input
+      <input
         ref={inputRef}
+        className="InputNumber"
         type="text"
         inputMode={totalDecimals === 0 ? 'numeric' : 'decimal'}
         onMouseDown={(event) => {
@@ -215,13 +214,12 @@ function InnerInputNumber({
           }
         }}
         defaultValue={normalizeValue(value)}
-        required={!optional}
+        required={optional === false}
         aria-invalid={!!errorMessageId}
         aria-errormessage={errorMessageId}
         disabled={disabled}
-        aria-label={ariaLabel || label}
+        aria-label={ariaLabel}
         style={style}
-        $errorOccurred={!!errorMessage}
       />
       {errorMessageId && errorMessage && (
         <ValidationError id={errorMessageId} message={errorMessage} />
