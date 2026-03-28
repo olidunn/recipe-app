@@ -48,7 +48,7 @@
     "[css]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "js/ts.tsdk.path": "root/node_modules/typescript/lib",
     "bun.test.filePattern": "**/*.test.{ts,tsx}"
   }
 }
