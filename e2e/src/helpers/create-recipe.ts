@@ -3,10 +3,16 @@ import { expect } from '@playwright/test';
 
 export async function submitRecipeForm(
   page: Page,
-  data: { name: string; servingSize: number; recipeString: string },
+  data: {
+    name: string;
+    servingSize: number;
+    cookingMinutes: number;
+    preparationMinutes: number;
+    recipeString: string;
+  },
 ) {
-  // Go to localhost/create-recipe
-  await page.goto('/create-recipe');
+  // Go to localhost/create
+  await page.goto('/recipes/create');
 
   // Get textbox for recipe name
   const nameInput = page.getByRole('textbox', { name: 'Name', exact: true });
@@ -19,6 +25,18 @@ export async function submitRecipeForm(
   });
   await expect(servingSizeInput).toBeVisible();
 
+  const cookingMinutes = page.getByRole('textbox', {
+    name: 'Preparation Time',
+    exact: true,
+  });
+  await expect(cookingMinutes).toBeVisible();
+
+  const preparationMinutes = page.getByRole('textbox', {
+    name: 'Cooking Time',
+    exact: true,
+  });
+  await expect(preparationMinutes).toBeVisible();
+
   // Get textbox for recipe steps
   const recipeStringInput = page.getByRole('textbox', {
     name: 'Steps',
@@ -29,12 +47,14 @@ export async function submitRecipeForm(
   // Fill the textboxes for recipe name, serving size, steps
   await nameInput.fill(data.name);
   await servingSizeInput.fill(String(data.servingSize));
+  await cookingMinutes.fill(String(data.cookingMinutes));
+  await preparationMinutes.fill(String(data.preparationMinutes));
   await recipeStringInput.fill(data.recipeString);
 
   // Click submit button, creates recipe
   await page
     .getByRole('button', {
-      name: 'Save',
+      name: 'Create',
       exact: true,
     })
     .click();

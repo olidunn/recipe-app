@@ -10,6 +10,8 @@ test('can create and delete a recipe', async ({ page }) => {
   await submitRecipeForm(page, {
     name: 'sample recipe',
     servingSize: 2,
+    cookingMinutes: 15,
+    preparationMinutes: 10,
     recipeString: '1. make the recipe using {{ingredients}}',
   });
 
