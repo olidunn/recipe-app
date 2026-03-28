@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export type FormControlProps = {
   label: ReactNode;
   children: ReactNode;
-  optional?: boolean;
+  optional?: boolean | undefined;
   fitContent?: boolean;
   inputFirst?: boolean;
   loading?: boolean;

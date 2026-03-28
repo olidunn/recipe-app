@@ -1,21 +1,28 @@
+import { kebabCase } from '@recipe-app/common';
 import type {
   ChangeEventHandler,
   HTMLInputAutoCompleteAttribute,
   ReactElement,
 } from 'react';
-import { useId } from 'react';
 import styled, { css } from 'styled-components';
-import type { RequiredAriaLabelProps } from '~/common/types';
+import type {
+  InnerRequiredAriaLabelProps,
+  RequiredAriaLabelProps,
+} from '~/common/utils/component';
+import { getAriaLabel } from '~/common/utils/component';
 import { FormControl } from '~/components/FormControl';
 import { ValidationError } from '~/components/ValidationError';
 
-type InputTextProps = RequiredAriaLabelProps & {
+type BaseInputProps = {
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   type?: 'text' | 'password' | 'email';
   errorMessage?: string | undefined;
   autoComplete?: HTMLInputAutoCompleteAttribute | undefined;
 };
+
+type InputTextProps = BaseInputProps & RequiredAriaLabelProps;
+
 export function InputText({
   value,
   onChange,
@@ -54,27 +61,18 @@ export function InputText({
   );
 }
 
-type InnerInputTextProps = {
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  type: 'text' | 'password' | 'email';
-  errorMessage: string | undefined;
-  autoComplete: HTMLInputAutoCompleteAttribute | undefined;
-  label: string | undefined;
-  ariaLabel: string | undefined;
-};
-
 function InnerInputText({
-  ariaLabel,
+  ariaLabel: propAriaLabel,
   autoComplete,
   errorMessage,
   label,
   onChange,
   type,
   value,
-}: InnerInputTextProps): ReactElement {
-  const id = useId();
-  const errorMessageId = `${id}-error`;
+}: InnerRequiredAriaLabelProps<BaseInputProps>): ReactElement {
+  const ariaLabel = getAriaLabel(label, propAriaLabel);
+  const id = `${kebabCase(ariaLabel)}-input-text`;
+  const errorMessageId = errorMessage ? `${id}-error` : undefined;
 
   return (
     <>
@@ -87,9 +85,9 @@ function InnerInputText({
         aria-errormessage={errorMessageId}
         $errorOccurred={!!errorMessage}
         autoComplete={autoComplete}
-        aria-label={ariaLabel || label}
+        aria-label={ariaLabel}
       />
-      {errorMessage && (
+      {errorMessageId && errorMessage && (
         <ValidationError id={errorMessageId} message={errorMessage} />
       )}
     </>
@@ -105,5 +103,5 @@ export const Input = styled.input<InputProps>`
     css`
       border-color: red;
       background-color: #ffcccc;
-    `}
+    `};
 `;
