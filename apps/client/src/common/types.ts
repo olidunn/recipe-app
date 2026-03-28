@@ -1,12 +1,14 @@
+import type { ReactNode } from 'react';
+
 /**
- * Enforces that at least one of `label` or `ariaLabel` is provided.
+ * Props for components that need to ensure that either a `label` or an `ariaLabel` is a `string`.
  */
 export type RequiredAriaLabelProps =
   | {
-      label: string;
-      ariaLabel?: string | undefined;
+      label?: ReactNode | undefined;
+      ariaLabel: string;
     }
   | {
-      label?: string | undefined;
-      ariaLabel: string;
+      label: string;
+      ariaLabel?: string | undefined;
     };
