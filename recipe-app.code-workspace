@@ -25,7 +25,7 @@
     ]
   },
   "settings": {
-    "cSpell.words": ["Elysia", "elysiajs", "typebox", "wouter"],
+    "cSpell.words": ["Elysia", "elysiajs", "Registrator", "typebox", "wouter"],
     "editor.codeActionsOnSave": {
       "source.organizeImports.biome": "explicit",
       "source.fixAll.biome": "explicit"
