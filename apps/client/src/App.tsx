@@ -21,8 +21,6 @@ import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
 import { UpdateRecipe } from './pages/UpdateRecipe';
 
-const navHeight = 56;
-
 const GlobalStyle = createGlobalStyle`
 body {
     margin: 0;
@@ -47,16 +45,15 @@ body {
 
   header {
     background-color: aliceblue;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1;
   }
 
   main {
     margin: 0;
-    margin-top: ${navHeight}px;
-
 
     @media (max-width: 1200px) {
       font-size: 30px;
@@ -76,9 +73,9 @@ body {
 `;
 
 const NavMenu = styled.div`
-  position: fixed;
+  position: absolute;
+  top: 100%;
   right: 0px;
-  top: ${navHeight}px;
   padding: 10px;
   gap: 10px;
   display: flex;
