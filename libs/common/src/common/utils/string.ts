@@ -18,3 +18,18 @@ export function kebabCase(value?: string): string {
       .toLowerCase()
   );
 }
+
+export function formatMinutesAsHours(totalMinutes: number): string | number {
+  if (!totalMinutes) {
+    return 'NaN';
+  }
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.floor(totalMinutes % 60);
+
+  // const formattedMinutes = minutes.toString().padStart(2, '0');
+
+  // const formattedHours = hours.toString().padStart(2, '0');
+
+  return `${hours}h: ${minutes}m`;
+}

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { kebabCase } from './string';
+import { formatMinutesAsHours, kebabCase } from './string';
 
 describe('kebabCase', () => {
   test.each([
@@ -45,5 +45,24 @@ describe('kebabCase', () => {
     },
   ])(`"$input" -> "$output"`, ({ input, output }) => {
     expect(kebabCase(input)).toBe(output);
+  });
+});
+
+describe('formatMinutesAsHours', () => {
+  test.each([
+    {
+      input: `${0}`,
+      output: 'NaN',
+    },
+    {
+      input: `${60}`,
+      output: `${1}h: ${0}m`,
+    },
+    {
+      input: `${70}`,
+      output: `${1}h: ${10}m`,
+    },
+  ])('$input -> $output', ({ input, output }) => {
+    expect(formatMinutesAsHours(Number(input))).toBe(output);
   });
 });
