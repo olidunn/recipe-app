@@ -31,9 +31,9 @@ export function formatMinutesAsHours(totalMinutes: number): string | number {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
 
-  // const formattedMinutes = minutes.toString().padStart(2, '0');
-
-  // const formattedHours = hours.toString().padStart(2, '0');
+  if (totalMinutes < 60) {
+    return `${minutes}m`;
+  }
 
   return `${hours}h: ${minutes}m`;
 }

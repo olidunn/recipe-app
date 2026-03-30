@@ -67,12 +67,24 @@ describe('formatMinutesAsHours', () => {
       output: 'NaN',
     },
     {
-      input: 1,
-      output: `${0}h: ${1}m`,
+      input: 5,
+      output: `${5}m`,
     },
     {
       input: 1000,
       output: 'Exceeded maximum length of time',
+    },
+    {
+      input: 500,
+      output: `${8}h: ${20}m`,
+    },
+    {
+      input: 80.5,
+      output: `${1}h: ${20}m`,
+    },
+    {
+      input: 'some string',
+      output: 'NaN',
     },
   ])('$input -> $output', ({ input, output }) => {
     expect(formatMinutesAsHours(Number(input))).toBe(output);
