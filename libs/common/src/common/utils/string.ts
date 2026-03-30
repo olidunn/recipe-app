@@ -24,6 +24,10 @@ export function formatMinutesAsHours(totalMinutes: number): string | number {
     return 'NaN';
   }
 
+  if (totalMinutes > 500) {
+    return 'Exceeded maximum length of time';
+  }
+
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
 
