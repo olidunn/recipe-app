@@ -1,4 +1,5 @@
 import type { Recipe } from '@recipe-app/common';
+import { formatMinutesAsHours } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Redirect, useParams } from 'wouter';
@@ -102,10 +103,14 @@ export function RecipePage() {
           <h3>Serving size: {servingSize}</h3>
 
           {preparationMinutes && (
-            <h3>Preparation Time: {preparationMinutes}m</h3>
+            <h3>
+              Preparation Time: {formatMinutesAsHours(preparationMinutes)}{' '}
+            </h3>
           )}
 
-          {cookingMinutes && <h3>Cooking Time: {cookingMinutes}m</h3>}
+          {cookingMinutes && (
+            <h3>Cooking Time: {formatMinutesAsHours(cookingMinutes)}</h3>
+          )}
 
           <h3>Steps</h3>
           <UL>

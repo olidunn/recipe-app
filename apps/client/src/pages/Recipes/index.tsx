@@ -1,4 +1,5 @@
 import type { Recipe } from '@recipe-app/common';
+import { formatMinutesAsHours } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { to } from '~/common/paths';
@@ -58,13 +59,16 @@ export function Recipes() {
 
               {recipe.preparationMinutes && (
                 <RecipeLinkSubheading>
-                  Preparation Time: {recipe.preparationMinutes}m
+                  Preparation Time:{' '}
+                  {formatMinutesAsHours(recipe.preparationMinutes)}
                 </RecipeLinkSubheading>
               )}
 
               {recipe.cookingMinutes && (
                 <RecipeLinkSubheading>
-                  Cooking Time: {recipe.cookingMinutes}m
+                  Cooking Time: {formatMinutesAsHours(
+                    recipe.cookingMinutes,
+                  )}{' '}
                 </RecipeLinkSubheading>
               )}
             </RecipeLink>
