@@ -18,3 +18,14 @@ export function kebabCase(value?: string): string {
       .toLowerCase()
   );
 }
+
+export function formatMinutesAsHours(totalMinutes: number): string {
+  if (!totalMinutes) {
+    return '0 mins';
+  }
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = Math.floor(totalMinutes % 60);
+
+  return `${hours}h: ${minutes}m`;
+}
