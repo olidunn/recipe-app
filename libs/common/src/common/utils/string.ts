@@ -19,21 +19,13 @@ export function kebabCase(value?: string): string {
   );
 }
 
-export function formatMinutesAsHours(totalMinutes: number): string | number {
+export function formatMinutesAsHours(totalMinutes: number): string {
   if (!totalMinutes) {
-    return 'NaN';
-  }
-
-  if (totalMinutes > 500) {
-    return 'Exceeded maximum length of time';
+    return '0 mins';
   }
 
   const hours = Math.floor(totalMinutes / 60);
   const minutes = Math.floor(totalMinutes % 60);
-
-  if (totalMinutes < 60) {
-    return `${minutes}m`;
-  }
 
   return `${hours}h: ${minutes}m`;
 }

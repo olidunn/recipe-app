@@ -51,40 +51,44 @@ describe('kebabCase', () => {
 describe('formatMinutesAsHours', () => {
   test.each([
     {
-      input: `${0}`,
-      output: 'NaN',
+      input: 0,
+      output: '0 mins',
     },
     {
-      input: `${60}`,
-      output: `${1}h: ${0}m`,
+      input: 59,
+      output: '59m',
     },
     {
-      input: `${70}`,
-      output: `${1}h: ${10}m`,
+      input: 60,
+      output: '1h: 0m',
+    },
+    {
+      input: 61,
+      output: '1h: 1m',
+    },
+    {
+      input: 70,
+      output: '1h: 10m',
     },
     {
       input: 0,
-      output: 'NaN',
+      output: '0 mins',
     },
     {
       input: 5,
-      output: `${5}m`,
-    },
-    {
-      input: 1000,
-      output: 'Exceeded maximum length of time',
+      output: '5m',
     },
     {
       input: 500,
-      output: `${8}h: ${20}m`,
+      output: '8h: 20m',
     },
     {
       input: 80.5,
-      output: `${1}h: ${20}m`,
+      output: '1h: 20m',
     },
     {
       input: 'some string',
-      output: 'NaN',
+      output: '0 mins',
     },
   ])('$input -> $output', ({ input, output }) => {
     expect(formatMinutesAsHours(Number(input))).toBe(output);
