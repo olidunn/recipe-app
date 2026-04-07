@@ -84,7 +84,7 @@ export function RecipePage() {
       <h1>{name}</h1>
       <ButtonGroup>
         <Link to={to('/recipes/:recipeId/update', { recipeId })}>
-          Update recipe
+          Update Recipe
         </Link>
         <Link to={to('/recipes')}>Recipes</Link>
       </ButtonGroup>

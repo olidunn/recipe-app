@@ -21,7 +21,7 @@ export function Link({ children, icon, ...restProps }: LinkProps) {
 }
 
 const StyledLink = styled(WouterLink)`
-  color: #e8e9eb;
+  color: white;
   background-color: #8c8b91;
   padding: 8px 10px;
   width: fit-content;
@@ -32,7 +32,8 @@ const StyledLink = styled(WouterLink)`
   text-decoration: none;
 
   &:hover  {
-    background-color: #8383cf;
+    /* background-color: #8383cf; */
+    color: #0000EE;
   }
   
   border-radius: 5px;

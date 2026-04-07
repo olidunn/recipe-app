@@ -76,7 +76,7 @@ export function Recipes() {
         </RecipeList>
       )}
       <ButtonGroup>
-        <Link to={to('/recipes/create')}>Create recipe</Link>
+        <Link to={to('/recipes/create')}>Create Recipe</Link>
         <Button
           onClick={() => {
             const confirmed =
