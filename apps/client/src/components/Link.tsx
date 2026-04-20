@@ -32,8 +32,8 @@ const StyledLink = styled(WouterLink)`
   text-decoration: none;
 
   &:hover  {
-    /* background-color: #8383cf; */
-    color: #0000EE;
+    background-color: #8383cf;
+    text-decoration: underline;
   }
   
   border-radius: 5px;
