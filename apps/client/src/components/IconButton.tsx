@@ -22,7 +22,7 @@ export function IconButton({
       loading={loading}
       ariaLabel={ariaLabel}
     >
-      <Icon type={type} size={32} />
+      <Icon type={type} size={36} />
     </StyledButton>
   );
 }
@@ -30,4 +30,5 @@ export function IconButton({
 const StyledButton = styled(Button)`
     border-radius: 50%;
     padding: 4px;
+    line-height: normal;
 `;

@@ -40,4 +40,6 @@ const StyledLink = styled(WouterLink)`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  line-height: 1.2;
+  min-height: 44px;
   `;

@@ -22,7 +22,15 @@ import { Recipes } from './pages/Recipes';
 import { UpdateRecipe } from './pages/UpdateRecipe';
 
 const GlobalStyle = createGlobalStyle`
-body {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    /* Turn off double tapping */
+    touch-action: manipulation;
+  }
+
+  body {
     margin: 0;
     font-family: "DM Sans", sans-serif;
     font-optical-sizing: auto;
@@ -55,20 +63,13 @@ body {
   main {
     margin: 0;
 
-    @media (max-width: 1200px) {
-      font-size: 30px;
-      button {
-        font-size: 20px;
-      }
-      input, textarea {
-        font-size: 20px;
-      }
+    @media (min-width: 768px) {
+      padding: 8px;
     }
 
-    @media (max-width: 600px) {
-      font-size: 20px;
+     @media (min-width: 992px) {
+      padding: 16px;
     }
-
   }
 `;
 

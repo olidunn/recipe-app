@@ -54,4 +54,6 @@ const StyledButton = styled.button`
   &:hover  {
     background-color: #8383cf;
   }
+  line-height: 1.2;
+  min-height: 44px;
 `;
