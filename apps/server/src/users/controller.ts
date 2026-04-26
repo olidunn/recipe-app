@@ -5,8 +5,8 @@ import {
   validateNewPassword,
 } from '@recipe-app/common';
 import Elysia, { t } from 'elysia';
-import { getErrorMessage } from '../common/error';
-import { D1_ERROR } from '../common/utils';
+import { D1_ERROR } from '../common/utils/d1';
+import { getErrorMessage } from '../common/utils/error';
 import { createUser } from './data';
 import { AuthenticationError, OptionalSessionCookie } from './schemas';
 import { authenticate, generateSalt, hashPassword } from './utils';
@@ -46,6 +46,10 @@ export const usersController = new Elysia({
 
         return status(500, 'Failed to create account.');
       }
+
+      // TODO
+      // await getMagicLink
+      // await send the verify email email
     },
     {
       body: CreateUserRequest,
