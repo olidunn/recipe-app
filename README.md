@@ -11,8 +11,16 @@
 ## Setup
 
 - Create `apps/client/.env` with the following content:
+
   ```env
   VITE_SERVER_URL
+  ```
+
+- Create `apps/server/.env` with the following content:
+
+  ```env
+  SESSION_COOKIE_SECRET=
+  MAGIC_LINK_SECRET=
   ```
 
 ## Development
