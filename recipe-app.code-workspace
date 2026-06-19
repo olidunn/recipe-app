@@ -25,7 +25,16 @@
     ]
   },
   "settings": {
-    "cSpell.words": ["Elysia", "elysiajs", "Registrator", "typebox", "wouter"],
+    "cSpell.words": [
+      "AHASEND",
+      "bunx",
+      "Elysia",
+      "elysiajs",
+      "mailpit",
+      "Registrator",
+      "typebox",
+      "wouter"
+    ],
     "editor.codeActionsOnSave": {
       "source.organizeImports.biome": "explicit",
       "source.fixAll.biome": "explicit"
