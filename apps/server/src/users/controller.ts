@@ -7,6 +7,8 @@ import {
 import Elysia, { t } from 'elysia';
 import { D1_ERROR } from '../common/utils/d1';
 import { getErrorMessage } from '../common/utils/error';
+import { getMagicLink } from '../common/utils/magic-link';
+import { sendEmail } from '../email/utils';
 import { createUser } from './data';
 import { AuthenticationError, OptionalSessionCookie } from './schemas';
 import { authenticate, generateSalt, hashPassword } from './utils';
@@ -47,9 +49,16 @@ export const usersController = new Elysia({
         return status(500, 'Failed to create account.');
       }
 
-      // TODO
-      // await getMagicLink
-      // await send the verify email email
+      const magicLink = await getMagicLink(env, email, 'verify-email');
+
+      const emailResponse = await sendEmail(env, {
+        type: 'VerifyEmailAddress',
+        link: magicLink,
+        recipient: { email, name },
+      });
+      if (emailResponse.errorOccurred) {
+        return status(500, 'Failed to send verification email');
+      }
     },
     {
       body: CreateUserRequest,
