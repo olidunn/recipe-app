@@ -1,8 +1,8 @@
 import { env } from 'elysia';
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
-import { AccessAttemptMessage } from './components/AccessAttemptMessage';
-import type { AccountCreationAttemptData } from './types';
+import { AccessAttemptMessage } from '../components/AccessAttemptMessage';
+import type { AccountCreationAttemptData } from '../types';
 
 function Component({
   recipient: { name },

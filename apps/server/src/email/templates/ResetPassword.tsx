@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
-import { AccessAttemptMessage } from './components/AccessAttemptMessage';
-import type { ResetPasswordData } from './types';
+import { AccessAttemptMessage } from '../components/AccessAttemptMessage';
+import type { ResetPasswordData } from '../types';
 
 function Component({
   recipient: { name },

@@ -1,8 +1,4 @@
-import { EmailAddress } from '@recipe-app/common';
-import { AccountCreationAttempt } from './AccountCreationAttempt';
-import { VerifyEmailAddress } from './components/VerifyEmailAddress';
-import { EmailAlreadyVerified } from './EmailAlreadyVerified';
-import { ResetPassword } from './ResetPassword';
+import { emailAddress } from '@recipe-app/common';
 import type { Email } from './schemas';
 import {
   EmailChecker,
@@ -10,6 +6,10 @@ import {
   MailpitEmailErrorChecker,
   MailpitEmailResponseChecker,
 } from './schemas';
+import { AccountCreationAttempt } from './templates/AccountCreationAttempt';
+import { EmailAlreadyVerified } from './templates/EmailAlreadyVerified';
+import { ResetPassword } from './templates/ResetPassword';
+import { VerifyEmailAddress } from './templates/VerifyEmailAddress';
 import type { EmailData } from './types';
 
 type EmailResponse =
@@ -27,7 +27,7 @@ export function sendEmail(env: Env, data: EmailData): Promise<EmailResponse> {
     case 'VerifyEmailAddress':
       return send(
         {
-          from: EmailAddress['account'],
+          from: emailAddress.account,
           recipients: [data.recipient],
           subject: 'Verify your email',
           html_content: VerifyEmailAddress.html(data),
@@ -39,7 +39,7 @@ export function sendEmail(env: Env, data: EmailData): Promise<EmailResponse> {
     case 'ResetPassword':
       return send(
         {
-          from: EmailAddress['account'],
+          from: emailAddress.account,
           recipients: [data.recipient],
           subject: 'Reset your password',
           html_content: ResetPassword.html(data),
@@ -51,7 +51,7 @@ export function sendEmail(env: Env, data: EmailData): Promise<EmailResponse> {
     case 'AccountCreationAttempt':
       return send(
         {
-          from: EmailAddress['account'],
+          from: emailAddress.account,
           recipients: [data.recipient],
           subject: 'You already have an account with us',
           html_content: AccountCreationAttempt.html(data),
@@ -63,7 +63,7 @@ export function sendEmail(env: Env, data: EmailData): Promise<EmailResponse> {
     case 'EmailAlreadyVerified':
       return send(
         {
-          from: EmailAddress['account'],
+          from: emailAddress.account,
           recipients: [data.recipient],
           subject: 'Your email address is already verified',
           html_content: EmailAlreadyVerified.html(data),

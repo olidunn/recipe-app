@@ -1,8 +1,8 @@
 import { env } from 'elysia';
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
-import { AccessAttemptMessage } from './components/AccessAttemptMessage';
-import type { EmailAlreadyVerifiedData } from './types';
+import { AccessAttemptMessage } from '../components/AccessAttemptMessage';
+import type { EmailAlreadyVerifiedData } from '../types';
 
 function Component({
   recipient: { name },
