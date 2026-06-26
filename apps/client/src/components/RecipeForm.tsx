@@ -1,5 +1,6 @@
 import type { RecipeRequest, RecipeResponse } from '@recipe-app/common';
 import { RecipeRequestSchema } from '@recipe-app/common';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
@@ -13,6 +14,8 @@ import { Button } from './Button';
 import { Form } from './Form';
 import { InputText } from './InputText';
 import { TextArea } from './TextArea';
+
+const RecipeRequestSchemaChecker = TypeCompiler.Compile(RecipeRequestSchema);
 
 export type RecipeFormData = {
   steps: string;
@@ -55,7 +58,7 @@ export function RecipeForm<Mode extends 'create' | 'update'>({
         preparationMinutes,
         cookingMinutes,
       );
-      const validation = validate(recipe, RecipeRequestSchema);
+      const validation = validate(recipe, RecipeRequestSchemaChecker);
 
       if (validation.failed) {
         setErrorByName(validation.errorByName);

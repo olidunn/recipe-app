@@ -6,6 +6,7 @@ export const paths = {
   updateRecipe: '/recipes/:recipeId/update',
   createAccount: '/create-account',
   login: '/login',
+  verifyEmail: '/verify-email/:token'
 } as const;
 
 type Path = (typeof paths)[keyof typeof paths];

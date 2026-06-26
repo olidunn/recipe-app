@@ -1,4 +1,5 @@
 import {
+  AuthenticationErrorSchema,
   CreateUserRequest,
   LoginRequest,
   sessionMaxAge,
@@ -10,7 +11,7 @@ import { getErrorMessage } from '../common/utils/error';
 import { getMagicLink } from '../common/utils/magic-link';
 import { sendEmail } from '../email/utils';
 import { createUser } from './data';
-import { AuthenticationError, OptionalSessionCookie } from './schemas';
+import { OptionalSessionCookie } from './schemas';
 import { authenticate, generateSalt, hashPassword } from './utils';
 
 export const usersController = new Elysia({
@@ -112,7 +113,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
       cookie: OptionalSessionCookie,
       response: {
         200: t.Void(),
-        400: AuthenticationError,
+        400: AuthenticationErrorSchema,
       },
     },
   )
