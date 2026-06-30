@@ -8,7 +8,10 @@ import {
 import Elysia, { t } from 'elysia';
 import { D1_ERROR } from '../common/utils/d1';
 import { getErrorMessage } from '../common/utils/error';
-import { getMagicLink } from '../common/utils/magic-link';
+import {
+  getEmailFromMagicLinkToken,
+  getMagicLink,
+} from '../common/utils/magic-link';
 import { sendEmail } from '../email/utils';
 import { createUser } from './data';
 import { OptionalSessionCookie } from './schemas';
@@ -70,6 +73,41 @@ export const usersController = new Elysia({
       },
     },
   )
+    .post("/verify-email/:token", async ({ env, params, status }) => {
+  console.log("Received token:", params.token);
+
+  const email = await getEmailFromMagicLinkToken(env, params.token);
+
+  console.log("Decoded email:", email);
+
+  if (!email) {
+    return status(400, "Invalid or expired verification link");
+  }
+
+  console.log("Verified:", email);
+
+  await env.DB.prepare(`
+    UPDATE users
+    SET emailIsVerified = 1
+    WHERE email = ?;
+  `)
+    .bind(email)
+    .run();
+
+
+      return;
+    },
+    {
+      params: t.Object({
+        token: t.String(),
+      }),
+      response: {
+        200: t.Void(),
+        400: t.String(),
+      },
+    },
+  )
+
   .post(
     '/login',
     async ({ status, body, env, cookie, request }) => {
