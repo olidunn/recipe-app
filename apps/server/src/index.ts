@@ -4,7 +4,6 @@ import Elysia from 'elysia';
 import packageJson from '../package.json';
 import { recipesController } from './recipes/controller';
 import { usersController } from './users/controller';
-import '@recipe-app/common/typebox-error-messages.global';
 
 function createServer(env: Env) {
   return new Elysia({

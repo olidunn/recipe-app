@@ -73,37 +73,31 @@ export const usersController = new Elysia({
       },
     },
   )
-    .post("/verify-email/:token", async ({ env, params, status }) => {
-  console.log("Received token:", params.token);
+  .post(
+    '/verify-email/:token',
+    async ({ env, params }) => {
+      const email = await getEmailFromMagicLinkToken(env, params.token);
 
-  const email = await getEmailFromMagicLinkToken(env, params.token);
+      if (!email) {
+        return { emailIsVerified: false };
+      }
 
-  console.log("Decoded email:", email);
-
-  if (!email) {
-    return status(400, "Invalid or expired verification link");
-  }
-
-  console.log("Verified:", email);
-
-  await env.DB.prepare(`
+      await env.DB.prepare(`
     UPDATE users
     SET emailIsVerified = 1
     WHERE email = ?;
   `)
-    .bind(email)
-    .run();
+        .bind(email)
+        .run();
 
-
-      return;
+      return { emailIsVerified: true };
     },
     {
       params: t.Object({
         token: t.String(),
       }),
       response: {
-        200: t.Void(),
-        400: t.String(),
+        200: t.Object({ emailIsVerified: t.Boolean() }),
       },
     },
   )

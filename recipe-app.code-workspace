@@ -39,24 +39,7 @@
       "source.organizeImports.biome": "explicit",
       "source.fixAll.biome": "explicit"
     },
-    "[typescriptreact]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[typescript]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[javascript]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[json]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[jsonc]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[css]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
+   
     "js/ts.tsdk.path": "root/node_modules/typescript/lib",
     "bun.test.filePattern": "**/*.test.{ts,tsx}"
   }
