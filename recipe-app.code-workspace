@@ -39,7 +39,6 @@
       "source.organizeImports.biome": "explicit",
       "source.fixAll.biome": "explicit"
     },
-   
     "js/ts.tsdk.path": "root/node_modules/typescript/lib",
     "bun.test.filePattern": "**/*.test.{ts,tsx}"
   }
