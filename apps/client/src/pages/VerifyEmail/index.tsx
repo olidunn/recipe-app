@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Link } from '~/components/Link';
 
-export function VerifyPage() {
+export function VerifyEmail() {
   const { token } = useParams<{ token: string }>();
   const [verified, setVerified] = useState<boolean | null>(null);
 
