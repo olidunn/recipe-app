@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import {
-  Redirect,
-  Route,
-  Switch,
-  useLocation,
-  Link as WouterLink,
-} from 'wouter';
+import { Redirect, Switch, useLocation } from 'wouter';
 import { useAuthenticated } from '~/common/data/users';
-import { paths, to } from './common/paths';
+import { PrivateRoute } from '~/components/PrivateRoute';
+import { PublicOnlyRoute } from '~/components/PublicOnlyRoute';
+import { Route } from '~/components/Route';
+import { to } from './common/paths';
 import { server } from './common/server';
 import { Button } from './components/Button';
 import { IconButton } from './components/IconButton';
@@ -123,7 +120,7 @@ export function App() {
         <Nav>
           {authenticated && (
             <>
-              <WouterLink
+              <Link
                 style={{
                   color: 'black',
                   textDecoration: 'none',
@@ -132,7 +129,7 @@ export function App() {
                 to={to('/')}
               >
                 Recipe App
-              </WouterLink>
+              </Link>
               <IconButton
                 onClick={() => {
                   setNavMenuIsOpen((state) => !state);
@@ -158,13 +155,16 @@ export function App() {
       </header>
       <main>
         <Switch>
-          <Route path={paths.home} component={HomeRedirection} />
-          <Route path={paths.recipes} component={Recipes} />
-          <Route path={paths.createRecipe} component={CreateRecipe} />
-          <Route path={paths.recipe} component={RecipePage} />
-          <Route path={paths.updateRecipe} component={UpdateRecipe} />
-          <Route path={paths.createAccount} component={CreateAccount} />
-          <Route path={paths.login} component={Login} />
+          <Route path="/" component={HomeRedirection} />
+          <PublicOnlyRoute path="/create-account" component={CreateAccount} />
+          <PublicOnlyRoute path="/login" component={Login} />
+          <PrivateRoute path="/recipes" component={Recipes} />
+          <PrivateRoute path="/recipes/create" component={CreateRecipe} />
+          <PrivateRoute path="/recipes/:recipeId" component={RecipePage} />
+          <PrivateRoute
+            path="/recipes/:recipeId/update"
+            component={UpdateRecipe}
+          />
           <Route>404 Not found</Route>
         </Switch>
       </main>
