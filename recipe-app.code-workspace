@@ -1,19 +1,6 @@
 {
   "folders": [
     {
-      "path": "apps/client"
-    },
-    {
-      "path": "apps/server"
-    },
-    {
-      "path": "libs/common"
-    },
-    {
-      "path": "e2e"
-    },
-    {
-      "name": "root",
       "path": "."
     }
   ],
