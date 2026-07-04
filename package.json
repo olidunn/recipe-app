@@ -16,6 +16,7 @@
     "unit-tests": "bun --filter '*' test",
     "typegen": "bun --filter '*' typegen",
     "typecheck": "bun --filter '*' typecheck",
+    "lint-staged": "lint-staged",
     "prepare": "husky"
   },
   "type": "module",
