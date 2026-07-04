@@ -1,6 +1,6 @@
+import type { AuthenticationErrorSchema } from '@recipe-app/common';
 import { passwordMaxLength } from '@recipe-app/common';
 import type { Static } from 'elysia';
-import type { AuthenticationError } from './schemas';
 
 export type UserSchema = {
   readonly id: number;
@@ -19,7 +19,7 @@ type SuccessResult = {
 
 type ErrorResult = {
   failed: true;
-  error: Static<typeof AuthenticationError>;
+  error: Static<typeof AuthenticationErrorSchema>;
 };
 
 export async function authenticate(

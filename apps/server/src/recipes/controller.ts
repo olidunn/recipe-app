@@ -80,10 +80,14 @@ export const recipesController = new Elysia({
   .post(
     '/recipes',
     async ({ env, userId, body }) => {
-      const { name, steps, servingSize, preparationMinutes, cookingMinutes, ingredients } = Value.Encode(
-        RecipeRequestTransform,
-        body,
-      );
+      const {
+        name,
+        steps,
+        servingSize,
+        preparationMinutes,
+        cookingMinutes,
+        ingredients,
+      } = Value.Encode(RecipeRequestTransform, body);
 
       await createRecipe(env, {
         userId,
@@ -106,10 +110,14 @@ export const recipesController = new Elysia({
   .post(
     '/recipes/:recipeId',
     async ({ env, userId, body, params: { recipeId } }) => {
-      const { name, steps, servingSize, preparationMinutes, cookingMinutes, ingredients } = Value.Encode(
-        RecipeRequestTransform,
-        body,
-      );
+      const {
+        name,
+        steps,
+        servingSize,
+        preparationMinutes,
+        cookingMinutes,
+        ingredients,
+      } = Value.Encode(RecipeRequestTransform, body);
 
       await updateRecipeById(env, {
         recipeId,
