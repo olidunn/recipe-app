@@ -1,4 +1,5 @@
 import {
+  AuthenticationErrorSchema,
   CreateUserRequest,
   LoginRequest,
   sessionMaxAge,
@@ -7,8 +8,13 @@ import {
 import Elysia, { t } from 'elysia';
 import { D1_ERROR } from '../common/utils/d1';
 import { getErrorMessage } from '../common/utils/error';
+import {
+  getEmailFromMagicLinkToken,
+  getMagicLink,
+} from '../common/utils/magic-link';
+import { sendEmail } from '../email/utils';
 import { createUser } from './data';
-import { AuthenticationError, OptionalSessionCookie } from './schemas';
+import { OptionalSessionCookie } from './schemas';
 import { authenticate, generateSalt, hashPassword } from './utils';
 
 export const usersController = new Elysia({
@@ -47,15 +53,106 @@ export const usersController = new Elysia({
         return status(500, 'Failed to create account.');
       }
 
-      // TODO
-      // await getMagicLink
-      // await send the verify email email
+      const magicLink = await getMagicLink(env, email, 'verify-email');
+
+      const emailResponse = await sendEmail(env, {
+        type: 'VerifyEmailAddress',
+        link: magicLink,
+        recipient: { email, name },
+      });
+      if (emailResponse.errorOccurred) {
+        return status(500, 'Failed to send verification email');
+      }
     },
     {
       body: CreateUserRequest,
       response: {
         200: t.Void(),
         400: t.String(),
+        500: t.String(),
+      },
+    },
+  )
+  .post(
+    '/verify-email/:token',
+    async ({ env, params }) => {
+      const email = await getEmailFromMagicLinkToken(env, params.token);
+
+      if (!email) {
+        return { emailIsVerified: false };
+      }
+
+      await env.DB.prepare(`
+    UPDATE users
+    SET emailIsVerified = 1
+    WHERE email = ?;
+  `)
+        .bind(email)
+        .run();
+
+      return { emailIsVerified: true };
+    },
+    {
+      params: t.Object({
+        token: t.String(),
+      }),
+      response: {
+        200: t.Object({ emailIsVerified: t.Boolean() }),
+      },
+    },
+  )
+  .post(
+    '/resend-verification-email',
+    async ({ status, body, env }) => {
+      const { email } = body;
+      const user = await env.DB.prepare(`
+      SELECT name, emailIsVerified
+      FROM users
+      WHERE email = ?
+      LIMIT 1;
+    `)
+        .bind(email)
+        .first<{
+          name: string;
+          emailIsVerified: number;
+        }>();
+
+      if (!user) {
+        return;
+      }
+
+      if (user.emailIsVerified) {
+        void sendEmail(env, {
+          type: 'EmailAlreadyVerified',
+          recipient: {
+            email,
+            name: user.name,
+          },
+        });
+        return;
+      }
+
+      const magicLink = await getMagicLink(env, email, 'verify-email');
+
+      const emailResponse = await sendEmail(env, {
+        type: 'VerifyEmailAddress',
+        link: magicLink,
+        recipient: {
+          email,
+          name: user.name,
+        },
+      });
+
+      if (emailResponse.errorOccurred) {
+        return status(500, 'Failed to send verification email');
+      }
+    },
+    {
+      body: t.Object({
+        email: t.String({ format: 'email' }),
+      }),
+      response: {
+        200: t.Void(),
         500: t.String(),
       },
     },
@@ -103,7 +200,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
       cookie: OptionalSessionCookie,
       response: {
         200: t.Void(),
-        400: AuthenticationError,
+        400: AuthenticationErrorSchema,
       },
     },
   )

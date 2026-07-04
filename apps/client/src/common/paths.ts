@@ -6,6 +6,7 @@ export const paths = {
   updateRecipe: '/recipes/:recipeId/update',
   createAccount: '/create-account',
   login: '/login',
+  verifyEmail: '/verify-email/:token',
 } as const;
 
 export type Path = (typeof paths)[keyof typeof paths];
@@ -48,6 +49,7 @@ type PathParamLiteral<P extends string> =
       ? Param
       : never;
 
-type PathParams<P extends string> = PathParamLiteral<P> extends never
-  ? never
-  : Record<PathParamLiteral<P>, string | number>;
+type PathParams<P extends string> =
+  PathParamLiteral<P> extends never
+    ? never
+    : Record<PathParamLiteral<P>, string | number>;

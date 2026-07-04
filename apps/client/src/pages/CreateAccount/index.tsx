@@ -1,4 +1,5 @@
 import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { to } from '~/common/paths';
@@ -8,6 +9,8 @@ import { validate } from '~/common/utils/schemaValidation';
 import { Button } from '~/components/Button';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
+
+const CreateUserRequestChecker = TypeCompiler.Compile(CreateUserRequest);
 
 export function CreateAccount() {
   const [name, setName] = useState('');
@@ -36,7 +39,7 @@ export function CreateAccount() {
         password,
         confirmedPassword,
       };
-      const result = validate(body, CreateUserRequest);
+      const result = validate(body, CreateUserRequestChecker);
       if (result.failed) {
         setErrorByName(result.errorByName);
         return;

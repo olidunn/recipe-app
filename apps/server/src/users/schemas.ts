@@ -57,8 +57,3 @@ export const SessionTransform = Type.Transform(SessionRecord)
       current: value.current ? 1 : 0,
     } satisfies Static<typeof SessionRecord>;
   });
-
-export const AuthenticationError = Type.Union([
-  Type.Literal('invalidEmailOrPassword'),
-  Type.Literal('emailIsNotVerified'),
-]);

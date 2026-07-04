@@ -9,11 +9,10 @@ export function createUser(
 ): D1PreparedStatement {
   const { name, email, passwordSalt, passwordHash } = data;
 
-  // TODO: remove the emailIsVerified hardcoding once email verification is implemented
   return env.DB.prepare(
     `
-INSERT INTO users (name, email, passwordSalt, passwordHash, emailIsVerified)
-VALUES (?, ?, ?, ?, 1);
+INSERT INTO users (name, email, passwordSalt, passwordHash)
+VALUES (?, ?, ?, ?);
 `,
   ).bind(name, email, passwordSalt, passwordHash);
 }

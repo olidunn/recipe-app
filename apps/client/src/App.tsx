@@ -17,6 +17,7 @@ import { Login } from './pages/Login';
 import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
 import { UpdateRecipe } from './pages/UpdateRecipe';
+import { VerifyEmail } from './pages/VerifyEmail';
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -165,6 +166,7 @@ export function App() {
             path="/recipes/:recipeId/update"
             component={UpdateRecipe}
           />
+          <Route path="/verify-email/:token" component={VerifyEmail} />
           <Route>404 Not found</Route>
         </Switch>
       </main>
