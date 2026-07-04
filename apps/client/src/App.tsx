@@ -1,7 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { Redirect, Switch, useLocation } from 'wouter';
 import { useAuthenticated } from '~/common/data/users';
+import { clearAllData } from '~/common/hooks/useClearAllDataAndRedirectToLogin';
 import { PrivateRoute } from '~/components/PrivateRoute';
 import { PublicOnlyRoute } from '~/components/PublicOnlyRoute';
 import { Route } from '~/components/Route';
@@ -95,18 +97,21 @@ export function App() {
   const { data: authenticated } = useAuthenticated();
   const [, setLocation] = useLocation();
   const [loggingOut, setLoggingOut] = useState(false);
+  const queryClient = useQueryClient();
   const [navMenuIsOpen, setNavMenuIsOpen] = useState(false);
 
   async function logout() {
     try {
       setLoggingOut(true);
+      await queryClient.cancelQueries();
       const { error } = await server.users.logout.post();
 
       if (error) {
         throw error;
       }
 
-      setLocation(to('/login'));
+      await clearAllData(queryClient);
+      setLocation(to('/login'), { replace: true });
     } catch (_error) {
       // TODO handle with sonner
     } finally {
