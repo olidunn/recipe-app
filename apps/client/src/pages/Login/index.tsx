@@ -14,10 +14,12 @@ import { ButtonGroup } from '~/components/ButtonGroup';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
 import { Link } from '~/components/Link';
+import { ResendVerificationEmailForm } from '../VerifyEmail/ResendVerificationEmailForm';
 
 const LoginRequestChecker = TypeCompiler.Compile(LoginRequest);
 
 export function Login() {
+  const [emailIsNotVerified, setEmailIsNotVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorByName, setErrorByName] = useState<ErrorByName<
@@ -43,9 +45,13 @@ export function Login() {
       });
 
       if (error?.status === 400) {
-        setErrorByName({
-          password: { message: errorMessageByError[error.value] },
-        });
+        if (error.value === 'emailIsNotVerified') {
+          setEmailIsNotVerified(true);
+        } else if (error.value === 'invalidEmailOrPassword') {
+          setErrorByName({
+            password: { message: errorMessageByError[error.value] },
+          });
+        }
         return;
       }
 
@@ -60,6 +66,16 @@ export function Login() {
     } finally {
       setLoggingIn(false);
     }
+  }
+
+  if (emailIsNotVerified) {
+    return (
+      <>
+        <h1>Almost there!</h1>
+        <p>Your email needs to be verified before you can login.</p>
+        <ResendVerificationEmailForm />
+      </>
+    );
   }
 
   return (

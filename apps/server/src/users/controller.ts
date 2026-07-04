@@ -101,7 +101,62 @@ export const usersController = new Elysia({
       },
     },
   )
+  .post(
+    '/resend-verification-email',
+    async ({ status, body, env }) => {
+      const { email } = body;
+      const user = await env.DB.prepare(`
+      SELECT name, emailIsVerified
+      FROM users
+      WHERE email = ?
+      LIMIT 1;
+    `)
+        .bind(email)
+        .first<{
+          name: string;
+          emailIsVerified: number;
+        }>();
 
+      if (!user) {
+        return;
+      }
+
+      if (user.emailIsVerified) {
+        void sendEmail(env, {
+          type: 'EmailAlreadyVerified',
+          recipient: {
+            email,
+            name: user.name,
+          },
+        });
+        return;
+      }
+
+      const magicLink = await getMagicLink(env, email, 'verify-email');
+
+      const emailResponse = await sendEmail(env, {
+        type: 'VerifyEmailAddress',
+        link: magicLink,
+        recipient: {
+          email,
+          name: user.name,
+        },
+      });
+
+      if (emailResponse.errorOccurred) {
+        return status(500, 'Failed to send verification email');
+      }
+    },
+    {
+      body: t.Object({
+        email: t.String({ format: 'email' }),
+      }),
+      response: {
+        200: t.Void(),
+        500: t.String(),
+      },
+    },
+  )
   .post(
     '/login',
     async ({ status, body, env, cookie, request }) => {

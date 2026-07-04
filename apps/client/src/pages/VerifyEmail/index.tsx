@@ -5,6 +5,7 @@ import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Link } from '~/components/Link';
+import { ResendVerificationEmailForm } from './ResendVerificationEmailForm';
 
 export function VerifyEmail() {
   const { token } = useParams<{ token: string }>();
@@ -36,7 +37,7 @@ export function VerifyEmail() {
   }
 
   return (
-    <Container>
+    <div>
       {verified ? (
         <>
           <h1>Email Verified!</h1>
@@ -47,8 +48,13 @@ export function VerifyEmail() {
         <>
           <h1>Verification Failed</h1>
           <p>This verification link is invalid or has expired.</p>
+          <p>
+            Your email address could not be verified. Please fill in the form
+            below to try again.
+          </p>
+          <ResendVerificationEmailForm />
         </>
       )}
-    </Container>
+    </div>
   );
 }
