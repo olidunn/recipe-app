@@ -70,7 +70,6 @@ export function Login() {
 
       setLocation(path, { replace: true });
       queryClient.setQueryData(authenticatedKey, true);
-      setLocation(to('/'), { replace: true });
     } catch (_) {
       setErrorByName({ password: { message: 'We were unable to login.' } });
     } finally {
