@@ -111,6 +111,23 @@
             "noRenderReturnValue": "error",
             "useExhaustiveDependencies": "error",
             "useHookAtTopLevel": "error"
+          },
+          "suspicious": {
+            "noConsole": "error",
+            "noAlert": "warn"
+          },
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "wouter": {
+                    "importNames": ["Route", "RouteProps", "Link"],
+                    "message": "Use the Route component instead since it provides type support for `path`."
+                  }
+                }
+              }
+            }
           }
         }
       }

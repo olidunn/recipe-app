@@ -9,7 +9,7 @@ export const paths = {
   verifyEmail: '/verify-email/:token',
 } as const;
 
-type Path = (typeof paths)[keyof typeof paths];
+export type Path = (typeof paths)[keyof typeof paths];
 
 /**
  * Returns the URL using the provided path and params.
