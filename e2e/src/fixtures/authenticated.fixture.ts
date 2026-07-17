@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 import { test } from '@playwright/test';
 import type { CreateUserRequest, LoginRequest } from '@recipe-app/common';
 import { to } from '@recipe-app/common';
-import { getServer, SERVER_URL } from '~/helpers/server';
+import { getCookieHeader, getServer, SERVER_URL } from '~/helpers/server';
 import {
   createAccount,
   createUniqueTestUser,
@@ -67,7 +67,8 @@ async function deleteAccountAPI(page: Page, data: LoginRequest): Promise<void> {
     return;
   }
 
-  const server = await getServer(page);
+  const cookie = await getCookieHeader(page);
+  const server = getServer(cookie);
   const { error } = await server.users['delete-account'].delete();
 
   if (error) {
