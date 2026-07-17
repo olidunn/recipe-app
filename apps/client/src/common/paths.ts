@@ -7,6 +7,8 @@ export const paths = {
   createAccount: '/create-account',
   login: '/login',
   verifyEmail: '/verify-email/:token',
+  settings: '/settings',
+  deleteAccount: '/settings/delete-account',
 } as const;
 
 type Path = (typeof paths)[keyof typeof paths];

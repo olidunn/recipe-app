@@ -16,9 +16,11 @@ import { Link } from './components/Link';
 import { Loading } from './components/Loading';
 import { CreateAccount } from './pages/CreateAccount';
 import { CreateRecipe } from './pages/CreateRecipe';
+import { DeleteAccount } from './pages/DeleteAccount';
 import { Login } from './pages/Login';
 import { RecipePage } from './pages/Recipe';
 import { Recipes } from './pages/Recipes';
+import { Settings } from './pages/Settings';
 import { UpdateRecipe } from './pages/UpdateRecipe';
 import { VerifyEmail } from './pages/VerifyEmail';
 
@@ -167,6 +169,9 @@ export function App() {
           <Route path={paths.createAccount} component={CreateAccount} />
           <Route path={paths.login} component={Login} />
           <Route path={paths.verifyEmail} component={VerifyEmail} />
+          <Route path={paths.settings} component={Settings} />
+          <Route path={paths.deleteAccount} component={DeleteAccount} />
+
           <Route>404 Not found</Route>
         </Switch>
       </main>

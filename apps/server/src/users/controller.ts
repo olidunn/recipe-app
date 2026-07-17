@@ -299,4 +299,24 @@ AND userId = ?;
     {
       response: { 200: t.Void() },
     },
+  )
+  .delete(
+    '/delete-account',
+    async ({ env, cookie: { session }, userId }) => {
+      await env.DB.prepare(
+        `
+DELETE FROM users
+WHERE id = ?;
+`,
+      )
+        .bind(userId)
+        .run();
+
+      session.remove();
+    },
+    {
+      response: {
+        200: t.Void(),
+      },
+    },
   );

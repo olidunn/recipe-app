@@ -12,6 +12,7 @@ type ButtonProps = {
   className?: string | undefined;
   style?: CSSProperties;
   loading?: boolean;
+  disabled?: boolean;
 };
 export function Button({
   children,
@@ -21,6 +22,7 @@ export function Button({
   onClick,
   style,
   loading = false,
+  disabled = false,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -28,6 +30,7 @@ export function Button({
       className={className}
       onClick={onClick}
       aria-label={ariaLabel}
+      disabled={disabled}
     >
       {icon && <Icon type={icon} />}
 
