@@ -1,6 +1,6 @@
+import { to } from '@recipe-app/common';
 import { useState } from 'react';
 import { Redirect } from 'wouter';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';

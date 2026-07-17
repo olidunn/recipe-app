@@ -1,7 +1,7 @@
+import { to } from '@recipe-app/common';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
-import { to } from '~/common/paths';
 
 export function useClearAllDataAndRedirectToLogin(): (
   redirectionToAttemptedPathDisabled?: boolean,

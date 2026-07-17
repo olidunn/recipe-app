@@ -1,29 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '~/test';
 
 test.beforeEach(async ({ page }) => {
-  // Navigates to localhost/recipes page
   await page.goto('/recipes');
-
-  // Expect delete button to be on page
-  const deleteButton = page.getByRole('button', { name: 'Delete All Recipes' });
-
-  await expect(deleteButton).toBeVisible();
-
-  // Delete prompt appears, enter "delete"
-  page.on('dialog', async (dialog) => {
-    expect(dialog.type()).toBe('prompt');
-    expect(dialog.message()).toBe(
-      `Do you want to delete all recipes?\nType "delete" to confirm.`,
-    );
-    await dialog.accept('delete');
-  });
-
-  await deleteButton.click();
 });
 
 // After deleting, test should return with no recipes
 // Page returns heading, create recipe link, delete all button, no recipes found
-test.skip('loads with no recipes', async ({ page }) => {
+test('loads with no recipes', async ({ loggedInPage: page }) => {
   await expect(page.getByRole('heading', { name: 'Recipes' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Create Recipe' })).toBeVisible();
   await expect(

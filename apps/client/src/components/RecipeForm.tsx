@@ -1,10 +1,9 @@
 import type { RecipeRequest, RecipeResponse } from '@recipe-app/common';
-import { RecipeRequestSchema } from '@recipe-app/common';
+import { RecipeRequestSchema, to } from '@recipe-app/common';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'wouter';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';

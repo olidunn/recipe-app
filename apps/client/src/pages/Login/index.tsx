@@ -1,11 +1,10 @@
 import type { AuthenticationError } from '@recipe-app/common';
-import { LoginRequest } from '@recipe-app/common';
+import { LoginRequestSchema, to } from '@recipe-app/common';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation, useSearch } from 'wouter';
 import { authenticatedKey } from '~/common/data/users';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';
@@ -16,14 +15,14 @@ import { InputText } from '~/components/InputText';
 import { Link } from '~/components/Link';
 import { ResendVerificationEmailForm } from '../VerifyEmail/ResendVerificationEmailForm';
 
-const LoginRequestChecker = TypeCompiler.Compile(LoginRequest);
+const LoginRequestChecker = TypeCompiler.Compile(LoginRequestSchema);
 
 export function Login() {
   const [emailIsNotVerified, setEmailIsNotVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorByName, setErrorByName] = useState<ErrorByName<
-    typeof LoginRequest
+    typeof LoginRequestSchema
   > | null>(null);
   const [loggingIn, setLoggingIn] = useState(false);
   const [, setLocation] = useLocation();

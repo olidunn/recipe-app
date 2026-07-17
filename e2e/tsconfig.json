@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "esnext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "lib": ["ESNext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["ESNext", "DOM"],
     "types": ["node"],
     "skipLibCheck": true,
     "noEmit": true,
@@ -20,5 +20,10 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src", "./playwright.config.ts"]
+  "include": ["src", "./playwright.config.ts"],
+  "references": [
+    {
+      "path": "../apps/server/tsconfig.json"
+    }
+  ]
 }

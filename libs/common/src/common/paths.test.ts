@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { to } from '~/common/paths';
+import { to } from './paths';
 
 describe('to', () => {
   it('replaces a single param', () => {

@@ -15,22 +15,24 @@ export const Name = t.String({
 
 export const EmailAddress = t.String({ format: 'email' });
 
-export const LoginRequest = Type.Object({
+export const LoginRequestSchema = Type.Object({
   email: EmailAddress,
   password: Password,
 });
+export type LoginRequest = Static<typeof LoginRequestSchema>;
 
 export const EmailRequest = t.Object({
   email: EmailAddress,
 });
 
-export const CreateUserRequest = t.Composite([
-  LoginRequest,
+export const CreateUserRequestSchema = t.Composite([
+  LoginRequestSchema,
   t.Object({
     confirmedPassword: Password,
     name: Name,
   }),
 ]);
+export type CreateUserRequest = Static<typeof CreateUserRequestSchema>;
 
 export const ChangePasswordRequest = t.Object({
   newPassword: Password,

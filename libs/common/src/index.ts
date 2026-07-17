@@ -1,4 +1,5 @@
 export * from './common/constants';
+export * from './common/paths';
 export * from './common/schemas';
 export * from './common/types';
 export * from './common/utils/string';

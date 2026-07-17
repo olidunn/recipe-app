@@ -229,5 +229,5 @@ function InnerInputNumber({
 }
 
 function normalizeValue(value: number | null): string {
-  return value !== null ? String(value) : '';
+  return value === null ? '' : String(value);
 }

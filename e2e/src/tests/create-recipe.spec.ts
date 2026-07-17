@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test';
 import { submitRecipeForm } from '~/helpers/create-recipe.js';
 import { submitDeleteRecipeForm } from '~/helpers/delete-recipe.js';
+import { expect, test } from '~/test';
 
 // Make a delete recipe helper and delete after recipe is created in the spec file
 

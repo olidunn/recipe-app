@@ -1,7 +1,7 @@
+import { to } from '@recipe-app/common';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { useAuthenticated } from '~/common/data/users';
-import { to } from '~/common/paths';
 
 /**
  * Redirect to the home page if there is an active session.

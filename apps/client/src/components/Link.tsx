@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'styled-components';
 import styled from 'styled-components';
 import type { LinkProps as WouterLinkProps } from 'wouter';
+// biome-ignore lint/style/noRestrictedImports: This is a valid place to use it
 import { Link as WouterLink } from 'wouter';
 import type { IconType } from './Icon';
 import { Icon } from './Icon';

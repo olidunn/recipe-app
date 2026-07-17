@@ -10,9 +10,8 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
-    "@playwright/test": "^1.58.2"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.3"
+    "@recipe-app/common": "workspace:*",
+    "@recipe-app/server": "workspace:*",
+    "@playwright/test": "^1.61.1"
   }
 }

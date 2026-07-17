@@ -141,6 +141,26 @@
           }
         }
       }
+    },
+    {
+      "includes": ["e2e/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@playwright/test": {
+                    "importNames": ["test", "expect"],
+                    "message": "Import from `~/test` instead."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

@@ -1,8 +1,7 @@
 import type { Recipe } from '@recipe-app/common';
-import { formatMinutesAsHours } from '@recipe-app/common';
+import { formatMinutesAsHours, to } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';

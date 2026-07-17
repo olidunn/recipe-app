@@ -1,6 +1,6 @@
+import { to } from '@recipe-app/common';
 import { useState } from 'react';
 import { useParams } from 'wouter';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
@@ -27,7 +27,7 @@ export function VerifyEmail() {
         <p>Please click the button to verify</p>
         <Button
           onClick={() => {
-            verifyEmail();
+            void verifyEmail();
           }}
         >
           Verify Email

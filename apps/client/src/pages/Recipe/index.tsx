@@ -1,9 +1,8 @@
 import type { Recipe } from '@recipe-app/common';
-import { formatMinutesAsHours } from '@recipe-app/common';
+import { formatMinutesAsHours, to } from '@recipe-app/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Redirect, useParams } from 'wouter';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import { Button } from '~/components/Button';
 import { ButtonGroup } from '~/components/ButtonGroup';

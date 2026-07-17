@@ -1,7 +1,7 @@
 import {
   AuthenticationErrorSchema,
-  CreateUserRequest,
-  LoginRequest,
+  CreateUserRequestSchema,
+  LoginRequestSchema,
   sessionMaxAge,
   validateNewPassword,
 } from '@recipe-app/common';
@@ -65,7 +65,7 @@ export const usersController = new Elysia({
       }
     },
     {
-      body: CreateUserRequest,
+      body: CreateUserRequestSchema,
       response: {
         200: t.Void(),
         400: t.String(),
@@ -196,7 +196,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
       });
     },
     {
-      body: LoginRequest,
+      body: LoginRequestSchema,
       cookie: OptionalSessionCookie,
       response: {
         200: t.Void(),

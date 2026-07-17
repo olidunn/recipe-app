@@ -1,8 +1,11 @@
-import { CreateUserRequest, validateNewPassword } from '@recipe-app/common';
+import {
+  CreateUserRequestSchema,
+  to,
+  validateNewPassword,
+} from '@recipe-app/common';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { to } from '~/common/paths';
 import { server } from '~/common/server';
 import type { ErrorByName } from '~/common/utils/schemaValidation';
 import { validate } from '~/common/utils/schemaValidation';
@@ -10,7 +13,7 @@ import { Button } from '~/components/Button';
 import { Form } from '~/components/Form';
 import { InputText } from '~/components/InputText';
 
-const CreateUserRequestChecker = TypeCompiler.Compile(CreateUserRequest);
+const CreateUserRequestChecker = TypeCompiler.Compile(CreateUserRequestSchema);
 
 export function CreateAccount() {
   const [name, setName] = useState('');
@@ -18,7 +21,7 @@ export function CreateAccount() {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [errorByName, setErrorByName] = useState<ErrorByName<
-    typeof CreateUserRequest
+    typeof CreateUserRequestSchema
   > | null>(null);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [, setLocation] = useLocation();

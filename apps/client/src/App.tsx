@@ -1,3 +1,4 @@
+import { to } from '@recipe-app/common';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -7,7 +8,6 @@ import { clearAllData } from '~/common/hooks/useClearAllDataAndRedirectToLogin';
 import { PrivateRoute } from '~/components/PrivateRoute';
 import { PublicOnlyRoute } from '~/components/PublicOnlyRoute';
 import { Route } from '~/components/Route';
-import { to } from './common/paths';
 import { server } from './common/server';
 import { Button } from './components/Button';
 import { IconButton } from './components/IconButton';
