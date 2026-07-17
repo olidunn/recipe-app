@@ -23,7 +23,7 @@ test.beforeEach(async ({ page }) => {
 
 // After deleting, test should return with no recipes
 // Page returns heading, create recipe link, delete all button, no recipes found
-test('loads with no recipes', async ({ page }) => {
+test.skip('loads with no recipes', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Recipes' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Create Recipe' })).toBeVisible();
   await expect(

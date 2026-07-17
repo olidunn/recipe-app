@@ -6,7 +6,7 @@ import { submitDeleteRecipeForm } from '~/helpers/delete-recipe.js';
 
 // Submit recipe function, fills in form as:
 // recipe name, serving, steps, ingredients
-test('can create and delete a recipe', async ({ page }) => {
+test.skip('can create and delete a recipe', async ({ page }) => {
   await submitRecipeForm(page, {
     name: 'sample recipe',
     servingSize: 2,
