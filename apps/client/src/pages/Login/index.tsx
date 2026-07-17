@@ -3,7 +3,7 @@ import { LoginRequest } from '@recipe-app/common';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, useSearch } from 'wouter';
 import { authenticatedKey } from '~/common/data/users';
 import { to } from '~/common/paths';
 import { server } from '~/common/server';
@@ -27,6 +27,8 @@ export function Login() {
   > | null>(null);
   const [loggingIn, setLoggingIn] = useState(false);
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const redirect = new URLSearchParams(search).get('redirect');
   const queryClient = useQueryClient();
 
   async function login() {
@@ -59,8 +61,15 @@ export function Login() {
         throw error;
       }
 
+      const pathsToSkipRedirection: string[] = [to('/')];
+
+      const path =
+        redirect && !pathsToSkipRedirection.includes(redirect)
+          ? redirect
+          : to('/');
+
+      setLocation(path, { replace: true });
       queryClient.setQueryData(authenticatedKey, true);
-      setLocation(to('/'), { replace: true });
     } catch (_) {
       setErrorByName({ password: { message: 'We were unable to login.' } });
     } finally {

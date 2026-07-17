@@ -11,7 +11,7 @@ export const paths = {
   deleteAccount: '/settings/delete-account',
 } as const;
 
-type Path = (typeof paths)[keyof typeof paths];
+export type Path = (typeof paths)[keyof typeof paths];
 
 /**
  * Returns the URL using the provided path and params.

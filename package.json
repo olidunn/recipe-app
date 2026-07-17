@@ -3,6 +3,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/bun": "^1.3.11",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "typescript": "^5.9.2"
   },
   "private": true,
@@ -13,7 +15,9 @@
     "e2e": "bun --filter '@recipe-app/e2e' e2e",
     "unit-tests": "bun --filter '*' test",
     "typegen": "bun --filter '*' typegen",
-    "typecheck": "bun --filter '*' typecheck"
+    "typecheck": "bun --filter '*' typecheck",
+    "lint-staged": "lint-staged",
+    "prepare": "husky"
   },
   "type": "module",
   "workspaces": [
