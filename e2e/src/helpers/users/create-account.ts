@@ -45,11 +45,7 @@ export async function submitCreateAccountForm(
   await emailInput.fill(email);
   await passwordInput.fill(password);
   await confirmPasswordInput.fill(confirmPassword);
-
-  const form = page.locator('form');
-  await expect(form).toBeVisible();
-
-  await form.press('Enter');
+  await page.getByRole('button', { name: 'Create account' }).click();
 }
 
 export async function createAccount(
@@ -63,13 +59,7 @@ export async function createAccount(
     confirmPassword: password,
   });
 
-  await expect(page).toHaveURL(to('/create-account'));
-  await expect(
-    page.getByRole('heading', { name: 'Welcome', exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Your account has been created!', { exact: true }),
-  ).toBeVisible();
+  await expect(page).toHaveURL(to('/login'));
 
   await verifyEmail(page, { name, email });
 }

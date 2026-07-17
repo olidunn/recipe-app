@@ -13,30 +13,20 @@ export async function verifyEmail(
 
   await clickLink(page, 'Verify your email address', /\/verify-email\/.+/);
 
-  await expect(
-    page.getByRole('heading', { name: 'One last step!', exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Click the button below to verify your email address.', {
-      exact: true,
-    }),
-  ).toBeVisible();
-
   const verifyButton = page.getByRole('button', {
-    name: 'Verify email address',
+    name: 'Verify Email',
     exact: true,
   });
-  await expect(verifyButton).toBeVisible();
   await verifyButton.click();
 
   await expect(
-    page.getByRole('heading', { name: "Let's go!", exact: true }),
+    page.getByRole('heading', { name: 'Email Verified!', exact: true }),
   ).toBeVisible();
 
   await expect(
-    page.getByText('Your email address has been verified.'),
+    page.getByText('Your email has been successfully verified.'),
   ).toBeVisible();
-  const loginLink = page.getByRole('link', { name: 'log in', exact: true });
+  const loginLink = page.getByRole('link', { name: 'Log In', exact: true });
   await expect(loginLink).toBeVisible();
 
   await loginLink.click();

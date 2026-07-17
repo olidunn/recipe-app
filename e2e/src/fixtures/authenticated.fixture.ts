@@ -45,13 +45,13 @@ export const authenticatedTest = test.extend<TestFixture>({
       email: user.email,
       password: user.password,
     });
-    await page.goto(to('/'));
+    await page.goto(to('/recipes'));
     await use(page);
   },
 });
 
 async function loginAPI(page: Page, data: LoginRequest): Promise<boolean> {
-  const loginResponse = await page.request.post(`${SERVER_URL}/auth/login`, {
+  const loginResponse = await page.request.post(`${SERVER_URL}/users/login`, {
     data,
   });
 
